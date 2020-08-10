@@ -37,9 +37,7 @@
         /// </summary>
         public const string PackageGuidString = "86f8fab8-b893-46cb-be11-b4035031cac3";
 
-        public MyExtensionPackage() {
-            Console.WriteLine("MyExtensionPackage.ctor()");
-        }
+        public MyExtensionPackage() => Console.WriteLine("MyExtensionPackage.ctor()");
 
         #region Package Members
 

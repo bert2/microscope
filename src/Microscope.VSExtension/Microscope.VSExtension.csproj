@@ -68,7 +68,7 @@
     <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="16.7.3065" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\MicroscopePackage.ico" />
+    <Content Include="Resources\microscope.ico" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="VSPackage.resx">

@@ -1,6 +1,8 @@
 ﻿#nullable enable
 
 namespace Microscope.CodeLensProvider {
+    using System;
+    using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -8,15 +10,19 @@ namespace Microscope.CodeLensProvider {
     using Microsoft.VisualStudio.Language.CodeLens.Remoting;
     using Microsoft.VisualStudio.Threading;
 
-    public class MSIL : IAsyncCodeLensDataPoint {
+    public class ILDataPoint : IAsyncCodeLensDataPoint {
         public CodeLensDescriptor Descriptor { get; }
 
         public event AsyncEventHandler InvalidatedAsync;
 
+        private static void Log(object? data = null, [CallerMemberName] string? method = null) => System.IO.File.AppendAllText(
+            @"C:\Users\bert\Desktop\microscope.log",
+            $"{DateTime.Now:HH:mm:ss.fff} {method}{(data == null ? "" : $": {data}")}\n");
+
         public Task<CodeLensDataPointDescriptor> GetDataAsync(CodeLensDescriptorContext descriptorContext, CancellationToken token)
             => Task.FromResult(new CodeLensDataPointDescriptor {
-                Description = "desc",
-                TooltipText = "tooltip",
+                Description = "{0} instructions",
+                TooltipText = "Click to inspect IL instructions.",
                 ImageId = null,
                 IntValue = null
             });

@@ -3,7 +3,7 @@
   <Metadata>
     <Identity Id="ede7ef0f-017b-4b33-b7b3-c7480d3cc712" Version="1.0" Language="en-US" Publisher="Robert Hofmann" />
     <DisplayName>microscope</DisplayName>
-    <Description>Provides a CodeLens to inspect the MSIL instructions of a method.</Description>
+    <Description>Provides a CodeLens to inspect the intermediate language (IL) instructions of a method.</Description>
   </Metadata>
   <Installation>
     <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[16.0, 17.0)" />

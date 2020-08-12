@@ -121,7 +121,7 @@
     <value>microscope</value>
   </data>
   <data name="101" xml:space="preserve">
-    <value>Provides a CodeLens to inspect the MSIL instructions of a method.</value>
+    <value>Provides a CodeLens to inspect the intermediate language (IL) instructions of a method.</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="400" type="System.Resources.ResXFileRef, System.Windows.Forms">

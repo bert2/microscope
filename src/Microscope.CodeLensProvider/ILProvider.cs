@@ -16,7 +16,7 @@ namespace Microscope.CodeLensProvider {
     [Name(ProviderId)]
     [LocalizedName(typeof(Resources), "Name")]
     [ContentType("code")]
-    [Priority(1)]
+    [Priority(201)]
     public class ILProvider : IAsyncCodeLensDataPointProvider {
         public const string ProviderId = "ILInstructions";
 

@@ -34,14 +34,13 @@ namespace Microscope.CodeLensProvider {
             }
         }
 
-        public async Task<bool> CanCreateDataPointAsync(
+        public Task<bool> CanCreateDataPointAsync(
             CodeLensDescriptor descriptor,
             CodeLensDescriptorContext descriptorContext,
             CancellationToken token) {
             try {
-                //var foo = await callbackService.Value.InvokeAsync<int>(this, nameof(ICodeLensContext.Foo)).ConfigureAwait(false);
-                //Log(foo);
-                return true;
+                Log();
+                return Task.FromResult(true);
             } catch (Exception ex) {
                 Log(ex);
                 throw;
@@ -53,7 +52,8 @@ namespace Microscope.CodeLensProvider {
             CodeLensDescriptorContext descriptorContext,
             CancellationToken token) {
             try {
-                return Task.FromResult<IAsyncCodeLensDataPoint>(new ILDataPoint());
+                Log();
+                return Task.FromResult<IAsyncCodeLensDataPoint>(new ILDataPoint(callbackService.Value, descriptor));
             } catch (Exception ex) {
                 Log(ex);
                 throw;

@@ -2,34 +2,55 @@
 
 namespace Microscope.CodeLensProvider {
     using System;
-    using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
+
+    using Microscope.Shared;
 
     using Microsoft.VisualStudio.Language.CodeLens;
     using Microsoft.VisualStudio.Language.CodeLens.Remoting;
     using Microsoft.VisualStudio.Threading;
 
+    using static Microscope.Shared.Logging;
+
     public class ILDataPoint : IAsyncCodeLensDataPoint {
+        private readonly ICodeLensCallbackService callbackService;
+
         public CodeLensDescriptor Descriptor { get; }
 
-        public event AsyncEventHandler InvalidatedAsync;
+        public event AsyncEventHandler? InvalidatedAsync;
 
-        private static void Log(object? data = null, [CallerMemberName] string? method = null) => System.IO.File.AppendAllText(
-            @"C:\Users\bert\Desktop\microscope.log",
-            $"{DateTime.Now:HH:mm:ss.fff} {method}{(data == null ? "" : $": {data}")}\n");
+        public ILDataPoint(ICodeLensCallbackService callbackService, CodeLensDescriptor descriptor) {
+            this.callbackService = callbackService;
+            Descriptor = descriptor;
+        }
 
-        public Task<CodeLensDataPointDescriptor> GetDataAsync(CodeLensDescriptorContext descriptorContext, CancellationToken token)
-            => Task.FromResult(new CodeLensDataPointDescriptor {
-                Description = "{0} instructions",
-                TooltipText = "Click to inspect IL instructions.",
-                ImageId = null,
-                IntValue = null
-            });
+        public async Task<CodeLensDataPointDescriptor> GetDataAsync(CodeLensDescriptorContext descriptorContext, CancellationToken token) {
+            try {
+                Log();
 
-        public Task<CodeLensDetailsDescriptor> GetDetailsAsync(CodeLensDescriptorContext descriptorContext, CancellationToken token)
-            => Task.FromResult(new CodeLensDetailsDescriptor {
-                Headers = new[] {
+                var foo = await callbackService
+                    .InvokeAsync<int>(this, nameof(ICodeLensContext.Foo), cancellationToken: token)
+                    .ConfigureAwait(false);
+                Log(foo);
+
+                return new CodeLensDataPointDescriptor {
+                    Description = "{0} instructions",
+                    TooltipText = "Click to inspect IL instructions.",
+                    ImageId = null,
+                    IntValue = null
+                };
+            } catch (Exception ex) {
+                Log(ex);
+                throw;
+            }
+        }
+
+        public Task<CodeLensDetailsDescriptor> GetDetailsAsync(CodeLensDescriptorContext descriptorContext, CancellationToken token) {
+            try {
+                Log();
+                return Task.FromResult(new CodeLensDetailsDescriptor {
+                    Headers = new[] {
                     new CodeLensDetailHeaderDescriptor {
                         UniqueName = "Address",
                         DisplayName = "Address",
@@ -46,7 +67,7 @@ namespace Microscope.CodeLensProvider {
                         Width = .75
                     }
                 },
-                Entries = new[] {
+                    Entries = new[] {
                     new CodeLensDetailEntryDescriptor {
                         Fields = new[] {
                             new CodeLensDetailEntryField { Text = "IL_0001" },
@@ -64,6 +85,11 @@ namespace Microscope.CodeLensProvider {
                         Tooltip = "callvirt short documentation bla bla"
                     }
                 }
-            });
+                });
+            } catch (Exception ex) {
+                Log(ex);
+                throw;
+            }
+        }
     }
 }

@@ -5,11 +5,11 @@ VisualStudioVersion = 16.0.30330.147
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "proto", "proto", "{B088B2E9-FB24-4580-9159-9EE8AB492903}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microscope.VSExtension", "src\Microscope.VSExtension\Microscope.VSExtension.csproj", "{A0920311-8835-4915-9E9B-384F5D8F1113}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "src\Shared\Shared.csproj", "{D6F37EEC-CBA3-4DB2-B44C-5F036C6FAA9F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeLensProvider", "src\CodeLensProvider\CodeLensProvider.csproj", "{FA8F7552-7E27-425B-9B81-09E0789179A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSExtension", "src\VSExtension\VSExtension.csproj", "{A0920311-8835-4915-9E9B-384F5D8F1113}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A0920311-8835-4915-9E9B-384F5D8F1113}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A0920311-8835-4915-9E9B-384F5D8F1113}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A0920311-8835-4915-9E9B-384F5D8F1113}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A0920311-8835-4915-9E9B-384F5D8F1113}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D6F37EEC-CBA3-4DB2-B44C-5F036C6FAA9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D6F37EEC-CBA3-4DB2-B44C-5F036C6FAA9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6F37EEC-CBA3-4DB2-B44C-5F036C6FAA9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -29,6 +25,10 @@ Global
 		{FA8F7552-7E27-425B-9B81-09E0789179A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA8F7552-7E27-425B-9B81-09E0789179A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA8F7552-7E27-425B-9B81-09E0789179A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0920311-8835-4915-9E9B-384F5D8F1113}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0920311-8835-4915-9E9B-384F5D8F1113}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0920311-8835-4915-9E9B-384F5D8F1113}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0920311-8835-4915-9E9B-384F5D8F1113}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

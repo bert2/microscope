@@ -5,6 +5,7 @@ namespace Microscope.Shared {
     using System.Diagnostics;
     using System.IO;
     using System.Runtime.CompilerServices;
+    using System.Threading;
 
     public static class Logging
     {
@@ -15,7 +16,8 @@ namespace Microscope.Shared {
             => File.AppendAllText(
                 @"C:\Users\bert\Desktop\microscope.log",
                 $"{DateTime.Now:HH:mm:ss.fff} "
-                + $"{Process.GetCurrentProcess().Id} "
+                + $"{Process.GetCurrentProcess().Id,5} "
+                + $"{Thread.CurrentThread.ManagedThreadId,3} "
                 + $"{Path.GetFileNameWithoutExtension(file)}.{method}()"
                 + $"{(data == null ? "" : $": {data}")}\n");
     }

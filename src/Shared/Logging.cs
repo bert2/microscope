@@ -13,9 +13,9 @@ namespace Microscope.Shared {
             [CallerFilePath] string? file = null,
             [CallerMemberName] string? method = null)
             => File.AppendAllText(
-                @"microscope.log",
-                $"{DateTime.Now:HH:mm:ss.fff} - "
-                + $"{Process.GetCurrentProcess().Id} - "
+                @"C:\Users\bert\Desktop\microscope.log",
+                $"{DateTime.Now:HH:mm:ss.fff} "
+                + $"{Process.GetCurrentProcess().Id} "
                 + $"{Path.GetFileNameWithoutExtension(file)}.{method}()"
                 + $"{(data == null ? "" : $": {data}")}\n");
     }

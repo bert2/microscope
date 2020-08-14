@@ -16,6 +16,10 @@ namespace Microscope.VSExtension {
     public sealed class MicroscopePackage : AsyncPackage {
         public const string PackageGuidString = "b798b46c-201a-470c-9e3e-fa0abb23dfa7";
 
+        static MicroscopePackage() {
+            Log();
+        }
+
         public MicroscopePackage() {
             Log();
         }

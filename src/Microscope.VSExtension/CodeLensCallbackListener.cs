@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 namespace Microscope.VSExtension {
+    using System;
     using System.ComponentModel.Composition;
 
     using Microscope.Shared;
@@ -13,11 +14,15 @@ namespace Microscope.VSExtension {
     [Export(typeof(ICodeLensCallbackListener))]
     [ContentType("CSharp")]
     public class CodeLensCallbackListener : ICodeLensCallbackListener, ICodeLensContext {
+        static CodeLensCallbackListener() {
+            Log();
+        }
+
         [ImportingConstructor]
         public CodeLensCallbackListener() {
             try {
                 Log();
-            } catch (System.Exception ex) {
+            } catch (Exception ex) {
                 Log(ex);
                 throw;
             }
@@ -27,7 +32,7 @@ namespace Microscope.VSExtension {
             try {
                 Log();
                 return 42;
-            } catch (System.Exception ex) {
+            } catch (Exception ex) {
                 Log(ex);
                 throw;
             }

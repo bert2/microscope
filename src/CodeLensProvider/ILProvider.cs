@@ -23,6 +23,10 @@ namespace Microscope.CodeLensProvider {
         public const string ProviderId = "ILInstructions";
         private readonly Lazy<ICodeLensCallbackService> callbackService;
 
+        static ILProvider() {
+            Log();
+        }
+
         [ImportingConstructor]
         public ILProvider(Lazy<ICodeLensCallbackService> callbackService) {
             try {

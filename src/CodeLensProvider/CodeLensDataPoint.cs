@@ -29,9 +29,15 @@ namespace Microscope.CodeLensProvider {
             try {
                 Log();
 
-                var foo = await callbackService
-                    .InvokeAsync<int>(this, nameof(IInstructionsProvider.Foo), cancellationToken: token)
-                    .ConfigureAwait(false);
+                var foo = await callbackService.InvokeAsync<int>(
+                        this,
+                        nameof(IInstructionsProvider.CountInstructions),
+                        new object[] {
+                            Descriptor.ProjectGuid,
+                            descriptorContext.Get<string>("FullyQualifiedName")
+                        },
+                        token
+                    ).ConfigureAwait(false);
 
                 return new CodeLensDataPointDescriptor {
                     Description = $"{foo} instructions",

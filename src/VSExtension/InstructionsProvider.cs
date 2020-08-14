@@ -7,6 +7,7 @@ namespace Microscope.VSExtension {
     using Microscope.Shared;
 
     using Microsoft.VisualStudio.Language.CodeLens;
+    using Microsoft.VisualStudio.LanguageServices;
     using Microsoft.VisualStudio.Utilities;
 
     using static Microscope.Shared.Logging;
@@ -14,23 +15,27 @@ namespace Microscope.VSExtension {
     [Export(typeof(ICodeLensCallbackListener))]
     [ContentType("CSharp")]
     public class InstructionsProvider : ICodeLensCallbackListener, IInstructionsProvider {
+        private readonly VisualStudioWorkspace workspace;
+
         static InstructionsProvider() {
             Log();
         }
 
         [ImportingConstructor]
-        public InstructionsProvider() {
+        public InstructionsProvider(VisualStudioWorkspace workspace) {
             try {
                 Log();
+                this.workspace = workspace;
             } catch (Exception ex) {
                 Log(ex);
                 throw;
             }
         }
 
-        public int Foo() {
+        public int CountInstructions(Guid project, string member) {
             try {
-                Log();
+                Log($"IL requested for {member} in project {project}");
+                //workspace.CurrentSolution.GetProject(ProjectId.)
                 return 42;
             } catch (Exception ex) {
                 Log(ex);

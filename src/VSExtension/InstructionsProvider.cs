@@ -13,13 +13,13 @@ namespace Microscope.VSExtension {
 
     [Export(typeof(ICodeLensCallbackListener))]
     [ContentType("CSharp")]
-    public class CodeLensCallbackListener : ICodeLensCallbackListener, ICodeLensContext {
-        static CodeLensCallbackListener() {
+    public class InstructionsProvider : ICodeLensCallbackListener, IInstructionsProvider {
+        static InstructionsProvider() {
             Log();
         }
 
         [ImportingConstructor]
-        public CodeLensCallbackListener() {
+        public InstructionsProvider() {
             try {
                 Log();
             } catch (Exception ex) {

@@ -1,7 +1,7 @@
 ﻿#nullable enable
 
 namespace Microscope.Shared {
-    public interface ICodeLensContext {
+    public interface IInstructionsProvider {
         int Foo();
     }
 }

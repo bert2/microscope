@@ -13,14 +13,14 @@ namespace Microscope.CodeLensProvider {
 
     using static Microscope.Shared.Logging;
 
-    public class InstructionsDataPoint : IAsyncCodeLensDataPoint {
+    public class CodeLensDataPoint : IAsyncCodeLensDataPoint {
         private readonly ICodeLensCallbackService callbackService;
 
         public CodeLensDescriptor Descriptor { get; }
 
         public event AsyncEventHandler? InvalidatedAsync;
 
-        public InstructionsDataPoint(ICodeLensCallbackService callbackService, CodeLensDescriptor descriptor) {
+        public CodeLensDataPoint(ICodeLensCallbackService callbackService, CodeLensDescriptor descriptor) {
             this.callbackService = callbackService;
             Descriptor = descriptor;
         }
@@ -30,7 +30,7 @@ namespace Microscope.CodeLensProvider {
                 Log();
 
                 var foo = await callbackService
-                    .InvokeAsync<int>(this, nameof(ICodeLensContext.Foo), cancellationToken: token)
+                    .InvokeAsync<int>(this, nameof(IInstructionsProvider.Foo), cancellationToken: token)
                     .ConfigureAwait(false);
 
                 return new CodeLensDataPointDescriptor {

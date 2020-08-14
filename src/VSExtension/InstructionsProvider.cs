@@ -3,6 +3,7 @@
 namespace Microscope.VSExtension {
     using System;
     using System.ComponentModel.Composition;
+    using System.Threading.Tasks;
 
     using Microscope.Shared;
 
@@ -32,11 +33,11 @@ namespace Microscope.VSExtension {
             }
         }
 
-        public int CountInstructions(Guid project, string member) {
+        public Task<int> CountInstructions(Guid project, string member) {
             try {
                 Log($"IL requested for {member} in project {project}");
                 //workspace.CurrentSolution.GetProject(ProjectId.)
-                return 42;
+                return Task.FromResult(42);
             } catch (Exception ex) {
                 Log(ex);
                 throw;

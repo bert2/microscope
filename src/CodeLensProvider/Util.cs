@@ -1,4 +1,6 @@
-﻿namespace Microscope.CodeLensProvider {
+﻿#nullable enable
+
+namespace Microscope.CodeLensProvider {
     using Microsoft.VisualStudio.Language.CodeLens;
 
     public static class Util {

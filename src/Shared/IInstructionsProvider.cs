@@ -1,9 +1,10 @@
 ﻿#nullable enable
 
-using System;
-
 namespace Microscope.Shared {
+    using System;
+    using System.Threading.Tasks;
+
     public interface IInstructionsProvider {
-        int CountInstructions(Guid project, string member);
+        Task<int> CountInstructions(Guid project, string member);
     }
 }

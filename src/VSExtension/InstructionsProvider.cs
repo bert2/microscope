@@ -52,20 +52,12 @@ namespace Microscope.VSExtension {
                 using var peStream = new MemoryStream();
                 var result = compilation.Emit(peStream);
                 if (!result.Success) throw new InvalidOperationException($"Failed to compile project {proj.FilePath}.");
-
                 _ = peStream.Seek(0, SeekOrigin.Begin);
-                var assembly = AssemblyDefinition.ReadAssembly(peStream);
 
-                var lastDot = methodName.LastIndexOf('.');
-                var typeName = methodName.Substring(0, lastDot);
-                var memberName = methodName.Substring(lastDot + 1, methodName.Length - lastDot - 1);
-
-                var type = assembly.MainModule.Types.SingleOrDefault(type => type.FullName == typeName)
-                    ?? throw new InvalidOperationException($"Type {typeName} could not be found in project {proj.FilePath}.");
-                var method = type.Methods.SingleOrDefault(m => m.Name == memberName)
-                    ?? throw new InvalidOperationException($"Method {memberName} could not be found in type {typeName}.");
-
-                return method.Body?
+                return AssemblyDefinition
+                    .ReadAssembly(peStream)
+                    .GetMethod(methodName)
+                    .Body?
                     .Instructions
                     .ToCodeLensData()
                     ?? new CodeLensData(new List<Instruction>(), boxOpsCount: 0, callvirtOpsCount: 0);

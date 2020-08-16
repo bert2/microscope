@@ -54,6 +54,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="GetMethodExt.cs" />
     <Compile Include="InstructionsProvider.cs" />
     <Compile Include="MicroscopePackage.cs" />
     <Compile Include="GetProjectIdExt.cs" />

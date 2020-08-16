@@ -15,6 +15,7 @@ WIP: not published on the VS extension marketplace yet.
     * ...
     * do we really have to implement this on our own?
 * make logging configurable or disable it in release builds
+* strong-name `Microscope.Shared` correctly (it's currently signed by me which seems stupid)
 * deploy to marketplace
 
 ### v1.0 Release
@@ -36,6 +37,9 @@ WIP: not published on the VS extension marketplace yet.
     * would shave off most of the runtime cost (except for first CodeLens)
     * but how to invalidate the cash on code changes?
     * is it worth the memory cost in big solutions?
+* edge cases:
+    * what happens when opening a project instead of a solution?
+    * what happens when opening a file without opening the project?
 * settings page to configure update frequency
 * VB support
 * F# support?

@@ -30,8 +30,6 @@ namespace Microscope.CodeLensProvider {
 
         public async Task<CodeLensDataPointDescriptor> GetDataAsync(CodeLensDescriptorContext descriptorContext, CancellationToken token) {
             try {
-                Log();
-
                 instructions = await callbackService.InvokeAsync<List<Instruction>>(
                         this,
                         nameof(IInstructionsProvider.GetInstructions),
@@ -57,6 +55,7 @@ namespace Microscope.CodeLensProvider {
         public Task<CodeLensDetailsDescriptor> GetDetailsAsync(CodeLensDescriptorContext descriptorContext, CancellationToken token) {
             try {
                 Log();
+
                 return Task.FromResult(new CodeLensDetailsDescriptor {
                     Headers = new[] {
                     new CodeLensDetailHeaderDescriptor {
@@ -82,7 +81,7 @@ namespace Microscope.CodeLensProvider {
                                 new CodeLensDetailEntryField { Text = instruction.OpCode },
                                 new CodeLensDetailEntryField { Text = instruction.Operand ?? "" }
                             },
-                            Tooltip = "MSDN short documentation"
+                            Tooltip = null
                         })
                         .ToList()
                 });

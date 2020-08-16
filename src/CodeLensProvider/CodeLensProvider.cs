@@ -6,8 +6,6 @@ namespace Microscope.CodeLensProvider {
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Microscope.Shared;
-
     using Microsoft.VisualStudio.Language.CodeLens;
     using Microsoft.VisualStudio.Language.CodeLens.Remoting;
     using Microsoft.VisualStudio.Language.Intellisense;
@@ -24,9 +22,7 @@ namespace Microscope.CodeLensProvider {
         public const string ProviderId = "ILInstructions";
         private readonly Lazy<ICodeLensCallbackService> callbackService;
 
-        static CodeLensProvider() {
-            Log();
-        }
+        static CodeLensProvider() => Log();
 
         [ImportingConstructor]
         public CodeLensProvider(Lazy<ICodeLensCallbackService> callbackService) {

@@ -24,9 +24,7 @@ namespace Microscope.VSExtension {
     public class InstructionsProvider : ICodeLensCallbackListener, IInstructionsProvider {
         private readonly VisualStudioWorkspace workspace;
 
-        static InstructionsProvider() {
-            Log();
-        }
+        static InstructionsProvider() => Log();
 
         [ImportingConstructor]
         public InstructionsProvider(VisualStudioWorkspace workspace) {

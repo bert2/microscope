@@ -40,7 +40,6 @@ namespace Microscope.CodeLensProvider {
             CodeLensDescriptorContext descriptorContext,
             CancellationToken token) {
             try {
-                Log();
                 return Task.FromResult(descriptor.Kind == CodeElementKinds.Method);
             } catch (Exception ex) {
                 Log(ex);
@@ -53,8 +52,8 @@ namespace Microscope.CodeLensProvider {
             CodeLensDescriptorContext descriptorContext,
             CancellationToken token) {
             try {
-                Log();
-                return Task.FromResult<IAsyncCodeLensDataPoint>(new CodeLensDataPoint(callbackService.Value, descriptor));
+                return Task.FromResult<IAsyncCodeLensDataPoint>(
+                    new CodeLensDataPoint(callbackService.Value, descriptor));
             } catch (Exception ex) {
                 Log(ex);
                 throw;

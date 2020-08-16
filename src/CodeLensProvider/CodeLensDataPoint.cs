@@ -2,6 +2,8 @@
 
 namespace Microscope.CodeLensProvider {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -9,13 +11,13 @@ namespace Microscope.CodeLensProvider {
 
     using Microsoft.VisualStudio.Language.CodeLens;
     using Microsoft.VisualStudio.Language.CodeLens.Remoting;
-    using Microsoft.VisualStudio.Language.Intellisense;
     using Microsoft.VisualStudio.Threading;
 
     using static Microscope.Shared.Logging;
 
     public class CodeLensDataPoint : IAsyncCodeLensDataPoint {
         private readonly ICodeLensCallbackService callbackService;
+        private List<Instruction>? instructions;
 
         public CodeLensDescriptor Descriptor { get; }
 
@@ -30,15 +32,9 @@ namespace Microscope.CodeLensProvider {
             try {
                 Log();
 
-                var target = Descriptor.Kind switch {
-                    CodeElementKinds.Method => nameof(IInstructionsProvider.CountInstructions),
-                    CodeElementKinds.Class => nameof(IInstructionsProvider.CountInstructions),
-                    _ => nameof(IInstructionsProvider.CountInstructions)
-                };
-
-                var foo = await callbackService.InvokeAsync<int>(
+                instructions = await callbackService.InvokeAsync<List<Instruction>>(
                         this,
-                        nameof(IInstructionsProvider.CountInstructions),
+                        nameof(IInstructionsProvider.GetInstructions),
                         new object[] {
                             Descriptor.ProjectGuid,
                             descriptorContext.Get<string>("FullyQualifiedName")
@@ -47,7 +43,7 @@ namespace Microscope.CodeLensProvider {
                     ).ConfigureAwait(false);
 
                 return new CodeLensDataPointDescriptor {
-                    Description = $"{foo} instructions",
+                    Description = $"{instructions.Count} instructions",
                     TooltipText = "{0} boxings, {0} unconstrained virtual calls",
                     ImageId = null,
                     IntValue = null
@@ -64,39 +60,31 @@ namespace Microscope.CodeLensProvider {
                 return Task.FromResult(new CodeLensDetailsDescriptor {
                     Headers = new[] {
                     new CodeLensDetailHeaderDescriptor {
-                        UniqueName = "Address",
-                        DisplayName = "Address",
+                        UniqueName = "Offset",
+                        DisplayName = "Offset",
                         Width = .1
                     },
                     new CodeLensDetailHeaderDescriptor {
-                        UniqueName = "Instruction",
-                        DisplayName = "Instruction",
+                        UniqueName = "OpCode",
+                        DisplayName = "Op Code",
                         Width = .15
                     },
                     new CodeLensDetailHeaderDescriptor {
-                        UniqueName = "Argument",
-                        DisplayName = "Argument",
+                        UniqueName = "Operand",
+                        DisplayName = "Operand",
                         Width = .75
                     }
                 },
-                    Entries = new[] {
-                    new CodeLensDetailEntryDescriptor {
-                        Fields = new[] {
-                            new CodeLensDetailEntryField { Text = "IL_0001" },
-                            new CodeLensDetailEntryField { Text = "ldfld" },
-                            new CodeLensDetailEntryField { Text = "UserQuery._queryCancelTokenOrigin" }
-                        },
-                        Tooltip = "ldfld short documentation bla bla"
-                    },
-                    new CodeLensDetailEntryDescriptor {
-                        Fields = new[] {
-                            new CodeLensDetailEntryField { Text = "IL_0006" },
-                            new CodeLensDetailEntryField { Text = "callvirt" },
-                            new CodeLensDetailEntryField { Text = "System.Lazy<System.Threading.CancellationToken>.get_Value" }
-                        },
-                        Tooltip = "callvirt short documentation bla bla"
-                    }
-                }
+                    Entries = instructions
+                        .Select(instruction => new CodeLensDetailEntryDescriptor {
+                            Fields = new[] {
+                                new CodeLensDetailEntryField { Text = $"IL_{instruction.Offset:X4}" },
+                                new CodeLensDetailEntryField { Text = instruction.OpCode },
+                                new CodeLensDetailEntryField { Text = instruction.Operand ?? "" }
+                            },
+                            Tooltip = "MSDN short documentation"
+                        })
+                        .ToList()
                 });
             } catch (Exception ex) {
                 Log(ex);

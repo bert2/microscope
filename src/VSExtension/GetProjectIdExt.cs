@@ -9,19 +9,19 @@ namespace Microscope.VSExtension {
     using Microsoft.CodeAnalysis;
     using Microsoft.VisualStudio.LanguageServices;
 
-    public static class ProjectGuidToId {
-        private static readonly FieldInfo projectToGuidMapField = typeof(VisualStudioWorkspace).Assembly
+    public static class GetProjectIdExt {
+        private static readonly FieldInfo projectToGuidMap = typeof(VisualStudioWorkspace).Assembly
             .GetType(
                 "Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem.VisualStudioWorkspaceImpl",
                 throwOnError: true)
             .GetField("_projectToGuidMap", BindingFlags.NonPublic | BindingFlags.Instance);
 
-        public static ProjectId? FindProject(this VisualStudioWorkspace workspace, Guid projectGuid)
-            => projectToGuidMapField
+        private static T GetValue<T>(this FieldInfo field, object obj) => (T)field.GetValue(obj);
+
+        public static ProjectId? GetProjectId(this VisualStudioWorkspace workspace, Guid projectGuid)
+            => projectToGuidMap
                 .GetValue<ImmutableDictionary<ProjectId, Guid>>(workspace)
                 .SingleOrDefault(kvp => kvp.Value == projectGuid)
                 .Key;
-
-        public static T GetValue<T>(this FieldInfo field, object obj) => (T)field.GetValue(obj);
     }
 }

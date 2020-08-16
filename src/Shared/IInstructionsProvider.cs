@@ -2,10 +2,11 @@
 
 namespace Microscope.Shared {
     using System;
+    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
 
     public interface IInstructionsProvider {
-        Task<int> CountInstructions(Guid projectGuid, string member, CancellationToken ct);
+        Task<List<Instruction>> GetInstructions(Guid projectGuid, string member, CancellationToken ct);
     }
 }

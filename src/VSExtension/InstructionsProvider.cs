@@ -2,6 +2,7 @@
 
 namespace Microscope.VSExtension {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.IO;
     using System.Linq;
@@ -38,11 +39,11 @@ namespace Microscope.VSExtension {
             }
         }
 
-        public async Task<int> CountInstructions(Guid projectGuid, string member, CancellationToken ct) {
+        public async Task<List<Instruction>> GetInstructions(Guid projectGuid, string member, CancellationToken ct) {
             try {
                 Log($"IL requested for {member} in project {projectGuid}");
 
-                var projectId = workspace.FindProject(projectGuid)
+                var projectId = workspace.GetProjectId(projectGuid)
                     ?? throw new InvalidOperationException($"Project with GUID {projectGuid} not found in VisualStudioWorkspace.");
                 var solution = workspace.CurrentSolution;
                 var project = solution.GetProject(projectId)
@@ -66,7 +67,11 @@ namespace Microscope.VSExtension {
                 var method = type.Methods.SingleOrDefault(m => m.Name == memberName)
                     ?? throw new InvalidOperationException($"Method {memberName} could not be found in type {typeName}.");
 
-                return method.Body?.Instructions.Count ?? 0;
+                return method.Body?
+                    .Instructions
+                    .Select(i => new Instruction(i.Offset, i.OpCode.Name, i.Operand?.ToString()))
+                    .ToList()
+                    ?? new List<Instruction>();
             } catch (Exception ex) {
                 Log(ex);
                 throw;

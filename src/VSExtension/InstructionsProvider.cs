@@ -67,7 +67,7 @@ namespace Microscope.VSExtension {
 
                 return method.Body?
                     .Instructions
-                    .Select(i => new Instruction(i.Offset, i.OpCode.Name, i.Operand?.ToString()))
+                    .Select(i => i.ToCodeLensData())
                     .ToList()
                     ?? new List<Instruction>();
             } catch (Exception ex) {

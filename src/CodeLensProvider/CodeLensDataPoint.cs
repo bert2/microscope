@@ -59,8 +59,8 @@ namespace Microscope.CodeLensProvider {
                 return Task.FromResult(new CodeLensDetailsDescriptor {
                     Headers = new[] {
                     new CodeLensDetailHeaderDescriptor {
-                        UniqueName = "Offset",
-                        DisplayName = "Offset",
+                        UniqueName = "Label",
+                        DisplayName = "Label",
                         Width = .1
                     },
                     new CodeLensDetailHeaderDescriptor {
@@ -75,13 +75,13 @@ namespace Microscope.CodeLensProvider {
                     }
                 },
                     Entries = instructions
-                        .Select(instruction => new CodeLensDetailEntryDescriptor {
+                        .Select(instr => new CodeLensDetailEntryDescriptor {
                             Fields = new[] {
-                                new CodeLensDetailEntryField { Text = $"IL_{instruction.Offset:X4}" },
-                                new CodeLensDetailEntryField { Text = instruction.OpCode },
-                                new CodeLensDetailEntryField { Text = instruction.Operand ?? "" }
+                                new CodeLensDetailEntryField { Text = instr.Label },
+                                new CodeLensDetailEntryField { Text = instr.OpCode },
+                                new CodeLensDetailEntryField { Text = instr.Operand }
                             },
-                            Tooltip = null
+                            Tooltip = $"{instr.Label}: {instr.OpCode} {instr.Operand}"
                         })
                         .ToList()
                 });

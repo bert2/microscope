@@ -2,11 +2,11 @@
 
 namespace Microscope.Shared {
     public class Instruction {
-        public int Offset { get; set; }
+        public string Label { get; set; }
         public string OpCode { get; set; }
-        public string? Operand { get; set; }
-        public Instruction(int offset, string opCode, string? operand) {
-            Offset = offset;
+        public string Operand { get; set; }
+        public Instruction(string label, string opCode, string operand) {
+            Label = label;
             OpCode = opCode;
             Operand = operand;
         }

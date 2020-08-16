@@ -2,7 +2,6 @@
 
 namespace Microscope.CodeLensProvider {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -16,8 +15,13 @@ namespace Microscope.CodeLensProvider {
     using static Microscope.Shared.Logging;
 
     public class CodeLensDataPoint : IAsyncCodeLensDataPoint {
+        private static readonly CodeLensDetailHeaderDescriptor[] detailHeaders = new[] {
+            new CodeLensDetailHeaderDescriptor { UniqueName = "Label",   DisplayName = "Label",   Width = .1 },
+            new CodeLensDetailHeaderDescriptor { UniqueName = "OpCode",  DisplayName = "Op Code", Width = .15 },
+            new CodeLensDetailHeaderDescriptor { UniqueName = "Operand", DisplayName = "Operand", Width = .75 }
+        };
         private readonly ICodeLensCallbackService callbackService;
-        private List<Instruction>? instructions;
+        private CodeLensData? data;
 
         public CodeLensDescriptor Descriptor { get; }
 
@@ -30,7 +34,7 @@ namespace Microscope.CodeLensProvider {
 
         public async Task<CodeLensDataPointDescriptor> GetDataAsync(CodeLensDescriptorContext descriptorContext, CancellationToken token) {
             try {
-                instructions = await callbackService.InvokeAsync<List<Instruction>>(
+                data = await callbackService.InvokeAsync<CodeLensData>(
                         this,
                         nameof(IInstructionsProvider.GetInstructions),
                         new object[] {
@@ -41,8 +45,8 @@ namespace Microscope.CodeLensProvider {
                     ).ConfigureAwait(false);
 
                 return new CodeLensDataPointDescriptor {
-                    Description = $"{instructions.Count} instructions",
-                    TooltipText = "{0} boxings, {0} unconstrained virtual calls",
+                    Description = $"{data.Instructions.Count} instructions",
+                    TooltipText = $"{data.BoxOpsCount} boxings, {data.CallvirtOpsCount} unconstrained virtual calls",
                     ImageId = null,
                     IntValue = null
                 };
@@ -57,24 +61,9 @@ namespace Microscope.CodeLensProvider {
                 Log();
 
                 return Task.FromResult(new CodeLensDetailsDescriptor {
-                    Headers = new[] {
-                    new CodeLensDetailHeaderDescriptor {
-                        UniqueName = "Label",
-                        DisplayName = "Label",
-                        Width = .1
-                    },
-                    new CodeLensDetailHeaderDescriptor {
-                        UniqueName = "OpCode",
-                        DisplayName = "Op Code",
-                        Width = .15
-                    },
-                    new CodeLensDetailHeaderDescriptor {
-                        UniqueName = "Operand",
-                        DisplayName = "Operand",
-                        Width = .75
-                    }
-                },
-                    Entries = instructions
+                    Headers = detailHeaders,
+                    Entries = data?
+                        .Instructions
                         .Select(instr => new CodeLensDetailEntryDescriptor {
                             Fields = new[] {
                                 new CodeLensDetailEntryField { Text = instr.Label },
@@ -84,6 +73,7 @@ namespace Microscope.CodeLensProvider {
                             Tooltip = $"{instr.Label}: {instr.OpCode} {instr.Operand}"
                         })
                         .ToList()
+                        ?? throw new InvalidOperationException("CodeLens data hasn't been loaded yet.")
                 });
             } catch (Exception ex) {
                 Log(ex);

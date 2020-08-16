@@ -37,9 +37,9 @@ namespace Microscope.VSExtension {
             }
         }
 
-        public async Task<List<Instruction>> GetInstructions(Guid projectGuid, string member, CancellationToken ct) {
+        public async Task<CodeLensData> GetInstructions(Guid projectGuid, string methodName, CancellationToken ct) {
             try {
-                Log($"IL requested for {member} in project {projectGuid}");
+                Log($"IL requested for {methodName} in project {projectGuid}");
 
                 var projectId = workspace.GetProjectId(projectGuid)
                     ?? throw new InvalidOperationException($"Project with GUID {projectGuid} not found in VisualStudioWorkspace.");
@@ -54,9 +54,9 @@ namespace Microscope.VSExtension {
                 if (!result.Success) throw new InvalidOperationException($"Failed to compile project {projectId}.");
                 _ = peStream.Seek(0, SeekOrigin.Begin);
 
-                var lastDot = member.LastIndexOf('.');
-                var typeName = member.Substring(0, lastDot);
-                var memberName = member.Substring(lastDot + 1, member.Length - lastDot - 1);
+                var lastDot = methodName.LastIndexOf('.');
+                var typeName = methodName.Substring(0, lastDot);
+                var memberName = methodName.Substring(lastDot + 1, methodName.Length - lastDot - 1);
 
                 var assembly = AssemblyDefinition.ReadAssembly(peStream);
                 var type = assembly.MainModule.Types.SingleOrDefault(type => type.FullName == typeName)
@@ -67,9 +67,8 @@ namespace Microscope.VSExtension {
 
                 return method.Body?
                     .Instructions
-                    .Select(i => i.ToCodeLensData())
-                    .ToList()
-                    ?? new List<Instruction>();
+                    .ToCodeLensData()
+                    ?? new CodeLensData(new List<Instruction>(), boxOpsCount: 0, callvirtOpsCount: 0);
             } catch (Exception ex) {
                 Log(ex);
                 throw;

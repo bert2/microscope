@@ -1,4 +1,6 @@
-﻿namespace Tests {
+﻿#nullable enable
+
+namespace Tests {
     using System;
     using System.Collections.Immutable;
     using System.Reflection;

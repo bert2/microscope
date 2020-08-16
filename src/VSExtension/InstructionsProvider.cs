@@ -66,9 +66,7 @@ namespace Microscope.VSExtension {
                 var method = type.Methods.SingleOrDefault(m => m.Name == memberName)
                     ?? throw new InvalidOperationException($"Method {memberName} could not be found in type {typeName}.");
 
-                var instructions = method.Body?.Instructions ?? 0;
-
-                return instructions.Count;
+                return method.Body?.Instructions.Count ?? 0;
             } catch (Exception ex) {
                 Log(ex);
                 throw;

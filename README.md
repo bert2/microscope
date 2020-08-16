@@ -11,7 +11,6 @@ WIP: not published on the VS extension marketplace yet.
 * improve looking up types and members in an `AssemblyDefinition` (+ tests)
 * measure runtime of major steps
 * cache `AssemblyDefintion`s
-* count `box` and unconstrained `callvirt` instructions
 * deploy to marketplace
 
 ### v1.0 Release

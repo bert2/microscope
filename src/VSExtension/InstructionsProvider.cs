@@ -37,31 +37,31 @@ namespace Microscope.VSExtension {
             }
         }
 
-        public async Task<CodeLensData> GetInstructions(Guid projectGuid, string methodName, CancellationToken ct) {
+        public async Task<CodeLensData> GetInstructions(Guid projGuid, string methodName, CancellationToken ct) {
             try {
-                Log($"IL requested for {methodName} in project {projectGuid}");
+                Log($"IL requested for {methodName} in project {projGuid}");
 
-                var projectId = workspace.GetProjectId(projectGuid)
-                    ?? throw new InvalidOperationException($"Project with GUID {projectGuid} not found in VisualStudioWorkspace.");
-                var solution = workspace.CurrentSolution;
-                var project = solution.GetProject(projectId)
-                    ?? throw new InvalidOperationException($"Project {projectId.Id} not found in solution {solution.FilePath}.");
-                var compilation = await project.GetCompilationAsync(ct).ConfigureAwait(false)
-                    ?? throw new InvalidOperationException($"Project {project.FilePath} does not support compilation.");
+                var sln = workspace.CurrentSolution;
+                var projId = workspace.GetProjectId(projGuid)
+                    ?? throw new InvalidOperationException($"Project with GUID {projGuid} not found in in solution {sln.FilePath}.");
+                var proj = sln.GetProject(projId)
+                    ?? throw new InvalidOperationException($"Project {projId.Id} not found in solution {sln.FilePath}.");
+                var compilation = await proj.GetCompilationAsync(ct).ConfigureAwait(false)
+                    ?? throw new InvalidOperationException($"Project {proj.FilePath} does not support compilation.");
 
-                using var peStream = new MemoryStream();
+                var peStream = new MemoryStream();
                 var result = compilation.Emit(peStream);
-                if (!result.Success) throw new InvalidOperationException($"Failed to compile project {projectId}.");
+                if (!result.Success) throw new InvalidOperationException($"Failed to compile project {proj.FilePath}.");
+
                 _ = peStream.Seek(0, SeekOrigin.Begin);
+                var assembly = AssemblyDefinition.ReadAssembly(peStream);
 
                 var lastDot = methodName.LastIndexOf('.');
                 var typeName = methodName.Substring(0, lastDot);
                 var memberName = methodName.Substring(lastDot + 1, methodName.Length - lastDot - 1);
 
-                var assembly = AssemblyDefinition.ReadAssembly(peStream);
                 var type = assembly.MainModule.Types.SingleOrDefault(type => type.FullName == typeName)
-                    ?? throw new InvalidOperationException($"Type {typeName} could not be found in project {project.FilePath}.");
-
+                    ?? throw new InvalidOperationException($"Type {typeName} could not be found in project {proj.FilePath}.");
                 var method = type.Methods.SingleOrDefault(m => m.Name == memberName)
                     ?? throw new InvalidOperationException($"Method {memberName} could not be found in type {typeName}.");
 

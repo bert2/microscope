@@ -10,7 +10,14 @@ WIP: not published on the VS extension marketplace yet.
 
 * improve looking up types and members in an `AssemblyDefinition` (+ tests)
 * measure runtime of major steps
-* cache `AssemblyDefintion`s
+    * looks surprisingly good
+    * first CodeLens takes ~1 sec, because in-memory compiling takes long
+    * everything seems to be cached aftewards and instructions can be retrieved in 15 - 40 ms
+    * compiling still takes most of the time (10 - 30 ms)
+* cache `AssemblyDefintion`s?
+    * would shave off most of the runtime cost (except for first CodeLens)
+    * but how to invalidate the cash on code changes?
+    * is it worth the memory cost in big solutions?
 * deploy to marketplace
 
 ### v1.0 Release

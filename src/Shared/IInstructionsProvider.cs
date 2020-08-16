@@ -6,6 +6,6 @@ namespace Microscope.Shared {
     using System.Threading.Tasks;
 
     public interface IInstructionsProvider {
-        Task<CodeLensData> GetInstructions(Guid projectGuid, string methodName, CancellationToken ct);
+        Task<CodeLensData> GetInstructions(Guid projGuid, string methodName, CancellationToken ct);
     }
 }

@@ -13,6 +13,8 @@ WIP: not published on the VS extension marketplace yet.
     * overloads
     * generic methods/classes
     * ...
+    * do we really have to implement this on our own?
+* make logging configurable or disable it in release builds
 * deploy to marketplace
 
 ### v1.0 Release

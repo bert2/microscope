@@ -45,8 +45,8 @@ namespace Microscope.CodeLensProvider {
                     ).ConfigureAwait(false);
 
                 return new CodeLensDataPointDescriptor {
-                    Description = $"{data.Instructions.Count} instructions",
-                    TooltipText = $"{data.BoxOpsCount} boxings, {data.CallvirtOpsCount} unconstrained virtual calls",
+                    Description = data.Instructions.Count.Labeled("instruction"),
+                    TooltipText = $"{data.BoxOpsCount.Labeled("boxing")}, {data.CallvirtOpsCount.Labeled("unconstrained virtual call")}",
                     ImageId = null,
                     IntValue = null
                 };

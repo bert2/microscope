@@ -10,6 +10,7 @@ namespace Microscope.CodeLensProvider {
 
     using Microsoft.VisualStudio.Language.CodeLens;
     using Microsoft.VisualStudio.Language.CodeLens.Remoting;
+    using Microsoft.VisualStudio.Language.Intellisense;
     using Microsoft.VisualStudio.Utilities;
 
     using static Shared.Logging;
@@ -44,7 +45,7 @@ namespace Microscope.CodeLensProvider {
             CancellationToken token) {
             try {
                 Log();
-                return Task.FromResult(true);
+                return Task.FromResult(descriptor.Kind == CodeElementKinds.Method);
             } catch (Exception ex) {
                 Log(ex);
                 throw;

@@ -77,6 +77,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Mono.Cecil">
+      <Version>0.11.2</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\microscope.ico" />

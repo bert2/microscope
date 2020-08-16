@@ -4,6 +4,7 @@ namespace Microscope.VSExtension {
     using System;
     using System.ComponentModel.Composition;
     using System.IO;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -12,6 +13,8 @@ namespace Microscope.VSExtension {
     using Microsoft.VisualStudio.Language.CodeLens;
     using Microsoft.VisualStudio.LanguageServices;
     using Microsoft.VisualStudio.Utilities;
+
+    using Mono.Cecil;
 
     using static Microscope.Shared.Logging;
 
@@ -45,14 +48,27 @@ namespace Microscope.VSExtension {
                 var project = solution.GetProject(projectId)
                     ?? throw new InvalidOperationException($"Project {projectId.Id} not found in solution {solution.FilePath}.");
                 var compilation = await project.GetCompilationAsync(ct).ConfigureAwait(false)
-                    ?? throw new InvalidOperationException($"Project {projectId.Id} does not support compilation.");
+                    ?? throw new InvalidOperationException($"Project {project.FilePath} does not support compilation.");
 
                 using var peStream = new MemoryStream();
                 var result = compilation.Emit(peStream);
+                if (!result.Success) throw new InvalidOperationException($"Failed to compile project {projectId}.");
+                _ = peStream.Seek(0, SeekOrigin.Begin);
 
-                Log(result.Success);
+                var lastDot = member.LastIndexOf('.');
+                var typeName = member.Substring(0, lastDot);
+                var memberName = member.Substring(lastDot + 1, member.Length - lastDot - 1);
 
-                return 42;
+                var assembly = AssemblyDefinition.ReadAssembly(peStream);
+                var type = assembly.MainModule.Types.SingleOrDefault(type => type.FullName == typeName)
+                    ?? throw new InvalidOperationException($"Type {typeName} could not be found in project {project.FilePath}.");
+
+                var method = type.Methods.SingleOrDefault(m => m.Name == memberName)
+                    ?? throw new InvalidOperationException($"Method {memberName} could not be found in type {typeName}.");
+
+                var instructions = method.Body?.Instructions ?? 0;
+
+                return instructions.Count;
             } catch (Exception ex) {
                 Log(ex);
                 throw;

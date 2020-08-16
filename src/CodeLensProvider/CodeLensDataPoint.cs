@@ -9,6 +9,7 @@ namespace Microscope.CodeLensProvider {
 
     using Microsoft.VisualStudio.Language.CodeLens;
     using Microsoft.VisualStudio.Language.CodeLens.Remoting;
+    using Microsoft.VisualStudio.Language.Intellisense;
     using Microsoft.VisualStudio.Threading;
 
     using static Microscope.Shared.Logging;
@@ -28,6 +29,12 @@ namespace Microscope.CodeLensProvider {
         public async Task<CodeLensDataPointDescriptor> GetDataAsync(CodeLensDescriptorContext descriptorContext, CancellationToken token) {
             try {
                 Log();
+
+                var target = Descriptor.Kind switch {
+                    CodeElementKinds.Method => nameof(IInstructionsProvider.CountInstructions),
+                    CodeElementKinds.Class => nameof(IInstructionsProvider.CountInstructions),
+                    _ => nameof(IInstructionsProvider.CountInstructions)
+                };
 
                 var foo = await callbackService.InvokeAsync<int>(
                         this,

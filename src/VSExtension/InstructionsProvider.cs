@@ -49,7 +49,7 @@ namespace Microscope.VSExtension {
                 var compilation = await proj.GetCompilationAsync(ct).ConfigureAwait(false)
                     ?? throw new InvalidOperationException($"Project {proj.FilePath} does not support compilation.");
 
-                var peStream = new MemoryStream();
+                using var peStream = new MemoryStream();
                 var result = compilation.Emit(peStream);
                 if (!result.Success) throw new InvalidOperationException($"Failed to compile project {proj.FilePath}.");
 

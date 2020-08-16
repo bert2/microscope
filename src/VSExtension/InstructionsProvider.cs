@@ -43,7 +43,7 @@ namespace Microscope.VSExtension {
 
                 var sln = workspace.CurrentSolution;
                 var projId = workspace.GetProjectId(projGuid)
-                    ?? throw new InvalidOperationException($"Project with GUID {projGuid} not found in in solution {sln.FilePath}.");
+                    ?? throw new InvalidOperationException($"Project with GUID {projGuid} not found in solution {sln.FilePath}.");
                 var proj = sln.GetProject(projId)
                     ?? throw new InvalidOperationException($"Project {projId.Id} not found in solution {sln.FilePath}.");
                 var compilation = await proj.GetCompilationAsync(ct).ConfigureAwait(false)

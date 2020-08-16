@@ -9,6 +9,10 @@ WIP: not published on the VS extension marketplace yet.
 ### v0.1 Release
 
 * improve looking up types and members in an `AssemblyDefinition` (+ tests)
+    * nested classes
+    * overloads
+    * generic methods/classes
+    * ...
 * deploy to marketplace
 
 ### v1.0 Release

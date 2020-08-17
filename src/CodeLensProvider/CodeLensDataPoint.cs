@@ -42,14 +42,24 @@ namespace Microscope.CodeLensProvider {
                         nameof(IInstructionsProvider.GetInstructions),
                         new object[] {
                             Descriptor.ProjectGuid,
+                            Descriptor.FilePath,
+                            descriptorContext.ApplicableSpan!.Value.Start,
+                            descriptorContext.ApplicableSpan!.Value.Length,
                             descriptorContext.Get<string>("FullyQualifiedName")
                         },
                         token)
                     .ConfigureAwait(false);
 
+                var (description, tooltip) = data.ErrorMessage switch {
+                    null => (
+                        data.Instructions!.Count.Labeled("instruction"),
+                        $"{data.BoxOpsCount.Labeled("boxing")}, {data.CallvirtOpsCount.Labeled("unconstrained virtual call")}"),
+                    var err => ("- instructions", err)
+                };
+
                 return new CodeLensDataPointDescriptor {
-                    Description = data.Instructions.Count.Labeled("instruction"),
-                    TooltipText = $"{data.BoxOpsCount.Labeled("boxing")}, {data.CallvirtOpsCount.Labeled("unconstrained virtual call")}",
+                    Description = description,
+                    TooltipText = tooltip,
                     ImageId = null,
                     IntValue = null
                 };

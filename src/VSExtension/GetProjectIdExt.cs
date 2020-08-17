@@ -23,5 +23,10 @@ namespace Microscope.VSExtension {
                 .GetValue<ImmutableDictionary<ProjectId, Guid>>(workspace)
                 .SingleOrDefault(kvp => kvp.Value == projectGuid)
                 .Key;
+
+        public static Guid? GetProjectGuid(this VisualStudioWorkspace workspace, ProjectId projectId)
+            => projectToGuidMap
+                .GetValue<ImmutableDictionary<ProjectId, Guid>>(workspace)
+                .GetValueOrDefault(projectId, Guid.Empty);
     }
 }

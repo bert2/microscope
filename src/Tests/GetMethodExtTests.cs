@@ -22,17 +22,17 @@ namespace Tests {
 
         [TestMethod] public void ThrowsForMissingMethod() => new Action(() =>
             TestAssembly
-            .GetMethod("Tests.TestData.Class.UnknownMethod"))
+            .GetMethod("Tests.TestData.Class.UnknownMethod", null!))
             .ShouldThrow<InvalidOperationException>();
 
         [TestMethod] public void FindsInstanceMethod() =>
             TestAssembly
-            .GetMethod("Tests.TestData.Class.Method")
+            .GetMethod("Tests.TestData.Class.Method", null!)
             .ShouldNotBeNull();
 
         [TestMethod] public void FindsStaticMethod() =>
             TestAssembly
-            .GetMethod("Tests.TestData.Class.StaticMethod")
+            .GetMethod("Tests.TestData.Class.StaticMethod", null!)
             .ShouldNotBeNull();
     }
 }

@@ -14,13 +14,13 @@ namespace Tests {
     [TestClass]
     public class GetProjectIdExtTests {
         [TestMethod]
-        public void VisualStudioWorkspaceImplExists() => typeof(VisualStudioWorkspace).Assembly
+        public void VisualStudioWorkspaceImplTypeExists() => typeof(VisualStudioWorkspace).Assembly
             .GetType(
                 "Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem.VisualStudioWorkspaceImpl")
             .ShouldNotBeNull();
 
         [TestMethod]
-        public void ProjectToGuidMapExists() => typeof(VisualStudioWorkspace).Assembly
+        public void ProjectToGuidMapFieldExists() => typeof(VisualStudioWorkspace).Assembly
             .GetType(
                 "Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem.VisualStudioWorkspaceImpl",
                 throwOnError: true)
@@ -28,7 +28,7 @@ namespace Tests {
             .ShouldNotBeNull();
 
         [TestMethod]
-        public void ProjectToGuidMapIsImmutableDictionary() => typeof(VisualStudioWorkspace).Assembly
+        public void ProjectToGuidMapFieldIsImmutableDictionary() => typeof(VisualStudioWorkspace).Assembly
             .GetType(
                 "Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem.VisualStudioWorkspaceImpl",
                 throwOnError: true)

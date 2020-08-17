@@ -61,7 +61,7 @@ namespace Microscope.CodeLensProvider {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to microscope.
+        ///   Looks up a localized string similar to instructions.
         /// </summary>
         internal static string Name {
             get {

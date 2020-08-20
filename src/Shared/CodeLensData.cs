@@ -18,6 +18,9 @@ namespace Microscope.Shared {
             CallvirtOpsCount = callvirtOpsCount;
         }
 
+        public static CodeLensData Empty()
+            => new CodeLensData(new List<Instruction>(), 0, 0);
+
         public static CodeLensData Failure(string message)
             => new CodeLensData(default!, default, default) { ErrorMessage = message };
     }

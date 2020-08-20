@@ -40,72 +40,66 @@ namespace Microscope.VSExtension {
             }
         }
 
-        public async Task<CodeLensData> GetInstructions(Guid projGuid, string filePath, int textStart, int textLen, string methodName, CancellationToken ct) {
+        public async Task<CodeLensData> GetInstructions(Guid projGuid, string filePath, int textStart, int textLen, string methodLongName, CancellationToken ct) {
             try {
-                Log($"IL requested for {methodName} in project {projGuid}");
-
-                var sln = workspace.CurrentSolution;
-
-                var (docId, syntaxNode) = await GetDocumentIdAndNodeAsync(
-                        sln,
-                        projGuid,
-                        filePath,
-                        new TextSpan(textStart, textLen),
-                        ct)
-                    .ConfigureAwait(false);
-
-                if (docId == null) throw new InvalidOperationException("Document not found.");
-
-                var doc = sln.GetDocument(docId)
-                    ?? throw new InvalidOperationException($"Document with id {docId} not found.");
-
-                var semanticModel = await doc.GetSemanticModelAsync(ct).ConfigureAwait(false)
-                    ?? throw new InvalidOperationException("Failed to get SemanticModel.");
-
-                var symbol = semanticModel.GetDeclaredSymbol(syntaxNode, ct)
-                    ?? throw new InvalidOperationException("Failed to get Symbol.");
-
-//                Log(@$"
-//Symbol names for    {methodName}:
-//    Name            {symbol.Name}
-//    MetadataName    {symbol.MetadataName}
-//    ToString()      {symbol}
-//    FullQualFmt     {symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}
-//    MiniQualFmt     {symbol.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat)}
-//    GetFull         {GetFullMetadataName(symbol)}
-//    XmlDocId        {symbol.GetDocumentationCommentId()}
-//Symbol names for ContainingSymbol:
-//    Name            {symbol.ContainingSymbol.Name}
-//    MetadataName    {symbol.ContainingSymbol.MetadataName}
-//    ToString()      {symbol.ContainingSymbol}
-//    FullQualFmt     {symbol.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}
-//    MiniQualFmt     {symbol.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat)}
-//    GetFull         {GetFullMetadataName(symbol.ContainingSymbol)}
-//    XmlDocId        {symbol.ContainingSymbol.GetDocumentationCommentId()}");
+                Log($"IL requested for {methodLongName} in project {projGuid}");
 
                 var projId = workspace.GetProjectId(projGuid)
-                    ?? throw new InvalidOperationException($"Project with GUID {projGuid} not found in solution {sln.FilePath}.");
-                var proj = sln.GetProject(projId)
-                    ?? throw new InvalidOperationException($"Project {projId.Id} not found in solution {sln.FilePath}.");
-                var compilation = await proj.GetCompilationAsync(ct).ConfigureAwait(false)
-                    ?? throw new InvalidOperationException($"Project {proj.FilePath} does not support compilation.");
+                    ?? throw new InvalidOperationException($"Project GUID {projGuid} not found in solution {workspace.CurrentSolution.FilePath}.");
 
-                using var peStream = new MemoryStream();
-                var result = compilation.Emit(peStream);
-                if (!result.Success) throw new InvalidOperationException($"Failed to compile project {proj.FilePath}.");
-                _ = peStream.Seek(0, SeekOrigin.Begin);
+                var assembly = await CompileProject(workspace, projId, ct).ConfigureAwait(false);
 
-                return AssemblyDefinition
-                    .ReadAssembly(peStream)
-                    .GetMethod(methodName, symbol)
+                var method = assembly.TryGetMethod(methodLongName);
+
+                if (method is null) {
+                    Log($"Loading IL of {methodLongName} via its symbol.");
+                    var sln = workspace.CurrentSolution;
+                    var (docId, syntaxNode) = await GetDocumentIdAndNodeAsync(
+                            sln,
+                            projGuid,
+                            filePath,
+                            new TextSpan(textStart, textLen),
+                            ct)
+                        .ConfigureAwait(false);
+
+                    if (docId == null) throw new InvalidOperationException("Document not found.");
+
+                    var doc = sln.GetDocument(docId)
+                        ?? throw new InvalidOperationException($"Document with id {docId} not found.");
+
+                    var semanticModel = await doc.GetSemanticModelAsync(ct).ConfigureAwait(false)
+                        ?? throw new InvalidOperationException("Failed to get SemanticModel.");
+
+                    var symbol = semanticModel.GetDeclaredSymbol(syntaxNode, ct)
+                        ?? throw new InvalidOperationException("Failed to get Symbol.");
+
+                    method = assembly.GetMethod(symbol);
+                }
+
+                return method
                     .Body?
                     .Instructions
                     .ToCodeLensData()
-                    ?? new CodeLensData(new List<Instruction>(), boxOpsCount: 0, callvirtOpsCount: 0);
+                    ?? CodeLensData.Empty();
             } catch (Exception ex) {
                 Log(ex);
                 return CodeLensData.Failure(ex.ToString());
             }
+        }
+
+        private static async Task<AssemblyDefinition> CompileProject(VisualStudioWorkspace workspace, ProjectId projId, CancellationToken ct) {
+            var sln = workspace.CurrentSolution;
+            var proj = sln.GetProject(projId)
+                ?? throw new InvalidOperationException($"Project {projId.Id} not found in solution {sln.FilePath}.");
+            var compilation = await proj.GetCompilationAsync(ct).ConfigureAwait(false)
+                ?? throw new InvalidOperationException($"Project {proj.FilePath} does not support compilation.");
+
+            using var peStream = new MemoryStream();
+            var result = compilation.Emit(peStream);
+            if (!result.Success) throw new InvalidOperationException($"Failed to compile project {proj.FilePath}:\n{string.Join("\n", result.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error))}");
+
+            _ = peStream.Seek(0, SeekOrigin.Begin);
+            return AssemblyDefinition.ReadAssembly(peStream);
         }
 
         /// <summary>
@@ -148,35 +142,5 @@ namespace Microscope.VSExtension {
 
             return document != null;
         }
-
-        /// <summary>
-        /// Code taken from https://stackoverflow.com/questions/27105909/get-fully-qualified-metadata-name-in-roslyn
-        /// </summary>
-        private static string GetFullMetadataName(ISymbol s) {
-            if (s == null || IsRootNamespace(s)) {
-                return string.Empty;
-            }
-
-            var sb = new StringBuilder(s.MetadataName);
-            var last = s;
-
-            s = s.ContainingSymbol;
-
-            while (!IsRootNamespace(s)) {
-                if (s is ITypeSymbol && last is ITypeSymbol) {
-                    _ = sb.Insert(0, '+');
-                } else {
-                    _ = sb.Insert(0, '.');
-                }
-
-                _ = sb.Insert(0, s.OriginalDefinition.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat));
-                //sb.Insert(0, s.MetadataName);
-                s = s.ContainingSymbol;
-            }
-
-            return sb.ToString();
-        }
-
-        private static bool IsRootNamespace(ISymbol sym) => sym is INamespaceSymbol s && s.IsGlobalNamespace;
     }
 }

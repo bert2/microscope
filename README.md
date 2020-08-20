@@ -52,4 +52,5 @@ WIP: not published on the VS extension marketplace yet.
 ## Credits
 
 * [VSCodeILViewer](https://github.com/JosephWoodward/VSCodeILViewer)
+* https://marketplace.visualstudio.com/items?itemName=segrived.Msiler
 * [Mono.Ceceil](https://github.com/jbevain/cecil)

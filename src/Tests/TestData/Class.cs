@@ -71,7 +71,14 @@ namespace Tests.TestData {
         public static void StaticMethod() { }
 
         // Tests.TestData.GenericClass.GenericMethod
-        public void GenericMethod() { }
+        public TMethod GenericMethod<TMethod>(T x) => default!;
+    }
+
+    public class AmbiguousClass {
+        public void Foo() { }
+    }
+    public class AmbiguousClass<T> {
+        public void Bar() { }
     }
 }
 

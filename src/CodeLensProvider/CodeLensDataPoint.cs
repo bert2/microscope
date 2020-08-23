@@ -21,7 +21,7 @@ namespace Microscope.CodeLensProvider {
             new CodeLensDetailHeaderDescriptor { UniqueName = "Operand", DisplayName = "Operand", Width = .75 }
         };
         private readonly ICodeLensCallbackService callbackService;
-        private CodeLensData? data;
+        private volatile CodeLensData? data;
 
         public CodeLensDescriptor Descriptor { get; }
 
@@ -36,21 +36,10 @@ namespace Microscope.CodeLensProvider {
             CodeLensDescriptorContext descriptorContext,
             CancellationToken token) {
             try {
-                data = await callbackService
-                    .InvokeAsync<CodeLensData>(
-                        this,
-                        nameof(IInstructionsProvider.GetInstructions),
-                        new object[] {
-                            Descriptor.ProjectGuid,
-                            Descriptor.FilePath,
-                            descriptorContext.ApplicableSpan!.Value.Start,
-                            descriptorContext.ApplicableSpan!.Value.Length,
-                            descriptorContext.Get<string>("FullyQualifiedName")
-                        },
-                        token)
-                    .ConfigureAwait(false);
+                data = await GetInstructions(descriptorContext, token).ConfigureAwait(false);
 
-                var (description, tooltip) = data.ErrorMessage switch {
+                var (description, tooltip) = data.ErrorMessage switch
+                {
                     null => (
                         data.Instructions!.Count.Labeled("instruction"),
                         $"{data.BoxOpsCount.Labeled("boxing")}, {data.CallvirtOpsCount.Labeled("unconstrained virtual call")}"),
@@ -69,15 +58,23 @@ namespace Microscope.CodeLensProvider {
             }
         }
 
-        public Task<CodeLensDetailsDescriptor> GetDetailsAsync(
+        public async Task<CodeLensDetailsDescriptor> GetDetailsAsync(
             CodeLensDescriptorContext descriptorContext,
             CancellationToken token) {
             try {
                 Log();
 
-                return Task.FromResult(new CodeLensDetailsDescriptor {
+                // HACK: when opening the details window, the data point is re-created leaving `data` uninitialized.
+                // VS will call `GetDataAsync()` and `GetDetailsAsync()` concurrently. In case `data` is still `null`
+                // we'll wait a bit for `GetData()` to finish. When it's still `null` afterwards, we'll load it again.
+                if (data is null) await Task.Delay(100, token).ConfigureAwait(false);
+                if (data is null) data = await GetInstructions(descriptorContext, token).ConfigureAwait(false);
+
+                if (data.ErrorMessage != null) throw new InvalidOperationException($"Getting CodeLens data for {descriptorContext.Get<string>("FullyQualifiedName")} failed earlier.");
+
+                return new CodeLensDetailsDescriptor {
                     Headers = detailHeaders,
-                    Entries = data?
+                    Entries = data
                         .Instructions
                         .Select(instr => new CodeLensDetailEntryDescriptor {
                             Fields = new[] {
@@ -88,12 +85,26 @@ namespace Microscope.CodeLensProvider {
                             Tooltip = $"{instr.Label}: {instr.OpCode} {instr.Operand}"
                         })
                         .ToList()
-                        ?? throw new InvalidOperationException("CodeLens data hasn't been loaded yet.")
-                });
+                };
             } catch (Exception ex) {
                 Log(ex);
                 throw;
             }
         }
+
+        private async Task<CodeLensData> GetInstructions(CodeLensDescriptorContext ctx, CancellationToken ct)
+            => await callbackService
+                .InvokeAsync<CodeLensData>(
+                    this,
+                    nameof(IInstructionsProvider.GetInstructions),
+                    new object[] {
+                        Descriptor.ProjectGuid,
+                        Descriptor.FilePath,
+                        ctx.ApplicableSpan!.Value.Start,
+                        ctx.ApplicableSpan!.Value.Length,
+                        ctx.Get<string>("FullyQualifiedName")
+                    },
+                    ct)
+                .ConfigureAwait(false);
     }
 }

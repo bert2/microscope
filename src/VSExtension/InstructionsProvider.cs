@@ -44,16 +44,18 @@ namespace Microscope.VSExtension {
             try {
                 Log($"IL requested for {methodLongName} in project {projGuid}");
 
+                var sln = workspace.CurrentSolution;
                 var projId = workspace.GetProjectId(projGuid)
-                    ?? throw new InvalidOperationException($"Project GUID {projGuid} not found in solution {workspace.CurrentSolution.FilePath}.");
-
-                var assembly = await CompileProject(workspace, projId, ct).ConfigureAwait(false);
+                    ?? throw new InvalidOperationException($"Project GUID {projGuid} not found in solution {sln.FilePath}.");
+                var proj = sln.GetProject(projId)
+                    ?? throw new InvalidOperationException($"Project {projId.Id} not found in solution {sln.FilePath}.");
+                using var peStream = new MemoryStream();
+                var assembly = await proj.Compile(peStream, ct).ConfigureAwait(false);
 
                 var method = assembly.TryGetMethod(methodLongName);
 
                 if (method is null) {
                     Log($"Loading IL of {methodLongName} via its symbol.");
-                    var sln = workspace.CurrentSolution;
                     var (docId, syntaxNode) = await GetDocumentIdAndNodeAsync(
                             sln,
                             projGuid,
@@ -73,7 +75,10 @@ namespace Microscope.VSExtension {
                     var symbol = semanticModel.GetDeclaredSymbol(syntaxNode, ct)
                         ?? throw new InvalidOperationException("Failed to get Symbol.");
 
-                    method = assembly.GetMethod(symbol);
+                    var methodSymbol = symbol as IMethodSymbol
+                        ?? throw new InvalidOperationException("Symbol is not a method.");
+
+                    method = assembly.GetMethod(methodSymbol);
                 }
 
                 return method
@@ -85,21 +90,6 @@ namespace Microscope.VSExtension {
                 Log(ex);
                 return CodeLensData.Failure(ex.ToString());
             }
-        }
-
-        private static async Task<AssemblyDefinition> CompileProject(VisualStudioWorkspace workspace, ProjectId projId, CancellationToken ct) {
-            var sln = workspace.CurrentSolution;
-            var proj = sln.GetProject(projId)
-                ?? throw new InvalidOperationException($"Project {projId.Id} not found in solution {sln.FilePath}.");
-            var compilation = await proj.GetCompilationAsync(ct).ConfigureAwait(false)
-                ?? throw new InvalidOperationException($"Project {proj.FilePath} does not support compilation.");
-
-            using var peStream = new MemoryStream();
-            var result = compilation.Emit(peStream);
-            if (!result.Success) throw new InvalidOperationException($"Failed to compile project {proj.FilePath}:\n{string.Join("\n", result.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error))}");
-
-            _ = peStream.Seek(0, SeekOrigin.Begin);
-            return AssemblyDefinition.ReadAssembly(peStream);
         }
 
         /// <summary>

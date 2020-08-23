@@ -10,11 +10,15 @@
 // fully qualified at all...
 namespace Tests.TestData {
     public class Class {
+        static Class() { }
+
         // Tests.TestData.Class+Class
         public Class() { }
 
         // Tests.TestData.Class+Class
         public Class(int x) { }
+
+        public Class(string x) { }
 
         // Tests.TestData.Class.Method
         public void Method() { }
@@ -40,6 +44,8 @@ namespace Tests.TestData {
         // Tests.TestData.Class.MethodWithOverload
         public void MethodWithOverload(string x) { }
 
+        public void MethodWithOverload(String x) { }
+
         // Tests.TestData.Class.MethodWithGenericOverload
         public void MethodWithGenericOverload(int x) { }
 
@@ -61,7 +67,16 @@ namespace Tests.TestData {
                 public void Method() { }
             }
         }
+
+        public class AmbiguousNestedClass {
+            public void Foo() { }
+        }
+        public class AmbiguousNestedClass<T> {
+            public void Bar() { }
+        }
     }
+
+    public class String { }
 
     public class GenericClass<T> {
         // Tests.TestData.GenericClass.Method
@@ -71,7 +86,7 @@ namespace Tests.TestData {
         public static void StaticMethod() { }
 
         // Tests.TestData.GenericClass.GenericMethod
-        public TMethod GenericMethod<TMethod>(T x) => default!;
+        public TMethod GenericMethod<TMethod>(T x, TMethod y) => default!;
     }
 
     public class AmbiguousClass {

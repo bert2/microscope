@@ -54,6 +54,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CompileInMemoryExt.cs" />
     <Compile Include="GetMethodExt.cs" />
     <Compile Include="GetDocumentIdInCurrentContextExt.cs" />
     <Compile Include="InstructionsProvider.cs" />

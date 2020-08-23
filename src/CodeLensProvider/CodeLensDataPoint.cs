@@ -32,11 +32,9 @@ namespace Microscope.CodeLensProvider {
             Descriptor = descriptor;
         }
 
-        public async Task<CodeLensDataPointDescriptor> GetDataAsync(
-            CodeLensDescriptorContext descriptorContext,
-            CancellationToken token) {
+        public async Task<CodeLensDataPointDescriptor> GetDataAsync(CodeLensDescriptorContext context, CancellationToken ct) {
             try {
-                data = await GetInstructions(descriptorContext, token).ConfigureAwait(false);
+                data = await GetInstructions(context, ct).ConfigureAwait(false);
 
                 var (description, tooltip) = data.ErrorMessage switch
                 {
@@ -58,19 +56,18 @@ namespace Microscope.CodeLensProvider {
             }
         }
 
-        public async Task<CodeLensDetailsDescriptor> GetDetailsAsync(
-            CodeLensDescriptorContext descriptorContext,
-            CancellationToken token) {
+        public async Task<CodeLensDetailsDescriptor> GetDetailsAsync(CodeLensDescriptorContext context, CancellationToken ct) {
             try {
                 Log();
 
-                // HACK: when opening the details window, the data point is re-created leaving `data` uninitialized.
+                // HACK: when opening the details pane, the data point is re-created leaving `data` uninitialized.
                 // VS will call `GetDataAsync()` and `GetDetailsAsync()` concurrently. In case `data` is still `null`
                 // we'll wait a bit for `GetData()` to finish. When it's still `null` afterwards, we'll load it again.
-                if (data is null) await Task.Delay(100, token).ConfigureAwait(false);
-                if (data is null) data = await GetInstructions(descriptorContext, token).ConfigureAwait(false);
+                if (data is null) await Task.Delay(100, ct).ConfigureAwait(false);
+                if (data is null) data = await GetInstructions(context, ct).ConfigureAwait(false);
 
-                if (data.ErrorMessage != null) throw new InvalidOperationException($"Getting CodeLens data for {descriptorContext.Get<string>("FullyQualifiedName")} failed earlier.");
+                if (data.ErrorMessage != null)
+                    throw new InvalidOperationException($"Getting CodeLens details for {context.FullName()} failed.");
 
                 return new CodeLensDetailsDescriptor {
                     Headers = detailHeaders,
@@ -100,9 +97,11 @@ namespace Microscope.CodeLensProvider {
                     new object[] {
                         Descriptor.ProjectGuid,
                         Descriptor.FilePath,
-                        ctx.ApplicableSpan!.Value.Start,
+                        ctx.ApplicableSpan != null
+                            ? ctx.ApplicableSpan.Value.Start
+                            : throw new InvalidOperationException($"No ApplicableSpan given for {ctx.FullName()}."),
                         ctx.ApplicableSpan!.Value.Length,
-                        ctx.Get<string>("FullyQualifiedName")
+                        ctx.FullName()
                     },
                     ct)
                 .ConfigureAwait(false);

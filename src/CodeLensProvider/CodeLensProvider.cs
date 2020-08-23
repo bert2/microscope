@@ -22,8 +22,6 @@ namespace Microscope.CodeLensProvider {
         public const string ProviderId = "ILInstructions";
         private readonly Lazy<ICodeLensCallbackService> callbackService;
 
-        static CodeLensProvider() => Log();
-
         [ImportingConstructor]
         public CodeLensProvider(Lazy<ICodeLensCallbackService> callbackService) {
             try {
@@ -37,8 +35,8 @@ namespace Microscope.CodeLensProvider {
 
         public Task<bool> CanCreateDataPointAsync(
             CodeLensDescriptor descriptor,
-            CodeLensDescriptorContext descriptorContext,
-            CancellationToken token) {
+            CodeLensDescriptorContext context,
+            CancellationToken ct) {
             try {
                 return Task.FromResult(descriptor.Kind == CodeElementKinds.Method);
             } catch (Exception ex) {
@@ -49,11 +47,12 @@ namespace Microscope.CodeLensProvider {
 
         public Task<IAsyncCodeLensDataPoint> CreateDataPointAsync(
             CodeLensDescriptor descriptor,
-            CodeLensDescriptorContext descriptorContext,
-            CancellationToken token) {
+            CodeLensDescriptorContext context,
+            CancellationToken ct) {
             try {
-                return Task.FromResult<IAsyncCodeLensDataPoint>(
-                    new CodeLensDataPoint(callbackService.Value, descriptor));
+                return Task.FromResult<IAsyncCodeLensDataPoint>(new CodeLensDataPoint(
+                    callbackService.Value,
+                    descriptor));
             } catch (Exception ex) {
                 Log(ex);
                 throw;

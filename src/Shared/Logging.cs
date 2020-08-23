@@ -11,6 +11,7 @@ namespace Microscope.Shared {
     {
         private static readonly object @lock = new object();
 
+        [Conditional("DEBUG")]
         public static void Log(
             object? data = null,
             [CallerFilePath] string? file = null,

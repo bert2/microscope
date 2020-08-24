@@ -23,7 +23,7 @@ namespace Microscope.CodeLensProvider {
 
         private readonly ICodeLensCallbackService callbackService;
         private volatile CodeLensData? data;
-        private readonly ManualResetEventSlim dataLoaded = new ManualResetEventSlim(false);
+        private readonly ManualResetEventSlim dataLoaded = new ManualResetEventSlim(initialState: false);
 
         public CodeLensDescriptor Descriptor { get; }
 

@@ -19,6 +19,7 @@ WIP: not published on the VS extension marketplace yet.
 
 ### v1.X Release
 
+* don't show CodeLens on interface/abstract methods
 * cache `AssemblyDefintion`s?
     * results of basic performance measurement:
         * first CodeLens takes ~1 sec, because in-memory compiling takes long

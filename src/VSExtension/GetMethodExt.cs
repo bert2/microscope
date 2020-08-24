@@ -13,46 +13,6 @@ namespace Microscope.VSExtension {
     using Mono.Collections.Generic;
 
     public static class GetMethodExt {
-        public static MethodDefinition? TryGetMethod(this AssemblyDefinition assembly, string methodLongName) {
-            // optimizations:
-            // - try find ctors
-            //   - ctor & cctor are reported as `MyClass+MyClass` instead of `MyClass.MyClass` or `MyClass..ctor`
-            // - try find method in nested type
-            //   - nested types are reported as `MyNamespace.MyClass+MyNestedClass+MyNestedNestedClass.MyMethod`
-
-            var lastDot = methodLongName.LastIndexOf('.');
-            if (lastDot == -1) throw new InvalidOperationException($"Method long name {methodLongName} is missing the declaring type.");
-
-            var typeName = methodLongName.Substring(0, lastDot);
-            var type = assembly.MainModule.GetType(fullName: typeName);
-            if (type is null) return null;
-
-            var methodName = methodLongName.Substring(lastDot + 1);
-            var method = type.Methods.TrySingleOrDefault(m => m.Name == methodName);
-            if (method is null) return null;
-
-            // PROFILE: in huge projects with lots of types this linear search might
-            // nullify the benefits of not using the `Symbol`.
-            // Solution: return `null` when `assembly.MainModule.Types.Count` is too high.
-            var isTypeNameAmbiguous = assembly.MainModule.Types
-                .Select(TypeNameWithoutSuffix)
-                .TrySingleOrDefault(t => t == typeName)
-                is null;
-
-            return isTypeNameAmbiguous ? null : method;
-        }
-
-        private static string TypeNameWithoutSuffix(TypeDefinition t) {
-            var name = t.FullName;
-            var suffixStart = name.IndexOf('`');
-            return suffixStart == -1 ? name : name.Substring(0, suffixStart);
-        }
-
-        public static T? TrySingleOrDefault<T>(this IEnumerable<T> xs, Func<T, bool> predicate) where T: class {
-            var two = xs.Where(predicate).Take(2).ToArray();
-            return two.Length == 1 ? two[0] : null;
-        }
-
         public static MethodDefinition GetMethod(this AssemblyDefinition assembly, IMethodSymbol methodSymbol) {
             var nameParts = methodSymbol.ContainingSymbol.GetFullNameParts();
             var @namespace = nameParts.PopNamespace();

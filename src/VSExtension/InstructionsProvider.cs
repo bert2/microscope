@@ -15,8 +15,6 @@ namespace Microscope.VSExtension {
     using Microsoft.VisualStudio.LanguageServices;
     using Microsoft.VisualStudio.Utilities;
 
-    using Mono.Cecil;
-
     using static Microscope.Shared.Logging;
 
     [Export(typeof(ICodeLensCallbackListener))]
@@ -47,38 +45,11 @@ namespace Microscope.VSExtension {
                 var proj = sln.GetProject(projId)
                     ?? throw new InvalidOperationException($"Project {projId.Id} not found in solution {sln.FilePath}.");
                 using var peStream = new MemoryStream();
-                var assembly = await proj.Compile(peStream, ct).ConfigureAwait(false);
+                using var assembly = await proj.Compile(peStream, ct).ConfigureAwait(false);
+                var method = await FindMethodSymbol(projGuid, filePath, textStart, textLen, sln, ct).ConfigureAwait(false);
 
-                var method = assembly.TryGetMethod(methodLongName);
-
-                if (method is null) {
-                    Log($"Loading IL of {methodLongName} via its symbol.");
-                    var (docId, syntaxNode) = await GetDocumentIdAndNodeAsync(
-                            sln,
-                            projGuid,
-                            filePath,
-                            new TextSpan(textStart, textLen),
-                            ct)
-                        .ConfigureAwait(false);
-
-                    if (docId == null) throw new InvalidOperationException("Document not found.");
-
-                    var doc = sln.GetDocument(docId)
-                        ?? throw new InvalidOperationException($"Document with id {docId} not found.");
-
-                    var semanticModel = await doc.GetSemanticModelAsync(ct).ConfigureAwait(false)
-                        ?? throw new InvalidOperationException("Failed to get SemanticModel.");
-
-                    var symbol = semanticModel.GetDeclaredSymbol(syntaxNode, ct)
-                        ?? throw new InvalidOperationException("Failed to get Symbol.");
-
-                    var methodSymbol = symbol as IMethodSymbol
-                        ?? throw new InvalidOperationException("Symbol is not a method.");
-
-                    method = assembly.GetMethod(methodSymbol);
-                }
-
-                return method
+                return assembly
+                    .GetMethod(method)
                     .Body?
                     .Instructions
                     .ToCodeLensData()
@@ -87,6 +58,25 @@ namespace Microscope.VSExtension {
                 Log(ex);
                 return CodeLensData.Failure(ex.ToString());
             }
+        }
+
+        private async Task<IMethodSymbol> FindMethodSymbol(Guid projGuid, string filePath, int textStart, int textLen, Solution sln, CancellationToken ct) {
+            var (docId, syntaxNode) = await GetDocumentIdAndNodeAsync(
+                    sln,
+                    projGuid,
+                    filePath,
+                    new TextSpan(textStart, textLen),
+                    ct)
+                .ConfigureAwait(false);
+            if (docId == null) throw new InvalidOperationException("Document not found.");
+            var doc = sln.GetDocument(docId)
+                ?? throw new InvalidOperationException($"Document with id {docId} not found.");
+            var semanticModel = await doc.GetSemanticModelAsync(ct).ConfigureAwait(false)
+                ?? throw new InvalidOperationException("Failed to get SemanticModel.");
+            var symbol = semanticModel.GetDeclaredSymbol(syntaxNode, ct)
+                ?? throw new InvalidOperationException("Failed to get Symbol.");
+            return symbol as IMethodSymbol
+                ?? throw new InvalidOperationException("Symbol is not a method.");
         }
 
         /// <summary>

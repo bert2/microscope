@@ -14,12 +14,13 @@ namespace Microscope.CodeLensProvider {
 
     using static Microscope.Shared.Logging;
 
-    public class CodeLensDataPoint : IAsyncCodeLensDataPoint {
+    public class CodeLensDataPoint : IAsyncCodeLensDataPoint, IDisposable {
         private static readonly CodeLensDetailHeaderDescriptor[] detailHeaders = new[] {
             new CodeLensDetailHeaderDescriptor { UniqueName = "Label",   DisplayName = "Label",   Width = .1 },
             new CodeLensDetailHeaderDescriptor { UniqueName = "OpCode",  DisplayName = "Op Code", Width = .15 },
             new CodeLensDetailHeaderDescriptor { UniqueName = "Operand", DisplayName = "Operand", Width = .75 }
         };
+
         private readonly ICodeLensCallbackService callbackService;
         private volatile CodeLensData? data;
         private readonly ManualResetEventSlim dataLoaded = new ManualResetEventSlim(false);
@@ -32,6 +33,8 @@ namespace Microscope.CodeLensProvider {
             this.callbackService = callbackService;
             Descriptor = descriptor;
         }
+
+        public void Dispose() => dataLoaded.Dispose();
 
         public async Task<CodeLensDataPointDescriptor> GetDataAsync(CodeLensDescriptorContext context, CancellationToken ct) {
             try {

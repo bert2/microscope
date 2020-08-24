@@ -22,6 +22,7 @@ namespace Microscope.CodeLensProvider {
         };
         private readonly ICodeLensCallbackService callbackService;
         private volatile CodeLensData? data;
+        private readonly ManualResetEventSlim dataLoaded = new ManualResetEventSlim(false);
 
         public CodeLensDescriptor Descriptor { get; }
 
@@ -35,6 +36,7 @@ namespace Microscope.CodeLensProvider {
         public async Task<CodeLensDataPointDescriptor> GetDataAsync(CodeLensDescriptorContext context, CancellationToken ct) {
             try {
                 data = await GetInstructions(context, ct).ConfigureAwait(false);
+                dataLoaded.Set();
 
                 var (description, tooltip) = data.ErrorMessage switch
                 {
@@ -60,13 +62,12 @@ namespace Microscope.CodeLensProvider {
             try {
                 Log();
 
-                // HACK: when opening the details pane, the data point is re-created leaving `data` uninitialized.
-                // VS will call `GetDataAsync()` and `GetDetailsAsync()` concurrently. In case `data` is still `null`
-                // we'll wait a bit for `GetData()` to finish. When it's still `null` afterwards, we'll load it again.
-                if (data is null) await Task.Delay(100, ct).ConfigureAwait(false);
-                if (data is null) data = await GetInstructions(context, ct).ConfigureAwait(false);
+                // When opening the details pane, the data point is re-created leaving `data` uninitialized. VS will
+                // then call `GetDataAsync()` and `GetDetailsAsync()` concurrently.
+                if (!dataLoaded.Wait(timeout: TimeSpan.FromSeconds(.5), ct))
+                    data = await GetInstructions(context, ct).ConfigureAwait(false);
 
-                if (data.ErrorMessage != null)
+                if (data!.ErrorMessage != null)
                     throw new InvalidOperationException($"Getting CodeLens details for {context.FullName()} failed.");
 
                 return new CodeLensDetailsDescriptor {

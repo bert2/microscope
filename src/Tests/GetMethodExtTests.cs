@@ -1,8 +1,6 @@
 ﻿#nullable enable
 
 namespace Tests {
-    using System;
-
     using Microscope.VSExtension;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -16,10 +14,10 @@ namespace Tests {
         private static readonly AssemblyDefinition TestAssembly = AssemblyDefinition
             .ReadAssembly(typeof(GetMethodExtTests).Assembly.Location);
 
-        [TestMethod] public void ThrowsForMissingMethod() => new Action(() =>
+        [TestMethod] public void ReturnsNullForMissingMethod() =>
             TestAssembly
-            .TryGetMethod("Tests.TestData.Class.UnknownMethod"))
-            .ShouldThrow<InvalidOperationException>();
+            .TryGetMethod("Tests.TestData.Class.UnknownMethod")
+            .ShouldBeNull();
 
         [TestMethod] public void FindsInstanceMethod() =>
             TestAssembly

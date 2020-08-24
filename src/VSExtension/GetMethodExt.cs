@@ -4,7 +4,6 @@ namespace Microscope.VSExtension {
     using System;
     using System.Collections.Generic;
     using System.Collections.Immutable;
-    using System.Diagnostics;
     using System.Linq;
     using System.Text;
 
@@ -44,8 +43,9 @@ namespace Microscope.VSExtension {
         }
 
         private static string TypeNameWithoutSuffix(TypeDefinition t) {
-            var suffixStart = t.Name.IndexOf('`');
-            return suffixStart == -1 ? t.Name : t.Name.Substring(0, suffixStart);
+            var name = t.FullName;
+            var suffixStart = name.IndexOf('`');
+            return suffixStart == -1 ? name : name.Substring(0, suffixStart);
         }
 
         public static T? TrySingleOrDefault<T>(this IEnumerable<T> xs, Func<T, bool> predicate) where T: class {

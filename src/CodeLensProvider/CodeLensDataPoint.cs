@@ -71,7 +71,7 @@ namespace Microscope.CodeLensProvider {
                     data = await GetInstructions(context, ct).ConfigureAwait(false);
 
                 if (data!.ErrorMessage != null)
-                    throw new InvalidOperationException($"Getting CodeLens details for {context.FullName()} failed.");
+                    throw new InvalidOperationException($"Getting CodeLens details for {context.FullName()} failed: {data.ErrorMessage}");
 
                 return new CodeLensDetailsDescriptor {
                     Headers = detailHeaders,

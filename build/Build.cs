@@ -26,6 +26,9 @@ class Build : NukeBuild {
     [Parameter("Version to publish - Required for target `Publish`, format: \"{major}.{minor}.{patch}\" (semver), default: `null`")]
     readonly string PublishVersion;
 
+    [Parameter("Personal access token to the VS Marketplace - Required for target `Publish`, default: `null`")]
+    readonly string MarketplaceKey;
+
     [Solution] readonly Solution Solution;
 
     [GitRepository] readonly GitRepository GitRepository;
@@ -74,9 +77,11 @@ class Build : NukeBuild {
             VSTest(p.Directory / p.GetProperty("OutputPath") / "Microscope.Tests.dll");
         });
 
-    // .\build.ps1 --target publish --publish-version 1.0.1
     Target Publish => _ => _
-        .Requires(() => PublishVersion != null)
+        .Requires(
+            () => PublishVersion != null,
+            () => MarketplaceKey != null,
+            () => GitRepository.Branch == "main")
         .Executes(() => {
             Info($"Publishing {PublishVersion} to Visual Studio Marketplace...");
             VsixPublisher("version");

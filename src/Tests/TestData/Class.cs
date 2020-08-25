@@ -8,7 +8,7 @@
 // The comment above each method is what's being reported to the CodeLenseProvider
 // as the "fully-qualified" name of the code-lensed method. Problem is they aren't
 // fully qualified at all...
-namespace Tests.TestData {
+namespace Microscope.Tests.TestData {
     public class Class {
         static Class() { }
 

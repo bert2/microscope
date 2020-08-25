@@ -1,6 +1,6 @@
 ﻿#nullable enable
 
-namespace Tests {
+namespace Microscope.Tests {
     using System.Reflection;
 
     using Microsoft.CodeAnalysis;

@@ -20,8 +20,8 @@ using static Nuke.Common.Tools.VSTest.VSTestTasks;
 class Build : NukeBuild {
     public static int Main() => Execute<Build>(x => x.Compile);
 
-    [Parameter("Configuration to build - Default: 'Debug' (local) or 'Release' (server)")]
-    readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
+    [Parameter("Configuration to build - Default: 'Release'")]
+    readonly Configuration Configuration = Configuration.Release;
 
     [Parameter("Version to publish - Required for target `Publish`, format: \"{major}.{minor}.{patch}\" (semver), default: `null`")]
     readonly string PublishVersion;
@@ -76,7 +76,8 @@ class Build : NukeBuild {
         .DependsOn(Compile)
         .Executes(() => {
             var p = Solution.GetProject("Tests");
-            VSTest(p.Directory / p.GetProperty("OutputPath") / "Microscope.Tests.dll");
+            var outDir = p.GetMSBuildProject(Configuration).GetPropertyValue("OutputPath");
+            VSTest(p.Directory / outDir / "Microscope.Tests.dll");
         });
 
     Target Publish => _ => _

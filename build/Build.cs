@@ -50,6 +50,7 @@ class Build : NukeBuild {
     Target Restore => _ => _
         .Executes(() => {
             MSBuild(s => s
+                .SetMSBuildPlatform(MSBuildPlatform.x86)
                 .SetTargetPath(Solution)
                 .SetTargets("Restore")
                 .SetVerbosity(MSBuildVerbosity.Minimal));
@@ -60,6 +61,7 @@ class Build : NukeBuild {
         .Produces(ArtifactsDirectory / "*.vsix")
         .Executes(() => {
             MSBuild(s => s
+                .SetMSBuildPlatform(MSBuildPlatform.x86)
                 .SetTargetPath(Solution)
                 .SetTargets("Rebuild")
                 .SetVerbosity(MSBuildVerbosity.Minimal)

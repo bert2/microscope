@@ -4,6 +4,8 @@ environment:
   marketplaceKey:
     secure: /V44/pvMDD3CZ/FJKsgY6FC+xR4Sa6jwsLEAtzYmfwA8v8Qvt4vhrPf2jYWI+4DAW3lL9eCTUxnUIsgkRzZwgw==
 build_script:
+- ps: ls 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VisualStudio\v16.0\VSSDK\Microsoft.VsSDK.targets'
+- ps: ls 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VisualStudio\v16.0\VSSDK\Microsoft.VisualStudio.Sdk.BuildTasks.16.0.dll'
 - ps: ./build --no-logo
 test_script:
 - ps: ./build --target test --skip --no-logo

@@ -67,7 +67,8 @@ class Build : NukeBuild {
                 .SetMaxCpuCount(Environment.ProcessorCount)
                 .SetNodeReuse(IsLocalBuild)
                 .SetProperty("DeployExtension", false)
-                .SetProperty("ZipPackageCompressionLevel", "normal"));
+                .SetProperty("ZipPackageCompressionLevel", "normal")
+                .SetToolsVersion(MSBuildToolsVersion._15_0));
         });
 
     Target Test => _ => _

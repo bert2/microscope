@@ -10,12 +10,10 @@ namespace Microscope.VSExtension {
     using static Microscope.Shared.Logging;
 
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
-    [InstalledProductRegistration("#100", "#101", "v0.1")]
-    [Guid(PackageGuidString)]
+    [InstalledProductRegistration(Vsix.Name, Vsix.Description, Vsix.Version)]
+    [Guid("b798b46c-201a-470c-9e3e-fa0abb23dfa7")]
     //[ProvideAutoLoad(UIContextGuids80.SolutionExists, PackageAutoLoadFlags.BackgroundLoad)]
     public sealed class MicroscopePackage : AsyncPackage {
-        public const string PackageGuidString = "b798b46c-201a-470c-9e3e-fa0abb23dfa7";
-
         static MicroscopePackage() => Log();
 
         public MicroscopePackage() => Log();

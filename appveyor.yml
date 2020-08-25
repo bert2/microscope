@@ -11,4 +11,4 @@ artifacts:
 - path: ./src/VSExtension/bin/Release/Microscope.VSExtension.vsix
   name: Latest build
 deploy_script:
-- ps: if ($env:APPVEYOR_REPO_TAG) { ./build --target publish --publish-version $env:APPVEYOR_REPO_TAG_NAME --no-logo }
+- ps: if ($env:APPVEYOR_REPO_TAG -eq $true) { ./build --target publish --publish-version $env:APPVEYOR_REPO_TAG_NAME --no-logo }

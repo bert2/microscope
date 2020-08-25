@@ -352,4 +352,3 @@ MigrationBackup/
 # Custom
 .vscode/
 build/tools/
-tests/UnitTests/coverage.opencover.xml

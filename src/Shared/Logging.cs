@@ -11,6 +11,8 @@ namespace Microscope.Shared {
     {
         private static readonly object @lock = new object();
 
+        private static readonly string logPath = Path.GetTempPath();
+
         [Conditional("DEBUG")]
         public static void Log(
             object? data = null,
@@ -18,7 +20,7 @@ namespace Microscope.Shared {
             [CallerMemberName] string? method = null) {
             lock (@lock) {
                 File.AppendAllText(
-                    @"C:\Users\bert\Desktop\microscope.log",
+                    $"{logPath}/microscope.log",
                     $"{DateTime.Now:HH:mm:ss.fff} "
                     + $"{Process.GetCurrentProcess().Id,5} "
                     + $"{Thread.CurrentThread.ManagedThreadId,3} "

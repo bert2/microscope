@@ -2,22 +2,26 @@
 
 A CodeLens extension for Visual Studio that lets you inspect the intermediate language instructions of a method.
 
-WIP: not published on the VS extension marketplace yet.
+![Usage example](img/usage.gif "Usage example")
+
+## Usage
+
+- The CodeLens appears on C# methods and displays the number of instructions that will be generated for the method.
+- Hover over the CodeLens to see individual counts for the number of `box` and unconstrained `virtcall` instructions in the method.
+- Click the CodeLens to get a detailed list of all instructions including their offsets and operands.
+- The CodeLens currently won't be updated after the method has been changed. In order to refresh it you will have to close and re-open the C# source file. Auto-update will be implemented in the next release.
+- In case the retrieval of instructions fails the CodeLens will display `-` instead of a count. Hover over the CodeLens to see the exception that caused the failure.
 
 ## TODO
 
-### v0.1 Release
+### Next release (1.0.0)
 
-* deploy to marketplace
+* update IL when typing/saving/building
+* XML documentation summary of op code as tooltip
+* double-clicking an instruction navigates to MSDN page of op code
+* settings page to enable/disable logging
 
-### v1.0 Release
-
-* update when typing/saving/building
-* XML doc summary of op code as tooltip
-* double-clicking an instruction navigates to MSDN page
-* `CodeLensDataPoint.GetDetails()` might fail, because `data` is `null`... but how?
-
-### v1.X Release
+### Future releases
 
 * don't show CodeLens on interface/abstract methods
 * cache `AssemblyDefintion`s?
@@ -25,25 +29,39 @@ WIP: not published on the VS extension marketplace yet.
         * first CodeLens takes ~1 sec, because in-memory compiling takes long
         * everything seems to be cached afterwards and instructions can be retrieved in 15 - 40 ms
         * compiling still takes most of the time (10 - 30 ms)
-    * would shave off most of the runtime cost (except for first CodeLens)
-    * but how to invalidate the cash on code changes?
+    * would shave off most of the runtime cost
+    * cash needs to be invalidated on code changes
     * is it worth the memory cost in big solutions?
     * reading an `AssemblyDefintion` is not thread-safe
 * edge cases:
     * what happens when opening a project instead of a solution?
     * what happens when opening a file without opening the project?
-* settings page to configure update frequency
+* setting to configure update frequency
 * VB support
 * F# support?
 * is it possible to move in-memory compiling and IL retrieval out of the VS process?
-    * is it actually running in-proc?
     * can we even access the `Compilation` out-of-proc?
 * custom UI?
 * support `async` & `IEnumerable` state machines (would benefit from custom UI)
 * support more code elements? (properties, classes, ...)
 
+## Changelog
+
+### 0.0.1
+
+- intitial preview release
+- enables CodeLens on C# methods showing the number of IL instructions
+- clicking the CodeLens opens a details view listing all IL instructions of the method
+- refreshing the CodeLens after code changes currently requires closing and re-opening the C# source file
+
 ## Credits
 
-* [VSCodeILViewer](https://github.com/JosephWoodward/VSCodeILViewer)
-* https://marketplace.visualstudio.com/items?itemName=segrived.Msiler
-* [Mono.Ceceil](https://github.com/jbevain/cecil)
+### Similar tools and inspirations
+
+* [VSCodeILViewer](https://github.com/JosephWoodward/VSCodeILViewer) by Joseph Woodward only works with VSCode and isn't updated anymore. Joseph wrote a nice [article](https://josephwoodward.co.uk/2017/01/c-sharp-il-viewer-vs-code-using-roslyn) on its implementation which helped me getting started.
+* [Msiler](https://marketplace.visualstudio.com/items?itemName=segrived.msiler2017) by Evgeniy Babaev looks like an excellent tool, but unfortunately it's not available for Visual Studio 2019. I discovered it when I was way into the development of microscope and if I had found it earlier, I might have tried patching Msiler first.
+
+### Dependencies
+
+* [Roslyn](https://github.com/dotnet/roslyn) is used to compile the current project in memory.
+* [Mono.Ceceil](https://github.com/jbevain/cecil) is used to retrieve the IL instructions from the compiled project.

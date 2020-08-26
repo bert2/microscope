@@ -13,6 +13,6 @@ namespace Microscope.VSExtension
         public const string Language = "en-US";
         public const string Version = "0.0.0.0";
         public const string Author = "Robert Hofmann";
-        public const string Tags = "CodeLens, CIL, MSIL, intermediate language";
+        public const string Tags = "CodeLens, CIL, MSIL, IL, intermediate language";
     }
 }

@@ -63,6 +63,6 @@ A CodeLens extension for Visual Studio that lets you inspect the intermediate la
 
 ### Dependencies
 
-* [Roslyn](https://github.com/dotnet/roslyn) is used to compile the current project in memory.
-* [Mono.Ceceil](https://github.com/jbevain/cecil) is used to retrieve the IL instructions from the compiled project.
+* [Roslyn](https://github.com/dotnet/roslyn) compiles the current project in memory.
+* [Mono.Ceceil](https://github.com/jbevain/cecil) retrieves the IL instructions from the compiled project.
 * [nuke](https://github.com/nuke-build/nuke) orchestrates the builds for microscope.

@@ -132,7 +132,7 @@ class Build : NukeBuild {
             VsixPublisher("version");
         });
 
-    private string LastGitTag() => Git("describe --tags --abbrev=0").Single().Text;
+    private string LastGitTag() => Git("describe --tags --abbrev=0", logOutput: false).Single().Text;
 
     private static void ReplaceText(AbsolutePath file, string pattern, string replacement) {
         var text = ReadAllText(file).ReplaceRegex(pattern, _ => replacement);

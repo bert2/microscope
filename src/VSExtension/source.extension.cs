@@ -11,7 +11,7 @@ namespace Microscope.VSExtension
         public const string Name = "microscope";
         public const string Description = @"Provides a CodeLens to inspect the intermediate language instructions of a method.";
         public const string Language = "en-US";
-        public const string Version = "0.1";
+        public const string Version = "0.0.0.0";
         public const string Author = "Robert Hofmann";
         public const string Tags = "CodeLens, CIL, MSIL, intermediate language";
     }

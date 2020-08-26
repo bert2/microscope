@@ -90,7 +90,8 @@ class Build : NukeBuild {
             ReplaceText(
                 SrcDir / "VSExtension" / "source.extension.cs",
                 @"Version = ""\d+\.\d+\.\d+\.\d+""",
-                $@"Version = ""{Version}""");
+                $@"Version = ""{Version}""",
+                bom: false);
 
             XmlPoke(
                 SrcDir / "VSExtension" / "source.extension.vsixmanifest",
@@ -134,8 +135,8 @@ class Build : NukeBuild {
 
     private string LastGitTag() => Git("describe --tags --abbrev=0", logOutput: false).Single().Text;
 
-    private static void ReplaceText(AbsolutePath file, string pattern, string replacement) {
+    private static void ReplaceText(AbsolutePath file, string pattern, string replacement, bool bom = true) {
         var text = ReadAllText(file).ReplaceRegex(pattern, _ => replacement);
-        WriteAllText(file, text, Encoding.UTF8);
+        WriteAllText(file, text, bom ? Encoding.UTF8 : null);
     }
 }

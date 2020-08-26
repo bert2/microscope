@@ -7,7 +7,7 @@ namespace Microscope.VSExtension
 {
     internal sealed partial class Vsix
     {
-        public const string Id = "ede7ef0f-017b-4b33-b7b3-c7480d3cc712";
+        public const string Id = "ede7ef0f-017b-4b33-b7b3-c7480d3cc713";
         public const string Name = "microscope";
         public const string Description = @"Provides a CodeLens to inspect the intermediate language instructions of a method.";
         public const string Language = "en-US";

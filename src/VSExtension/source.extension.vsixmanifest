@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="ede7ef0f-017b-4b33-b7b3-c7480d3cc712" Version="0.0.0.0" Language="en-US" Publisher="Robert Hofmann" />
+        <Identity Id="ede7ef0f-017b-4b33-b7b3-c7480d3cc713" Version="0.0.0.0" Language="en-US" Publisher="Robert Hofmann" />
         <DisplayName>microscope</DisplayName>
         <Description xml:space="preserve">Provides a CodeLens to inspect the intermediate language instructions of a method.</Description>
         <MoreInfo>https://github.com/bert2/microscope</MoreInfo>

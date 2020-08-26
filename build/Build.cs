@@ -57,6 +57,10 @@ class Build : NukeBuild {
 
     AbsolutePath SrcDir => RootDirectory / "src";
 
+    AbsolutePath VsixProjDir => SrcDir / "VSExtension";
+
+    AbsolutePath VsixOutDir => VsixProjDir / "bin" / Configuration;
+
     Target Clean => _ => _
         .Before(Restore)
         .Executes(() => {
@@ -88,13 +92,13 @@ class Build : NukeBuild {
             Info("Updating VSIX manifest...");
 
             ReplaceText(
-                SrcDir / "VSExtension" / "source.extension.cs",
+                VsixProjDir / "source.extension.cs",
                 @"Version = ""\d+\.\d+\.\d+\.\d+""",
                 $@"Version = ""{Version}""",
                 bom: false);
 
             XmlPoke(
-                SrcDir / "VSExtension" / "source.extension.vsixmanifest",
+                VsixProjDir / "source.extension.vsixmanifest",
                 "/ns:PackageManifest/ns:Metadata/ns:Identity/@Version",
                 Version,
                 ("ns", "http://schemas.microsoft.com/developer/vsx-schema/2011"));
@@ -130,7 +134,9 @@ class Build : NukeBuild {
             () => GitRepository.Branch == "main")
         .Executes(() => {
             Info($"Publishing {Version} to Visual Studio Marketplace...");
-            VsixPublisher("version");
+            var manifest = RootDirectory / "publish-manifest.json";
+            var vsixPkg = VsixOutDir / "Microscope.VSExtension.vsix";
+            VsixPublisher($"publish -publishManifest {manifest} -payload {vsixPkg} -personalAccessToken {MarketplaceKey}");
         });
 
     private string LastGitTag() => Git("describe --tags --abbrev=0", logOutput: false).Single().Text;

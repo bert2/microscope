@@ -9,5 +9,11 @@
     "publisher": "bert",
     "private": false,
     "qna": true,
-    "repo": "https://github.com/bert2/microscope"
+    "repo": "https://github.com/bert2/microscope",
+    "assetFiles": [
+        {
+            "pathOnDisk": "img\\usage.gif",
+            "targetPath": "img/usage.gif"
+        }
+    ]
 }

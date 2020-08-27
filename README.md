@@ -8,6 +8,8 @@ A CodeLens extension for Visual Studio that lets you inspect the intermediate la
 
 ## Usage
 
+- Install latest stable release from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=bert.microscope).
+- Alternatively you can grab the [VSIX package](https://ci.appveyor.com/project/bert2/microscope/branch/main/artifacts) of the latest build from AppVeyor.
 - The CodeLens appears on C# methods and displays the number of instructions that will be generated for the method.
 - Hover over the CodeLens to see individual counts for the number of `box` and unconstrained `virtcall` instructions in the method.
 - Click the CodeLens to get a detailed list of all instructions including their offsets and operands.

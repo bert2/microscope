@@ -16,9 +16,14 @@ A CodeLens extension for Visual Studio that lets you inspect the intermediate la
 - The CodeLens currently won't be updated after the method has been changed. In order to refresh it you will have to close and re-open the C# source file. Auto-update will be implemented in the next release.
 - In case the retrieval of instructions fails the CodeLens will display `-` instead of a count. Hover over the CodeLens to see the exception that caused the failure.
 
+## Known issues
+
+- Instructions are not updated automatically on code changes.
+- Retrieval of instructions might fail for methods wich have overloads (especially when generic parameters are involved).
+
 ## TODO
 
-### Next release (1.0.0)
+### Release (1.0.0)
 
 * update IL when typing/saving/building
 * XML documentation summary of op code as tooltip

@@ -91,7 +91,6 @@ namespace Microscope.VSExtension {
         private static TypeDefinition PopNestedTypes(this Stack<ISymbol> nameParts, TypeDefinition type) {
             while (nameParts.Count > 0) {
                 var nestedTypeSymbol = nameParts.Pop();
-                // TODO: use `FirstOrDefault()` because `MetdadataName` should not be ambiguous.
                 type = type.NestedTypes.SingleOrDefault(t => t.Name == nestedTypeSymbol.MetadataName)
                     ?? throw new InvalidOperationException($"Type {type.FullName} does not have a nested type named {nestedTypeSymbol.MetadataName}.");
             }

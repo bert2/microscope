@@ -14,6 +14,18 @@ namespace Microscope.Tests.Util {
     using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Microsoft.CodeAnalysis.MSBuild;
 
+    /// <summary>
+    /// In order to test that `GetMethodExt.GetMethod()` can resolve methods with ambiguous names in an
+    /// `AssemblyDefinition` we need a reliable way to get an `IMethodSymbol` for a given method inside
+    /// the `TestData` namespace.
+    /// One way would be to compile the test project in memory and then look up the method symbol by name.
+    /// This has the major disadvantage that we'd have to implement the logic to resolve ambiguous method
+    /// names again.
+    /// Instead we are using a special method `Get()` that takes a lambda calling the method which should
+    /// be used as the input symbol. From that (and the line number where `Get()` was called) we can
+    /// locate the lambda's method call in the syntax tree of the whole test class and get the
+    /// corresponding `IMethodSymbol`.
+    /// </summary>
     public class SymbolResolver : IDisposable {
         private const string get = nameof(SymbolResolver) + "." + nameof(Get) + "()";
         private readonly MSBuildWorkspace workspace;
@@ -33,6 +45,8 @@ namespace Microscope.Tests.Util {
             this.syntaxTree = syntaxTree;
             semanticModel = compilation.GetSemanticModel(syntaxTree);
         }
+
+        public void Dispose() => workspace.Dispose();
 
         public static async Task<SymbolResolver> ForMyTests(CancellationToken ct, [CallerFilePath] string? testClassFile = null) {
             var workspace = MSBuildWorkspace.Create();
@@ -56,8 +70,6 @@ namespace Microscope.Tests.Util {
 
             return new SymbolResolver(workspace, compilation, syntaxTree);
         }
-
-        public void Dispose() => workspace.Dispose();
 
         [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Param `selector` needed indirectly.")]
         public IMethodSymbol Get<T>(Action<T> selector, [CallerLineNumber] int line = 0)

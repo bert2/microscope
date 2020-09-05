@@ -34,16 +34,12 @@ namespace Microscope.Tests.TestData {
         public void GenericMethod<U>(T x, U y) { }
     }
 
-    public class NonPrimitiveParams {
-        public void Method(List<int> x) { }
-        public void Method(Dictionary<string, List<int>> x) { }
-        public void Method(Name1.Space1.Foo x) { }
-        public void Method(Name2.Space2.Foo x) { }
-        public void Method(Foo<bool, char>.Bar<float, int> x) { }
+    public class AmbiguousClass {
+        public void Method(int x) { }
+    }
 
-        public class Foo<B, C> {
-            public class Bar<F, I> { }
-        }
+    public class AmbiguousClass<T> {
+        public void Method(T x) { }
     }
 
     public class Overloads {
@@ -53,6 +49,18 @@ namespace Microscope.Tests.TestData {
         public void Method<T>(T x) { }
         public void Method(List<int> x) { }
         public void Method<T>(List<T> x) { }
+    }
+
+    public class MoreOverloads {
+        public void Method(List<int> x) { }
+        public void Method(Dictionary<string, List<int>> x) { }
+        public void Method(Name1.Space1.Foo x) { }
+        public void Method(Name2.Space2.Foo x) { }
+        public void Method(Foo<bool, char>.Bar<float, int> x) { }
+
+        public class Foo<B, C> {
+            public class Bar<F, I> { }
+        }
     }
 }
 

@@ -16,7 +16,8 @@
                 ?? throw new InvalidOperationException($"Project {proj.FilePath} does not support compilation.");
 
             var result = compilation.Emit(peStream);
-            if (!result.Success) throw new InvalidOperationException($"Failed to compile project {proj.FilePath}:\n{result.PrintErrors()}");
+            if (!result.Success)
+                throw new InvalidOperationException($"Failed to compile project {proj.FilePath}:\n{result.PrintErrors()}");
 
             _ = peStream.Seek(0, SeekOrigin.Begin);
             return AssemblyDefinition.ReadAssembly(peStream);

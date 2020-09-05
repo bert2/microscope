@@ -92,25 +92,17 @@ namespace Microscope.Tests {
 
         #endregion NestedClass
 
-        #region NonPrimitiveParams
+        #region AmbiguousClass
 
-        [TestMethod] public void NonPrimitiveParams_MethodWithListParam() => Should.NotThrow(() =>
+        [TestMethod] public void AmbiguousClass_Method() => Should.NotThrow(() =>
             testAssembly.GetMethod(
-                symbols.Get<NonPrimitiveParams>(c => c.Method(new List<int>()))));
+                symbols.Get<AmbiguousClass>(c => c.Method(0))));
 
-        [TestMethod] public void NonPrimitiveParams_MethodWithDictOfListParam() => Should.NotThrow(() =>
+        [TestMethod] public void AmbiguousClass_MethodWithGenericParam() => Should.NotThrow(() =>
             testAssembly.GetMethod(
-                symbols.Get<NonPrimitiveParams>(c => c.Method(new Dictionary<string, List<int>>()))));
+                symbols.Get<AmbiguousClass<int>>(c => c.Method(0))));
 
-        [TestMethod] public void NonPrimitiveParams_DuplicateTypeNamesInDifferenNamespaces() => Should.NotThrow(() =>
-            testAssembly.GetMethod(
-                symbols.Get<NonPrimitiveParams>(c => c.Method(new Name1.Space1.Foo()))));
-
-        [TestMethod] public void NonPrimitiveParams_MethodWithNestedTypeParam() => Should.NotThrow(() =>
-            testAssembly.GetMethod(
-                symbols.Get<NonPrimitiveParams>(c => c.Method(new NonPrimitiveParams.Foo<bool, char>.Bar<float, int>()))));
-
-        #endregion NonPrimitiveParams
+        #endregion AmbiguousClass
 
         #region Overloads
 
@@ -147,5 +139,25 @@ namespace Microscope.Tests {
                 symbols.Get<Overloads>(c => c.Method<int>(new List<int>()))));
 
         #endregion Overloads
+
+        #region MoreOverloads
+
+        [TestMethod] public void MoreOverloads_MethodWithListParam() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<MoreOverloads>(c => c.Method(new List<int>()))));
+
+        [TestMethod] public void MoreOverloads_MethodWithDictOfListParam() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<MoreOverloads>(c => c.Method(new Dictionary<string, List<int>>()))));
+
+        [TestMethod] public void MoreOverloads_DuplicateTypeNamesInDifferenNamespaces() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<MoreOverloads>(c => c.Method(new Name1.Space1.Foo()))));
+
+        [TestMethod] public void MoreOverloads_MethodWithNestedTypeParam() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<MoreOverloads>(c => c.Method(new MoreOverloads.Foo<bool, char>.Bar<float, int>()))));
+
+        #endregion MoreOverloads
     }
 }

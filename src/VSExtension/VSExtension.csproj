@@ -54,6 +54,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AllParametersMatchExt.cs" />
     <Compile Include="CompileInMemoryExt.cs" />
     <Compile Include="GetMethodExt.cs" />
     <Compile Include="GetDocumentIdInCurrentContextExt.cs" />
@@ -66,6 +67,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>source.extension.vsixmanifest</DependentUpon>
     </Compile>
+    <Compile Include="SymbolNameExt.cs" />
     <Compile Include="ToCodeLensDataExt.cs" />
   </ItemGroup>
   <ItemGroup>

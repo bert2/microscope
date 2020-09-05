@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 namespace Microscope.Tests {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using Microscope.Tests.TestData;
@@ -15,6 +16,8 @@ namespace Microscope.Tests {
 
     [TestClass]
     public class GetMethodExtTests {
+        #region Initialization
+
         private static readonly AssemblyDefinition testAssembly = AssemblyDefinition
             .ReadAssembly(typeof(GetMethodExtTests).Assembly.Location);
 
@@ -27,61 +30,122 @@ namespace Microscope.Tests {
 
         [ClassCleanup] public static void ClassCleanup() => symbols?.Dispose();
 
-        [TestMethod] public void InstanceMethod() => Should.NotThrow(() =>
+        #endregion Initialization
+
+        #region Basic
+
+        [TestMethod] public void Basic_InstanceMethod() => Should.NotThrow(() =>
             testAssembly.GetMethod(
                 symbols.Get<Class>(c => c.InstanceMethod())));
 
-        [TestMethod] public void StaticMethod() => Should.NotThrow(() =>
+        [TestMethod] public void Basic_StaticMethod() => Should.NotThrow(() =>
             testAssembly.GetMethod(
                 symbols.Get(Class.StaticMethod)));
 
-        [TestMethod] public void GenericInstanceMethod() => Should.NotThrow(() =>
+        [TestMethod] public void Basic_GenericInstanceMethod() => Should.NotThrow(() =>
             testAssembly.GetMethod(
                 symbols.Get<Class>(c => c.GenericInstanceMethod<int>())));
 
-        [TestMethod] public void GenericStaticMethod() => Should.NotThrow(() =>
+        [TestMethod] public void Basic_GenericStaticMethod() => Should.NotThrow(() =>
             testAssembly.GetMethod(
                 symbols.Get(Class.GenericStaticMethod<bool>)));
 
-        [TestMethod] public void InstanceMethodWithParam() => Should.NotThrow(() =>
+        [TestMethod] public void Basic_InstanceMethodWithParam() => Should.NotThrow(() =>
             testAssembly.GetMethod(
                 symbols.Get<Class>(c => c.InstanceMethodWithParam(0))));
 
-        [TestMethod] public void StaticMethodWithParam() => Should.NotThrow(() =>
+        [TestMethod] public void Basic_StaticMethodWithParam() => Should.NotThrow(() =>
             testAssembly.GetMethod(
                 symbols.Get(() => Class.StaticMethodWithParam(true))));
 
-        [TestMethod] public void GenericInstanceMethodWithParam() => Should.NotThrow(() =>
+        [TestMethod] public void Basic_GenericInstanceMethodWithParam() => Should.NotThrow(() =>
             testAssembly.GetMethod(
                 symbols.Get<Class>(c => c.GenericInstanceMethodWithParam(0))));
 
-        [TestMethod] public void GenericStaticMethodWithParam() => Should.NotThrow(() =>
+        [TestMethod] public void Basic_GenericStaticMethodWithParam() => Should.NotThrow(() =>
             testAssembly.GetMethod(
                 symbols.Get(() => Class.GenericStaticMethodWithParam(true))));
 
-        [TestClass]
-        public class GenericClass {
-            [TestMethod] public void Method() => Should.NotThrow(() =>
-                testAssembly.GetMethod(
-                    symbols.Get<GenericClass<int>>(c => c.Method(0))));
+        #endregion Basic
 
-            [TestMethod] public void GenericMethod() => Should.NotThrow(() =>
-                testAssembly.GetMethod(
-                    symbols.Get<GenericClass<int>>(c => c.GenericMethod(0, false))));
-        }
+        #region GenericClass
 
-        [TestClass]
-        public class NestedClass {
-            [TestMethod] public void Method() => Should.NotThrow(() =>
-                testAssembly.GetMethod(
-                    symbols.Get<Class.NestedClass>(c => c.Method())));
-        }
+        [TestMethod] public void GenericClass_Method() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<GenericClass<int>>(c => c.Method(0))));
 
-        [TestClass]
-        public class NestedNestedClass {
-            [TestMethod] public void Method() => Should.NotThrow(() =>
-                testAssembly.GetMethod(
-                    symbols.Get<Class.NestedClass.NestedNestedClass>(c => c.Method())));
-        }
+        [TestMethod] public void GenericClass_GenericMethod() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<GenericClass<int>>(c => c.GenericMethod(0, true))));
+
+        #endregion GenericClass
+
+        #region NestedClass
+
+        [TestMethod] public void NestedClass_Method() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<Class.NestedClass>(c => c.Method())));
+
+        [TestMethod] public void NestedNestedClass_Method() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<Class.NestedClass.NestedNestedClass>(c => c.Method())));
+
+        #endregion NestedClass
+
+        #region NonPrimitiveParams
+
+        [TestMethod] public void NonPrimitiveParams_MethodWithListParam() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<NonPrimitiveParams>(c => c.Method(new List<int>()))));
+
+        [TestMethod] public void NonPrimitiveParams_MethodWithDictOfListParam() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<NonPrimitiveParams>(c => c.Method(new Dictionary<string, List<int>>()))));
+
+        [TestMethod] public void NonPrimitiveParams_DuplicateTypeNamesInDifferenNamespaces() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<NonPrimitiveParams>(c => c.Method(new Name1.Space1.Foo()))));
+
+        [TestMethod] public void NonPrimitiveParams_MethodWithNestedTypeParam() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<NonPrimitiveParams>(c => c.Method(new NonPrimitiveParams.Foo<bool, char>.Bar<float, int>()))));
+
+        #endregion NonPrimitiveParams
+
+        #region Overloads
+
+        [TestMethod] public void Overloads_MethodWithoutParam() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<Overloads>(c => c.Method())));
+
+        [TestMethod] public void Overloads_MethodWithIntParam() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<Overloads>(c => c.Method(0))));
+
+        [TestMethod] public void Overloads_MethodWithStringParam() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<Overloads>(c => c.Method(""))));
+
+        [TestMethod] public void Overloads_MethodWithGenericParam() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<Overloads>(c => c.Method(true))));
+
+        [TestMethod] public void Overloads_MethodWithAmbiguousGenericParam() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<Overloads>(c => c.Method<int>(0))));
+
+        [TestMethod] public void Overloads_MethodWithListParam() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<Overloads>(c => c.Method(new List<int>()))));
+
+        [TestMethod] public void Overloads_MethodWithGenericListParam() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<Overloads>(c => c.Method(new List<bool>()))));
+
+        [TestMethod] public void Overloads_MethodWithAmbiguousGenericListParam() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<Overloads>(c => c.Method<int>(new List<int>()))));
+
+        #endregion Overloads
     }
 }

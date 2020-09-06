@@ -121,6 +121,10 @@ Intitial preview release.
 - Clicking the CodeLens opens a details view listing all IL instructions of the method.
 - Refreshing the CodeLens after code changes currently requires closing and re-opening the C# source file.
 
+## Versioning scheme
+
+Microscope's versioning scheme uses a manually maintained [semantic version](https://semver.org/) with an appended build number. A semver bump is triggered by creating a Git tag. The build version is auto-incremented by [AppVeyor](https://ci.appveyor.com/project/bert2/microscope/branch/main).
+
 ## Credits
 
 ### Similar tools

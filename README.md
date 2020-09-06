@@ -23,11 +23,11 @@ A CodeLens extension for Visual Studio that lets you inspect the intermediate la
 
 ## Contributing
 
-Pull requests and bug reports are much appreciated!
+Bug reports and pull requests are always welcome!
 
-### Reporting bugs and feature ideas
+### Issue tracker
 
-Feel free to [create an issue on GitHub](https://github.com/bert2/microscope/issues/new) if you found a bug or have an idea how to improve microscope.
+Feel free to [create an issue on GitHub](https://github.com/bert2/microscope/issues/new) if you found a bug, have a question or got an idea how to improve microscope.
 
 ### Cloning the source
 

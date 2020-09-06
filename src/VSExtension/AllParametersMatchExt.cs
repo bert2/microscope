@@ -39,13 +39,32 @@ namespace Microscope.VSExtension {
             return target.Matches(candidate, candidateTypeArgs);
         }
 
-        private static bool Matches(this ITypeSymbol target, TypeReference candidate, Stack<TypeReference> candidateTypeArgs) {
-            if (target.TypeKind == TypeKind.Array) {
-                return target.ArrayMatches(candidate);
-            } else if (target.TypeKind == TypeKind.Pointer) {
-                return target.PointerMatches(candidate);
-            }
+        private static bool Matches(this ITypeSymbol target, TypeReference candidate, Stack<TypeReference> candidateTypeArgs) =>
+            target.TypeKind switch {
+                TypeKind.Array   => target.ArrayTypeMatches(candidate),
+                TypeKind.Pointer => target.PointerTypeMatches(candidate),
+                _                => target.PlainTypeMatches(candidate, candidateTypeArgs)
+            };
 
+        private static bool ArrayTypeMatches(this ITypeSymbol target, TypeReference candidate) {
+            if (!candidate.IsArray) return false;
+
+            var t = (IArrayTypeSymbol)target;
+            var c = (ArrayType)candidate;
+
+            return t.Rank == c.Rank && t.ElementType.Matches(c.ElementType);
+        }
+
+        private static bool PointerTypeMatches(this ITypeSymbol target, TypeReference candidate) {
+            if (!candidate.IsPointer) return false;
+
+            var t = (IPointerTypeSymbol)target;
+            var c = (PointerType)candidate;
+
+            return t.PointedAtType.Matches(c.ElementType);
+        }
+
+        private static bool PlainTypeMatches(this ITypeSymbol target, TypeReference candidate, Stack<TypeReference> candidateTypeArgs) {
             if (target.MetadataName != candidate.Name) return false;
 
             // We can't compare with `==`, because the arity of a nested `TypeReference` is the sum
@@ -67,25 +86,6 @@ namespace Microscope.VSExtension {
                 return target.Namespace() == candidate.Namespace;
             }
         }
-
-        private static bool ArrayMatches(this ITypeSymbol target, TypeReference candidate) {
-            if (!candidate.IsArray) return false;
-
-            var t = (IArrayTypeSymbol)target;
-            var c = (ArrayType)candidate;
-
-            return t.Rank == c.Rank && t.ElementType.Matches(c.ElementType);
-        }
-
-        private static bool PointerMatches(this ITypeSymbol target, TypeReference candidate) {
-            if (!candidate.IsPointer) return false;
-
-            var t = (IPointerTypeSymbol)target;
-            var c = (PointerType)candidate;
-
-            return t.PointedAtType.Matches(c.ElementType);
-        }
-
         private static int Arity(this ITypeSymbol type) => type is INamedTypeSymbol _type ? _type.Arity : 0;
 
         private static int Arity(this TypeReference type) => type is IGenericInstance _type

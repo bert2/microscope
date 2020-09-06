@@ -207,5 +207,26 @@ namespace Microscope.Tests {
                 symbols.Get<Arrays>(c => c.Method(new MoreOverloads.Foo<bool, char>.Bar<float, int>[0]))));
 
         #endregion Arrays
+
+        #region Refs
+
+        [TestMethod] public void Refs_RefParam() => Should.NotThrow(() => {
+            var x = 0;
+            _ = testAssembly.GetMethod(
+                symbols.Get<Refs>(c => c.Method(ref x)));
+        });
+
+        [TestMethod] public void Refs_InParam() => Should.NotThrow(() => {
+            var x = '\0';
+            _ = testAssembly.GetMethod(
+                symbols.Get<Refs>(c => c.Method(in x)));
+        });
+
+        [TestMethod]
+        public void Refs_OutParam() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<Refs>(c => c.Method(out var x))));
+
+        #endregion Refs
     }
 }

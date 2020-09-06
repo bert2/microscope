@@ -78,6 +78,12 @@ namespace Microscope.Tests.TestData {
         public void Method(Dictionary<int, char>[] xs) { }
         public void Method(MoreOverloads.Foo<bool, char>.Bar<float, int>[] xs) { }
     }
+
+    public class Refs {
+        public void Method(ref int x) { }
+        public void Method(in char x) { }
+        public void Method(out float x) => x = '\0';
+    }
 }
 
 namespace Name1.Space1 {

@@ -17,7 +17,15 @@ namespace Microscope.VSExtension {
 
         private static bool Matches(this IParameterSymbol target, ParameterDefinition candidate)
             => target.MetadataName == candidate.Name
-            && target.Type.Matches(candidate.ParameterType);
+            && target.ParamTypeMatches(candidate);
+
+        private static bool ParamTypeMatches(this IParameterSymbol target, ParameterDefinition candidate) {
+            var t = target.Type;
+            var c = candidate.ParameterType;
+            return target.RefKind == RefKind.None
+                ? t.Matches(c)
+                : c.IsByReference && t.Matches(c.GetElementType());
+        }
 
         private static bool Matches(this ITypeSymbol target, TypeReference candidate) {
             // Mono.Cecil exposes generic type arguments only on the innermost type in a hierarchy

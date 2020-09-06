@@ -222,11 +222,30 @@ namespace Microscope.Tests {
                 symbols.Get<Refs>(c => c.Method(in x)));
         });
 
-        [TestMethod]
-        public void Refs_OutParam() => Should.NotThrow(() =>
+        [TestMethod] public void Refs_OutParam() => Should.NotThrow(() =>
             testAssembly.GetMethod(
                 symbols.Get<Refs>(c => c.Method(out var x))));
 
         #endregion Refs
+
+        #region Pointers
+
+        [TestMethod] public unsafe void Pointers_PtrParam() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<Pointers>(c => c.Method((int*)null))));
+
+        [TestMethod] public unsafe void Pointers_PtrToPtrParam() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<Pointers>(c => c.Method((int**)null))));
+
+        [TestMethod] public unsafe void Pointers_PtrArrayParam() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<Pointers>(c => c.Method(new int*[0]))));
+
+        [TestMethod] public unsafe void Pointers_VoidPtrParam() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<Pointers>(c => c.Method((void*)null))));
+
+        #endregion Pointers
     }
 }

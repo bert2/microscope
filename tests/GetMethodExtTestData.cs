@@ -84,6 +84,13 @@ namespace Microscope.Tests.TestData {
         public void Method(in char x) { }
         public void Method(out float x) => x = .0f;
     }
+
+    public class Pointers {
+        public unsafe void Method(int* x) { }
+        public unsafe void Method(int** x) { }
+        public unsafe void Method(int*[] xs) { }
+        public unsafe void Method(void* x) { }
+    }
 }
 
 namespace Name1.Space1 {

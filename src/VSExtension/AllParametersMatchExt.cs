@@ -41,6 +41,8 @@ namespace Microscope.VSExtension {
         private static bool Matches(this ITypeSymbol target, TypeReference candidate, Stack<TypeReference> candidateTypeArgs) {
             if (target.TypeKind == TypeKind.Array) {
                 return target.ArrayMatches(candidate);
+            } else if (target.TypeKind == TypeKind.Pointer) {
+                return target.PointerMatches(candidate);
             }
 
             if (target.MetadataName != candidate.Name) return false;
@@ -72,6 +74,15 @@ namespace Microscope.VSExtension {
             var c = (ArrayType)candidate;
 
             return t.Rank == c.Rank && t.ElementType.Matches(c.ElementType);
+        }
+
+        private static bool PointerMatches(this ITypeSymbol target, TypeReference candidate) {
+            if (!candidate.IsPointer) return false;
+
+            var t = (IPointerTypeSymbol)target;
+            var c = (PointerType)candidate;
+
+            return t.PointedAtType.Matches(c.ElementType);
         }
 
         private static int Arity(this ITypeSymbol type) => type is INamedTypeSymbol _type ? _type.Arity : 0;

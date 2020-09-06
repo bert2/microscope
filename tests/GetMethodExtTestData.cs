@@ -82,7 +82,7 @@ namespace Microscope.Tests.TestData {
     public class Refs {
         public void Method(ref int x) { }
         public void Method(in char x) { }
-        public void Method(out float x) => x = .0;
+        public void Method(out float x) => x = .0f;
     }
 }
 

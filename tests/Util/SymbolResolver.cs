@@ -21,10 +21,9 @@ namespace Microscope.Tests.Util {
     /// One way would be to compile the test project in memory and then look up the method symbol by name.
     /// This has the major disadvantage that we'd have to implement the logic to resolve ambiguous method
     /// names again.
-    /// Instead we are using a special method `Get()` that takes a lambda calling the method which should
-    /// be used as the input symbol. From that (and the line number where `Get()` was called) we can
-    /// locate the lambda's method call in the syntax tree of the whole test class and get the
-    /// corresponding `IMethodSymbol`.
+    /// Instead we are using a special method `Get()` that can locate its own call in the syntax tree and
+    /// in turn analyze the syntax of the arguments passed to it. Hence the only purpose of the lambda
+    /// passed to `Get()` is to reference the method which we want the `IMethodSymbol` for.
     /// </summary>
     public class SymbolResolver : IDisposable {
         private const string get = nameof(SymbolResolver) + "." + nameof(Get) + "()";

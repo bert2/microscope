@@ -12,6 +12,7 @@ namespace Microscope.VSExtension {
     public static class AllParametersMatchExt {
         public static bool AllParametersMatch(this IMethodSymbol target, MethodDefinition candidate)
             => target.Parameters
+                // `t.OriginalDefinition` returns `T` for generic type parameters and `t` otherwise.
                 .Zip(candidate.Parameters, (t, c) => t.OriginalDefinition.Matches(c))
                 .All(methodParamMatched => methodParamMatched);
 

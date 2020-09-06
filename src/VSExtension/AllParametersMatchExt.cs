@@ -12,7 +12,7 @@ namespace Microscope.VSExtension {
     public static class AllParametersMatchExt {
         public static bool AllParametersMatch(this IMethodSymbol target, MethodDefinition candidate)
             => target.Parameters
-                // `t.OriginalDefinition` returns `T` for generic type parameters and `t` otherwise.
+                // `t.OriginalDefinition` returns `T` for generic type parameters and itself (`this`) otherwise.
                 .Zip(candidate.Parameters, (t, c) => t.OriginalDefinition.Matches(c))
                 .All(methodParamMatched => methodParamMatched);
 
@@ -39,6 +39,7 @@ namespace Microscope.VSExtension {
             return target.Matches(candidate, candidateTypeArgs);
         }
 
+        // Chains of nested types will keep recursing into this method while consuming all `candidateTypeArgs`.
         private static bool Matches(this ITypeSymbol target, TypeReference candidate, Stack<TypeReference> candidateTypeArgs) =>
             target.TypeKind switch {
                 TypeKind.Array   => target.ArrayTypeMatches(candidate),

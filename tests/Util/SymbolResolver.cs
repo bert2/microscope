@@ -15,9 +15,9 @@ namespace Microscope.Tests.Util {
     using Microsoft.CodeAnalysis.MSBuild;
 
     /// <summary>
-    /// In order to test that `GetMethodExt.GetMethod()` can resolve methods with ambiguous names in an
-    /// `AssemblyDefinition` we need a reliable way to get an `IMethodSymbol` for a given method inside
-    /// the `TestData` namespace.
+    /// In order to test that `GetMethodExt.GetMethod(this AssemblyDefinition, IMethodSymbol)` can
+    /// resolve methods with ambiguous names in an `AssemblyDefinition` we need a reliable way to get an
+    /// `IMethodSymbol` for a given method from the `TestData` namespace.
     /// One way would be to compile the test project in memory and then look up the method symbol by name.
     /// This has the major disadvantage that we'd have to implement the logic to resolve ambiguous method
     /// names again.

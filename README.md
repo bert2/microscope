@@ -74,7 +74,10 @@ PS> nuke test # build and run tests
 
 ### Next release
 
-- verify/fix overload resolution for more exotic types (jagged arrays, pointers, `ref`s, ...)
+- verify/fix overload resolution for more exotic types:
+    - `dynamic`
+    - delegates
+    - aliased types
 
 ### Release (1.0.0)
 
@@ -108,6 +111,13 @@ PS> nuke test # build and run tests
 - support more code elements? (properties, classes, ...)
 
 ## Changelog
+
+### 0.0.3
+
+- Overload resolution has been extended to handle more types:
+  - arrays
+  - pointers
+  - `ref`s
 
 ### 0.0.2
 

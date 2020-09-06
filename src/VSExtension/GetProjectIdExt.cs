@@ -18,6 +18,7 @@ namespace Microscope.VSExtension {
 
         private static T GetValue<T>(this FieldInfo field, object obj) => (T)field.GetValue(obj);
 
+        // TODO: this sometimes fails, because some solutions have multiple `ProjectId`s pointing at the same `Guid`.
         public static ProjectId? GetProjectId(this VisualStudioWorkspace workspace, Guid projectGuid)
             => projectToGuidMap
                 .GetValue<ImmutableDictionary<ProjectId, Guid>>(workspace)

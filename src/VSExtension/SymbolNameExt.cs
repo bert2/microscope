@@ -1,4 +1,6 @@
-﻿namespace Microscope.VSExtension {
+﻿#nullable enable
+
+namespace Microscope.VSExtension {
     using System.Collections.Generic;
     using System.Text;
 

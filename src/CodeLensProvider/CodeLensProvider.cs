@@ -11,8 +11,6 @@ namespace Microscope.CodeLensProvider {
     using Microsoft.VisualStudio.Language.Intellisense;
     using Microsoft.VisualStudio.Utilities;
 
-    using static Shared.Logging;
-
     [Export(typeof(IAsyncCodeLensDataPointProvider))]
     [Name(ProviderId)]
     [LocalizedName(typeof(Resources), "Name")]
@@ -23,40 +21,18 @@ namespace Microscope.CodeLensProvider {
         private readonly Lazy<ICodeLensCallbackService> callbackService;
 
         [ImportingConstructor]
-        public CodeLensProvider(Lazy<ICodeLensCallbackService> callbackService) {
-            try {
-                Log();
-                this.callbackService = callbackService;
-            } catch (Exception ex) {
-                Log(ex);
-                throw;
-            }
-        }
+        public CodeLensProvider(Lazy<ICodeLensCallbackService> callbackService) => this.callbackService = callbackService;
 
         public Task<bool> CanCreateDataPointAsync(
             CodeLensDescriptor descriptor,
             CodeLensDescriptorContext context,
-            CancellationToken ct) {
-            try {
-                return Task.FromResult(descriptor.Kind == CodeElementKinds.Method);
-            } catch (Exception ex) {
-                Log(ex);
-                throw;
-            }
-        }
+            CancellationToken ct)
+            => Task.FromResult(descriptor.Kind == CodeElementKinds.Method);
 
         public Task<IAsyncCodeLensDataPoint> CreateDataPointAsync(
             CodeLensDescriptor descriptor,
             CodeLensDescriptorContext context,
-            CancellationToken ct) {
-            try {
-                return Task.FromResult<IAsyncCodeLensDataPoint>(new CodeLensDataPoint(
-                    callbackService.Value,
-                    descriptor));
-            } catch (Exception ex) {
-                Log(ex);
-                throw;
-            }
-        }
+            CancellationToken ct)
+            => Task.FromResult<IAsyncCodeLensDataPoint>(new CodeLensDataPoint(callbackService.Value, descriptor));
     }
 }

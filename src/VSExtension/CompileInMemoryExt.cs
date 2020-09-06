@@ -1,4 +1,6 @@
-﻿namespace Microscope.VSExtension {
+﻿#nullable enable
+
+namespace Microscope.VSExtension {
     using System;
     using System.IO;
     using System.Linq;

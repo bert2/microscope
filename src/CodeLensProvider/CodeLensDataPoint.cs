@@ -41,8 +41,7 @@ namespace Microscope.CodeLensProvider {
                 data = await GetInstructions(context, ct).ConfigureAwait(false);
                 dataLoaded.Set();
 
-                var (description, tooltip) = data.ErrorMessage switch
-                {
+                var (description, tooltip) = data.ErrorMessage switch {
                     null => (
                         data.Instructions!.Count.Labeled("instruction"),
                         $"{data.BoxOpsCount.Labeled("boxing")}, {data.CallvirtOpsCount.Labeled("unconstrained virtual call")}"),
@@ -63,8 +62,6 @@ namespace Microscope.CodeLensProvider {
 
         public async Task<CodeLensDetailsDescriptor> GetDetailsAsync(CodeLensDescriptorContext context, CancellationToken ct) {
             try {
-                Log();
-
                 // When opening the details pane, the data point is re-created leaving `data` uninitialized. VS will
                 // then call `GetDataAsync()` and `GetDetailsAsync()` concurrently.
                 if (!dataLoaded.Wait(timeout: TimeSpan.FromSeconds(.5), ct))

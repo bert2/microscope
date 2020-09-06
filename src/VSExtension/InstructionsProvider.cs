@@ -22,18 +22,8 @@ namespace Microscope.VSExtension {
     public class InstructionsProvider : ICodeLensCallbackListener, IInstructionsProvider {
         private readonly VisualStudioWorkspace workspace;
 
-        static InstructionsProvider() => Log();
-
         [ImportingConstructor]
-        public InstructionsProvider(VisualStudioWorkspace workspace) {
-            try {
-                Log();
-                this.workspace = workspace;
-            } catch (Exception ex) {
-                Log(ex);
-                throw;
-            }
-        }
+        public InstructionsProvider(VisualStudioWorkspace workspace) => this.workspace = workspace;
 
         public async Task<CodeLensData> GetInstructions(Guid projGuid, string filePath, int textStart, int textLen, string methodLongName, CancellationToken ct) {
             try {

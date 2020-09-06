@@ -55,7 +55,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AllParametersMatchExt.cs" />
-    <Compile Include="CompileInMemoryExt.cs" />
+    <Compile Include="CompileExt.cs" />
     <Compile Include="GetMethodExt.cs" />
     <Compile Include="GetDocumentIdInCurrentContextExt.cs" />
     <Compile Include="InstructionsProvider.cs" />

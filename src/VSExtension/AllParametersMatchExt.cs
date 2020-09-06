@@ -87,6 +87,7 @@ namespace Microscope.VSExtension {
                 return target.Namespace() == candidate.Namespace;
             }
         }
+
         private static int Arity(this ITypeSymbol type) => type is INamedTypeSymbol _type ? _type.Arity : 0;
 
         private static int Arity(this TypeReference type) => type is IGenericInstance _type

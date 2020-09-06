@@ -12,7 +12,7 @@ namespace Microscope.VSExtension {
 
     using Mono.Cecil;
 
-    public static class CompileInMemoryExt {
+    public static class CompileExt {
         public static async Task<AssemblyDefinition> Compile(this Project proj, Stream peStream, CancellationToken ct) {
             var compilation = await proj.GetCompilationAsync(ct).ConfigureAwait(false)
                 ?? throw new InvalidOperationException($"Project {proj.FilePath} does not support compilation.");

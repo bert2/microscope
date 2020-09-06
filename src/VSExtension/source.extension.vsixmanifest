@@ -6,6 +6,7 @@
         <Description xml:space="preserve">Provides a CodeLens to inspect the intermediate language instructions of a method.</Description>
         <MoreInfo>https://github.com/bert2/microscope</MoreInfo>
         <License>Resources\LICENSE</License>
+        <ReleaseNotes>https://github.com/bert2/microscope#changelog</ReleaseNotes>
         <Icon>Resources\icon.png</Icon>
         <PreviewImage>Resources\icon.png</PreviewImage>
         <Tags>CodeLens, CIL, MSIL, IL, intermediate language</Tags>

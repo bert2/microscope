@@ -106,35 +106,35 @@ namespace Microscope.Tests {
 
         #region Overloads
 
-        [TestMethod] public void Overloads_MethodWithoutParam() => Should.NotThrow(() =>
+        [TestMethod] public void Overloads_NoParam() => Should.NotThrow(() =>
             testAssembly.GetMethod(
                 symbols.Get<Overloads>(c => c.Method())));
 
-        [TestMethod] public void Overloads_MethodWithIntParam() => Should.NotThrow(() =>
+        [TestMethod] public void Overloads_IntParam() => Should.NotThrow(() =>
             testAssembly.GetMethod(
                 symbols.Get<Overloads>(c => c.Method(0))));
 
-        [TestMethod] public void Overloads_MethodWithStringParam() => Should.NotThrow(() =>
+        [TestMethod] public void Overloads_StringParam() => Should.NotThrow(() =>
             testAssembly.GetMethod(
                 symbols.Get<Overloads>(c => c.Method(""))));
 
-        [TestMethod] public void Overloads_MethodWithGenericParam() => Should.NotThrow(() =>
+        [TestMethod] public void Overloads_GenericParam() => Should.NotThrow(() =>
             testAssembly.GetMethod(
                 symbols.Get<Overloads>(c => c.Method(true))));
 
-        [TestMethod] public void Overloads_MethodWithAmbiguousGenericParam() => Should.NotThrow(() =>
+        [TestMethod] public void Overloads_AmbiguousGenericParam() => Should.NotThrow(() =>
             testAssembly.GetMethod(
                 symbols.Get<Overloads>(c => c.Method<int>(0))));
 
-        [TestMethod] public void Overloads_MethodWithListParam() => Should.NotThrow(() =>
+        [TestMethod] public void Overloads_ListParam() => Should.NotThrow(() =>
             testAssembly.GetMethod(
                 symbols.Get<Overloads>(c => c.Method(new List<int>()))));
 
-        [TestMethod] public void Overloads_MethodWithGenericListParam() => Should.NotThrow(() =>
+        [TestMethod] public void Overloads_GenericListParam() => Should.NotThrow(() =>
             testAssembly.GetMethod(
                 symbols.Get<Overloads>(c => c.Method(new List<bool>()))));
 
-        [TestMethod] public void Overloads_MethodWithAmbiguousGenericListParam() => Should.NotThrow(() =>
+        [TestMethod] public void Overloads_AmbiguousGenericListParam() => Should.NotThrow(() =>
             testAssembly.GetMethod(
                 symbols.Get<Overloads>(c => c.Method<int>(new List<int>()))));
 
@@ -142,11 +142,11 @@ namespace Microscope.Tests {
 
         #region MoreOverloads
 
-        [TestMethod] public void MoreOverloads_MethodWithListParam() => Should.NotThrow(() =>
+        [TestMethod] public void MoreOverloads_ListParam() => Should.NotThrow(() =>
             testAssembly.GetMethod(
                 symbols.Get<MoreOverloads>(c => c.Method(new List<int>()))));
 
-        [TestMethod] public void MoreOverloads_MethodWithDictOfListParam() => Should.NotThrow(() =>
+        [TestMethod] public void MoreOverloads_DictOfListParam() => Should.NotThrow(() =>
             testAssembly.GetMethod(
                 symbols.Get<MoreOverloads>(c => c.Method(new Dictionary<string, List<int>>()))));
 
@@ -154,10 +154,58 @@ namespace Microscope.Tests {
             testAssembly.GetMethod(
                 symbols.Get<MoreOverloads>(c => c.Method(new Name1.Space1.Foo()))));
 
-        [TestMethod] public void MoreOverloads_MethodWithNestedTypeParam() => Should.NotThrow(() =>
+        [TestMethod] public void MoreOverloads_NestedTypeParam() => Should.NotThrow(() =>
             testAssembly.GetMethod(
                 symbols.Get<MoreOverloads>(c => c.Method(new MoreOverloads.Foo<bool, char>.Bar<float, int>()))));
 
+        [TestMethod] public void MoreOverloads_GenericMethodWithNestedTypeParam() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<MoreOverloads>(c => c.Method(new MoreOverloads.Foo<bool, char>.Bar<double, int>()))));
+
         #endregion MoreOverloads
+
+        #region Arrays
+
+        [TestMethod] public void Arrays_ArrayParam() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<Arrays>(c => c.Method(new int[0]))));
+
+        [TestMethod] public void Arrays_JaggedArrayParam() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<Arrays>(c => c.Method(new[] { new[] { new int[0] } }))));
+
+        [TestMethod] public void Arrays_MultidimArrayParam() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<Arrays>(c => c.Method(new int[0,0,0]))));
+
+        [TestMethod] public void Arrays_ParamsArray() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<Arrays>(c => c.Method('a', 'b', 'c'))));
+
+        [TestMethod] public void Arrays_GenericArrayParam() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<Arrays>(c => c.Method<int>(new int[0]))));
+
+        [TestMethod] public void Arrays_GenericJaggedArrayParam() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<Arrays>(c => c.Method<int>(new[] { new[] { new int[0] } }))));
+
+        [TestMethod] public void Arrays_GenericMultidimArrayParam() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<Arrays>(c => c.Method<int>(new int[0,0,0]))));
+
+        [TestMethod] public void Arrays_GenericArrayElements1() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<Arrays>(c => c.Method(new Dictionary<char, int>[0]))));
+
+        [TestMethod] public void Arrays_GenericArrayElements2() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<Arrays>(c => c.Method(new Dictionary<int, char>[0]))));
+
+        [TestMethod] public void Arrays_GenericArrayElements3() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<Arrays>(c => c.Method(new MoreOverloads.Foo<bool, char>.Bar<float, int>[0]))));
+
+        #endregion Arrays
     }
 }

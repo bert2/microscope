@@ -57,10 +57,26 @@ namespace Microscope.Tests.TestData {
         public void Method(Name1.Space1.Foo x) { }
         public void Method(Name2.Space2.Foo x) { }
         public void Method(Foo<bool, char>.Bar<float, int> x) { }
+        public void Method<T>(Foo<bool, char>.Bar<T, int> x) { }
 
         public class Foo<B, C> {
             public class Bar<F, I> { }
         }
+    }
+
+    public class Arrays {
+        public void Method(int[] xs) { }
+        public void Method(int[][][] xs) { }
+        public void Method(int[,,] xs) { }
+        public void Method(params char[] xs) { }
+
+        public void Method<T>(T[] xs) { }
+        public void Method<T>(T[][][] xs) { }
+        public void Method<T>(T[,,] xs) { }
+
+        public void Method(Dictionary<char, int>[] xs) { }
+        public void Method(Dictionary<int, char>[] xs) { }
+        public void Method(MoreOverloads.Foo<bool, char>.Bar<float, int>[] xs) { }
     }
 }
 

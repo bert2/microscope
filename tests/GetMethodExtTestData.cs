@@ -10,6 +10,8 @@ namespace Microscope.Tests.TestData {
     using System;
     using System.Collections.Generic;
 
+    using MyAlias = System.String;
+
     public class Class {
         public void InstanceMethod() { }
         public static void StaticMethod() { }
@@ -102,6 +104,11 @@ namespace Microscope.Tests.TestData {
         public delegate string Qux(int x);
         public void Method(Func<int, string> x) { }
         public void Method(Qux x) { }
+    }
+
+    public class Alias {
+        public void Method(int x) { }
+        public void Method(MyAlias x) { }
     }
 }
 

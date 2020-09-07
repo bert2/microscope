@@ -272,5 +272,17 @@ namespace Microscope.Tests {
                 symbols.Get<Delegates>(c => c.Method((Delegates.Qux)null!))));
 
         #endregion Delegate
+
+        #region Alias
+
+        [TestMethod] public void Alias_IntParam() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<Alias>(c => c.Method(0))));
+
+        [TestMethod] public void Alias_AliasedParam() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<Alias>(c => c.Method(""))));
+
+        #endregion Alias
     }
 }

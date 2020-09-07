@@ -19,7 +19,6 @@ A CodeLens extension for Visual Studio that lets you inspect the intermediate la
 ## Known issues
 
 - Instructions are not updated automatically on code changes.
-- Retrieval of instructions might fail for methods wich have overloads (overload resolution is still work in progress).
 
 ## Contributing
 
@@ -74,17 +73,14 @@ PS> nuke test # build and run tests
 
 ### Next release
 
-- verify/fix overload resolution for more exotic types:
-    - `dynamic`
-    - delegates
-    - aliased types
+- fix issue with duplicate Guids in big solutions
 
 ### Release (1.0.0)
 
 - update IL when typing/saving/building
+  - refresh button in details view for manual update
 - XML documentation summary of op code as tooltip
 - double-clicking an instruction navigates to MSDN page of op code
-- settings page to enable/disable logging
 
 ### Future releases
 
@@ -101,16 +97,29 @@ PS> nuke test # build and run tests
 - edge cases:
     - what happens when opening a project instead of a solution?
     - what happens when opening a file without opening the project?
-- setting to configure update frequency
+- settings page to configure update frequency
+- reduce namespace noise in operands column of details view
+  - setting for that
+  - checkbox in details view for the setting as well
+- show C# code in details view
+  - extra column or above first instruction? (latter needs custom UI)
 - VB support
 - F# support?
 - is it possible to move in-memory compiling and IL retrieval out of the VS process?
     - can we even access the `Compilation` out-of-proc?
 - custom UI?
-- support `async` & `IEnumerable` state machines (would benefit from custom UI)
+- support C# features that use compiler-generated classes (would benefit from custom UI)
+  - async state machines
+  - enumerator state machines
+  - lambdas
+  - local functions
 - support more code elements? (properties, classes, ...)
 
 ## Changelog
+
+### 0.0.4
+
+- Overload resolution has been extended to handle `dynamic` parameters as well. There no longer should be any issues saying that a method couldn't be found or that a method couldn't be uniquely identified.
 
 ### 0.0.3
 

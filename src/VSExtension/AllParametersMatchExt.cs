@@ -44,7 +44,7 @@ namespace Microscope.VSExtension {
             target.TypeKind switch {
                 TypeKind.Array   => target.ArrayTypeMatches(candidate),
                 TypeKind.Pointer => target.PointerTypeMatches(candidate),
-                TypeKind.Dynamic => candidate.FullName == "System.Object", // Mono.Cecil doesn't know `dynamic`.
+                TypeKind.Dynamic => candidate.FullName == "System.Object", // `dynamic` gets compiled to `object`.
                 _                => target.PlainTypeMatches(candidate, candidateTypeArgs)
             };
 

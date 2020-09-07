@@ -7,6 +7,7 @@
 #pragma warning disable RCS1102 // Make class static.
 
 namespace Microscope.Tests.TestData {
+    using System;
     using System.Collections.Generic;
 
     public class Class {
@@ -95,6 +96,12 @@ namespace Microscope.Tests.TestData {
     public class Dynamic {
         public void Method(int x) { }
         public void Method(dynamic x) { }
+    }
+
+    public class Delegates {
+        public delegate string Qux(int x);
+        public void Method(Func<int, string> x) { }
+        public void Method(Qux x) { }
     }
 }
 

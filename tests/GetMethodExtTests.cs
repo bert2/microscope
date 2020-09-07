@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 namespace Microscope.Tests {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
@@ -259,5 +260,17 @@ namespace Microscope.Tests {
                 symbols.Get<Dynamic>(c => c.Method(.0))));
 
         #endregion Dynamic
+
+        #region Delegate
+
+        [TestMethod] public void Delegate_FuncParam() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<Delegates>(c => c.Method((Func<int, string>)null!))));
+
+        [TestMethod] public void Delegate_DelegateParam() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<Delegates>(c => c.Method((Delegates.Qux)null!))));
+
+        #endregion Delegate
     }
 }

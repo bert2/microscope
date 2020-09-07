@@ -247,5 +247,17 @@ namespace Microscope.Tests {
                 symbols.Get<Pointers>(c => c.Method((void*)null))));
 
         #endregion Pointers
+
+        #region Dynamic
+
+        [TestMethod] public void Dynamic_IntParam() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<Dynamic>(c => c.Method(0))));
+
+        [TestMethod] public void Dynamic_DynamicParam() => Should.NotThrow(() =>
+            testAssembly.GetMethod(
+                symbols.Get<Dynamic>(c => c.Method(.0))));
+
+        #endregion Dynamic
     }
 }

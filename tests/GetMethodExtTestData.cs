@@ -91,6 +91,11 @@ namespace Microscope.Tests.TestData {
         public unsafe void Method(int*[] xs) { }
         public unsafe void Method(void* x) { }
     }
+
+    public class Dynamic {
+        public void Method(int x) { }
+        public void Method(dynamic x) { }
+    }
 }
 
 namespace Name1.Space1 {

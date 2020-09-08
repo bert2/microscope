@@ -62,7 +62,7 @@ namespace Microscope.Tests.Util {
             var testClassDoc = testProj.GetDocument(testClassDocId)
                 ?? throw new InvalidOperationException($"Could not find document with id {testClassDocId} in project {testProj.Name}.");
             var syntaxTree = await testClassDoc.GetSyntaxTreeAsync(ct).ConfigureAwait(false)
-                ?? throw new InvalidOperationException($"Document {testClassDoc.Name} does not support syntax trees.");
+                ?? throw new InvalidOperationException($"Document {testClassDoc.Name} does not have a syntax tree.");
 
             var compilation = await testProj.GetCompilationAsync(ct).ConfigureAwait(false)
                 ?? throw new InvalidOperationException($"Project {testProj.Name} does not support compilation.");

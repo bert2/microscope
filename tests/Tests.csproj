@@ -50,7 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GetDocumentIdInCurrentContextExtTests.cs" />
-    <Compile Include="GetProjectIdExtTests.cs" />
+    <Compile Include="GetDocumentExtTests.cs" />
     <Compile Include="GetMethodExtTestData.cs" />
     <Compile Include="Util\SymbolResolver.cs" />
     <Compile Include="GetMethodExtTests.cs" />

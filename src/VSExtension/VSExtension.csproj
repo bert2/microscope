@@ -58,9 +58,10 @@
     <Compile Include="CompileExt.cs" />
     <Compile Include="GetMethodExt.cs" />
     <Compile Include="GetDocumentIdInCurrentContextExt.cs" />
+    <Compile Include="GetMethodSymbolAtExt.cs" />
     <Compile Include="InstructionsProvider.cs" />
     <Compile Include="MicroscopePackage.cs" />
-    <Compile Include="GetProjectIdExt.cs" />
+    <Compile Include="GetDocumentExt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="source.extension.cs">
       <AutoGen>True</AutoGen>

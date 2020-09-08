@@ -12,7 +12,7 @@ namespace Microscope.Tests {
     using Shouldly;
 
     [TestClass]
-    public class GetProjectIdExtTests {
+    public class GetDocumentExtTests {
         [TestMethod]
         public void VisualStudioWorkspaceImplTypeExists() => typeof(VisualStudioWorkspace).Assembly
             .GetType(

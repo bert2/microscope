@@ -73,7 +73,7 @@ PS> nuke test # build and run tests
 
 ### Next release
 
-- fix issue with duplicate Guids in big solutions
+- probably some way to update the CodeLens when the method code changes
 
 ### Release (1.0.0)
 
@@ -116,6 +116,10 @@ PS> nuke test # build and run tests
 - support more code elements? (properties, classes, ...)
 
 ## Changelog
+
+### 0.0.5
+
+- Fixes an issue where IL retrieval failed for projects with multiple target frameworks.
 
 ### 0.0.4
 

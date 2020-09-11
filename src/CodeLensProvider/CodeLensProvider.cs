@@ -14,8 +14,8 @@ namespace Microscope.CodeLensProvider {
     [Export(typeof(IAsyncCodeLensDataPointProvider))]
     [Name(ProviderId)]
     [LocalizedName(typeof(Resources), "Name")]
-    [ContentType("code")]
-    [Priority(201)]
+    [ContentType("CSharp")]
+    [Priority(210)]
     public class CodeLensProvider : IAsyncCodeLensDataPointProvider {
         public const string ProviderId = "ILInstructions";
         private readonly Lazy<ICodeLensCallbackService> callbackService;

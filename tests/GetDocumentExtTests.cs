@@ -35,5 +35,15 @@ namespace Microscope.Tests {
             .GetField("_projectToGuidMap", BindingFlags.NonPublic | BindingFlags.Instance)
             .FieldType
             .ShouldBe(typeof(ImmutableDictionary<ProjectId, Guid>));
+
+        [TestMethod]
+        public void GetDocumentIdInCurrentContextMethodExists() => typeof(Workspace)
+            .GetMethod(
+                "GetDocumentIdInCurrentContext",
+                BindingFlags.NonPublic | BindingFlags.Instance,
+                binder: null,
+                types: new[] { typeof(DocumentId) },
+                modifiers: null)
+            .ShouldNotBeNull();
     }
 }

@@ -57,7 +57,6 @@
     <Compile Include="AllParametersMatchExt.cs" />
     <Compile Include="CompileExt.cs" />
     <Compile Include="GetMethodExt.cs" />
-    <Compile Include="GetDocumentIdInCurrentContextExt.cs" />
     <Compile Include="GetMethodSymbolAtExt.cs" />
     <Compile Include="InstructionsProvider.cs" />
     <Compile Include="MicroscopePackage.cs" />

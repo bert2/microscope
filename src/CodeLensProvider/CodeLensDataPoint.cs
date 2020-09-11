@@ -52,7 +52,7 @@ namespace Microscope.CodeLensProvider {
                     Description = description,
                     TooltipText = tooltip,
                     ImageId = null,
-                    IntValue = null
+                    IntValue = data.Instructions!.Count
                 };
             } catch (Exception ex) {
                 Log(ex);

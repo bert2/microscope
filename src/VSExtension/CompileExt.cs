@@ -7,6 +7,8 @@ namespace Microscope.VSExtension {
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Microscope.Shared;
+
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.Emit;
 
@@ -14,7 +16,7 @@ namespace Microscope.VSExtension {
 
     public static class CompileExt {
         public static async Task<AssemblyDefinition> Compile(this Project proj, Stream peStream, CancellationToken ct) {
-            var compilation = await proj.GetCompilationAsync(ct).ConfigureAwait(false)
+            var compilation = await proj.GetCompilationAsync(ct).Caf()
                 ?? throw new InvalidOperationException($"Project {proj.FilePath} does not support compilation.");
 
             var result = compilation.Emit(peStream);

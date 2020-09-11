@@ -9,6 +9,8 @@ namespace Microscope.Tests.Util {
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Microscope.Shared;
+
     using Microsoft.Build.Locator;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -55,16 +57,16 @@ namespace Microscope.Tests.Util {
             };
 
             var testProjPath = Path.Combine(Path.GetDirectoryName(testClassFile), "Tests.csproj");
-            var testProj = await workspace.OpenProjectAsync(testProjPath, progress: null, ct).ConfigureAwait(false);
+            var testProj = await workspace.OpenProjectAsync(testProjPath, progress: null, ct).Caf();
 
             var testClassDocId = testProj.Solution.GetDocumentIdsWithFilePath(testClassFile).SingleOrDefault()
                 ?? throw new InvalidOperationException($"Could not find file {testClassFile} in project {testProj.Name}.");
             var testClassDoc = testProj.GetDocument(testClassDocId)
                 ?? throw new InvalidOperationException($"Could not find document with id {testClassDocId} in project {testProj.Name}.");
-            var syntaxTree = await testClassDoc.GetSyntaxTreeAsync(ct).ConfigureAwait(false)
+            var syntaxTree = await testClassDoc.GetSyntaxTreeAsync(ct).Caf()
                 ?? throw new InvalidOperationException($"Document {testClassDoc.Name} does not have a syntax tree.");
 
-            var compilation = await testProj.GetCompilationAsync(ct).ConfigureAwait(false)
+            var compilation = await testProj.GetCompilationAsync(ct).Caf()
                 ?? throw new InvalidOperationException($"Project {testProj.Name} does not support compilation.");
 
             return new SymbolResolver(workspace, compilation, syntaxTree);

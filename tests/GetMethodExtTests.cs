@@ -5,6 +5,7 @@ namespace Microscope.Tests {
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
+    using Microscope.Shared;
     using Microscope.Tests.TestData;
     using Microscope.Tests.Util;
     using Microscope.VSExtension;
@@ -25,9 +26,7 @@ namespace Microscope.Tests {
         private static SymbolResolver symbols = null!;
 
         [ClassInitialize] public static async Task ClassInitialize(TestContext tc)
-            => symbols = await SymbolResolver
-                .ForMyTests(tc.CancellationTokenSource.Token)
-                .ConfigureAwait(false);
+            => symbols = await SymbolResolver.ForMyTests(tc.CancellationTokenSource.Token).Caf();
 
         [ClassCleanup] public static void ClassCleanup() => symbols?.Dispose();
 

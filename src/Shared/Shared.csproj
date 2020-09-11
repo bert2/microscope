@@ -40,6 +40,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CodeLensData.cs" />
+    <Compile Include="ConfigureAwaitAlias.cs" />
     <Compile Include="IInstructionsProvider.cs" />
     <Compile Include="Instruction.cs" />
     <Compile Include="Logging.cs" />

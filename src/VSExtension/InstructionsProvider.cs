@@ -29,10 +29,10 @@ namespace Microscope.VSExtension {
                 Log($"IL requested for {methodLongName} in project {projGuid}");
 
                 var doc = workspace.GetDocument(filePath, projGuid);
-                var method = await doc.GetMethodSymbolAt(new TextSpan(textStart, textLen), ct).ConfigureAwait(false);
+                var method = await doc.GetMethodSymbolAt(new TextSpan(textStart, textLen), ct).Caf();
 
                 using var peStream = new MemoryStream();
-                using var assembly = await doc.Project.Compile(peStream, ct).ConfigureAwait(false);
+                using var assembly = await doc.Project.Compile(peStream, ct).Caf();
 
                 return assembly
                     .GetMethod(method)

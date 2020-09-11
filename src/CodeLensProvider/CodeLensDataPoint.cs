@@ -38,7 +38,7 @@ namespace Microscope.CodeLensProvider {
 
         public async Task<CodeLensDataPointDescriptor> GetDataAsync(CodeLensDescriptorContext context, CancellationToken ct) {
             try {
-                data = await GetInstructions(context, ct).ConfigureAwait(false);
+                data = await GetInstructions(context, ct).Caf();
                 dataLoaded.Set();
 
                 var (description, tooltip) = data.ErrorMessage switch {
@@ -65,7 +65,7 @@ namespace Microscope.CodeLensProvider {
                 // When opening the details pane, the data point is re-created leaving `data` uninitialized. VS will
                 // then call `GetDataAsync()` and `GetDetailsAsync()` concurrently.
                 if (!dataLoaded.Wait(timeout: TimeSpan.FromSeconds(.5), ct))
-                    data = await GetInstructions(context, ct).ConfigureAwait(false);
+                    data = await GetInstructions(context, ct).Caf();
 
                 if (data!.ErrorMessage != null)
                     throw new InvalidOperationException($"Getting CodeLens details for {context.FullName()} failed: {data.ErrorMessage}");
@@ -104,7 +104,6 @@ namespace Microscope.CodeLensProvider {
                         ctx.ApplicableSpan!.Value.Length,
                         ctx.FullName()
                     },
-                    ct)
-                .ConfigureAwait(false);
+                    ct).Caf();
     }
 }

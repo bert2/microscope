@@ -20,10 +20,16 @@ namespace Microscope.CodeLensProvider {
             new CodeLensDetailHeaderDescriptor { UniqueName = "OpCode",  DisplayName = "Op Code", Width = .15 },
             new CodeLensDetailHeaderDescriptor { UniqueName = "Operand", DisplayName = "Operand", Width = .75 }
         };
+        private static readonly CodeLensDetailEntryCommand refreshCmdId = new CodeLensDetailEntryCommand {
+            // Defined in file `src/VSExtension/MicroscopePackage.vsct`.
+            CommandSet = new Guid("32872e4d-3d0e-4b26-9ef8-d3a90080429f"),
+            CommandId = 0x0100
+        };
 
+        private readonly Guid id = Guid.NewGuid();
+        private readonly ManualResetEventSlim dataLoaded = new ManualResetEventSlim(initialState: false);
         private readonly ICodeLensCallbackService callbackService;
         private volatile CodeLensData? data;
-        private readonly ManualResetEventSlim dataLoaded = new ManualResetEventSlim(initialState: false);
 
         public CodeLensDescriptor Descriptor { get; }
 
@@ -82,7 +88,14 @@ namespace Microscope.CodeLensProvider {
                             },
                             Tooltip = $"{instr.Label}: {instr.OpCode} {instr.Operand}"
                         })
-                        .ToList()
+                        .ToList(),
+                    PaneNavigationCommands = new[] {
+                        new CodeLensDetailPaneCommand {
+                            CommandDisplayName = "Refresh",
+                            CommandId = refreshCmdId,
+                            CommandArgs = new[] { (object)id }
+                        }
+                    }
                 };
             } catch (Exception ex) {
                 Log(ex);

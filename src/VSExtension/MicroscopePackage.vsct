@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <Commands package="PackageId">
+    <Buttons>
+      <Button guid="CmdSetId" id="RefreshCommandId" priority="0x0000" type="Button">
+        <Strings>
+          <LocCanonicalName>Microscope.Refresh</LocCanonicalName>
+          <ButtonText>Refresh</ButtonText>
+        </Strings>
+      </Button>
+    </Buttons>
+  </Commands>
+
+  <Symbols>
+    <GuidSymbol name="PackageId" value="{b798b46c-201a-470c-9e3e-fa0abb23dfa7}" />
+    <GuidSymbol name="CmdSetId" value="{32872e4d-3d0e-4b26-9ef8-d3a90080429f}">
+      <IDSymbol name="RefreshCommandId" value="0x0100" />
+    </GuidSymbol>
+  </Symbols>
+</CommandTable>

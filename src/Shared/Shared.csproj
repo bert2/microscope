@@ -41,8 +41,11 @@
   <ItemGroup>
     <Compile Include="CodeLensData.cs" />
     <Compile Include="ConfigureAwaitAlias.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="IRemoteVisualStudio.cs" />
     <Compile Include="IInstructionsProvider.cs" />
     <Compile Include="Instruction.cs" />
+    <Compile Include="IRemoteCodeLens.cs" />
     <Compile Include="Logging.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -26,9 +26,10 @@ namespace Microscope.CodeLensProvider {
             CommandId = 0x0100
         };
 
-        private readonly Guid id = Guid.NewGuid();
+        public readonly Guid id = Guid.NewGuid();
         private readonly ManualResetEventSlim dataLoaded = new ManualResetEventSlim(initialState: false);
         private readonly ICodeLensCallbackService callbackService;
+        private VisualStudioConnectionHandler? visualStudioConnection;
         private volatile CodeLensData? data;
 
         public CodeLensDescriptor Descriptor { get; }
@@ -40,7 +41,13 @@ namespace Microscope.CodeLensProvider {
             Descriptor = descriptor;
         }
 
-        public void Dispose() => dataLoaded.Dispose();
+        public void Dispose() {
+            visualStudioConnection?.Dispose();
+            dataLoaded.Dispose();
+        }
+
+        public async Task ConnectToVisualStudio() =>
+            visualStudioConnection = await VisualStudioConnectionHandler.Create(owner: this).Caf();
 
         public async Task<CodeLensDataPointDescriptor> GetDataAsync(CodeLensDescriptorContext context, CancellationToken ct) {
             try {
@@ -102,6 +109,8 @@ namespace Microscope.CodeLensProvider {
                 throw;
             }
         }
+
+        public void Refresh() => _ = InvalidatedAsync?.InvokeAsync(this, EventArgs.Empty);
 
         private async Task<CodeLensData> GetInstructions(CodeLensDescriptorContext ctx, CancellationToken ct)
             => await callbackService

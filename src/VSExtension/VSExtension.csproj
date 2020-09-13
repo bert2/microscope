@@ -55,6 +55,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AllParametersMatchExt.cs" />
+    <Compile Include="CodeLensConnectionHandler.cs" />
     <Compile Include="RefreshCommand.cs" />
     <Compile Include="CompileExt.cs" />
     <Compile Include="GetMethodExt.cs" />
@@ -122,6 +123,9 @@
     </PackageReference>
     <PackageReference Include="Mono.Cecil">
       <Version>0.11.2</Version>
+    </PackageReference>
+    <PackageReference Include="StreamJsonRpc">
+      <Version>2.5.46</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

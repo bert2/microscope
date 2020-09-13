@@ -13,12 +13,13 @@ A CodeLens extension for Visual Studio that lets you inspect the intermediate la
 - The CodeLens appears on C# methods and displays the number of instructions that will be generated for the method.
 - Hover over the CodeLens to see individual counts for the number of `box` and unconstrained `callvirt` instructions in the method.
 - Click the CodeLens to get a detailed list of all instructions including their offsets and operands.
-- The CodeLens currently won't be updated after the method has been changed. In order to refresh it you will have to close and re-open the C# source file. Auto-update will be implemented for the 1.0 release.
+- The CodeLens currently won't be updated after the method has been changed. In order to refresh it you will have to click the "Refresh" button in bottom left of the details view. Auto-update will be implemented for the 1.0 release.
 - In case the retrieval of instructions fails the CodeLens will display `-` instead of a count. Hover over the CodeLens to see the exception that caused the failure.
 
 ## Known issues
 
-- Instructions are not updated automatically on code changes.
+- Instructions are not updated automatically on code changes. Use the "Refresh" button in the details view to update the instructions manually.
+- The "Refresh" button is not an option, in case a CodeLens could not be created for the method (e.g. when there are compiler errors in the project). In that case you still have to close and re-open the source file after the errors have been fixed.
 
 ## Contributing
 
@@ -73,12 +74,11 @@ PS> nuke test # build and run tests
 
 ### Next release
 
-- probably some way to update the CodeLens when the method code changes
+- I'm not sure yet. Either the auto-update of the CodeLens when the method code changes or retrieval of opcode documentation to show it in the tooltip.
 
 ### Release (1.0.0)
 
-- update IL when typing/saving/building
-  - refresh button in details view for manual update
+- update IL when typing, saving, building, or switching the build configuration
 - XML documentation summary of op code as tooltip
 - double-clicking an instruction navigates to MSDN page of op code
 
@@ -116,6 +116,10 @@ PS> nuke test # build and run tests
 - support more code elements? (properties, classes, ...)
 
 ## Changelog
+
+### 0.1.0
+
+- Adds a "Refresh" button to the details view which retrieves the instructions of the method again.
 
 ### 0.0.5
 

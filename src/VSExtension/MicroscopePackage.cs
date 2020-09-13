@@ -5,8 +5,12 @@ namespace Microscope.VSExtension {
     using System.Runtime.InteropServices;
     using System.Threading;
 
+    using Microscope.Shared;
+
     using Microsoft.VisualStudio.Shell;
     using Microsoft.VisualStudio.Shell.Interop;
+
+    using static Microscope.Shared.Logging;
 
     using Task = System.Threading.Tasks.Task;
 
@@ -17,9 +21,15 @@ namespace Microscope.VSExtension {
     [ProvideAutoLoad(UIContextGuids80.SolutionExists, PackageAutoLoadFlags.BackgroundLoad)]
     public sealed class MicroscopePackage : AsyncPackage {
         protected override async Task InitializeAsync(CancellationToken ct, IProgress<ServiceProgressData> progress) {
-            await base.InitializeAsync(ct, progress);
-            await JoinableTaskFactory.SwitchToMainThreadAsync(ct);
-            await RefreshCommand.InitializeAsync(this);
+            try {
+                await base.InitializeAsync(ct, progress);
+                await JoinableTaskFactory.SwitchToMainThreadAsync(ct);
+                await RefreshCommand.Initialize(this, CodeLensConnectionHandler.RefreshCodeLensDataPoint).Caf();
+                _ = CodeLensConnectionHandler.AcceptCodeLensConnections();
+            } catch (Exception ex) {
+                Log(ex);
+                throw;
+            }
         }
     }
 }

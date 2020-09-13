@@ -6,10 +6,14 @@ namespace Microscope.CodeLensProvider {
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Microscope.Shared;
+
     using Microsoft.VisualStudio.Language.CodeLens;
     using Microsoft.VisualStudio.Language.CodeLens.Remoting;
     using Microsoft.VisualStudio.Language.Intellisense;
     using Microsoft.VisualStudio.Utilities;
+
+    using static Microscope.Shared.Logging;
 
     [Export(typeof(IAsyncCodeLensDataPointProvider))]
     [Name(ProviderId)]
@@ -29,10 +33,18 @@ namespace Microscope.CodeLensProvider {
             CancellationToken ct)
             => Task.FromResult(descriptor.Kind == CodeElementKinds.Method);
 
-        public Task<IAsyncCodeLensDataPoint> CreateDataPointAsync(
+        public async Task<IAsyncCodeLensDataPoint> CreateDataPointAsync(
             CodeLensDescriptor descriptor,
             CodeLensDescriptorContext context,
-            CancellationToken ct)
-            => Task.FromResult<IAsyncCodeLensDataPoint>(new CodeLensDataPoint(callbackService.Value, descriptor));
+            CancellationToken ct) {
+            try {
+                var dp = new CodeLensDataPoint(callbackService.Value, descriptor);
+                await dp.ConnectToVisualStudio().Caf();
+                return dp;
+            } catch (Exception ex) {
+                Log(ex);
+                throw;
+            }
+        }
     }
 }

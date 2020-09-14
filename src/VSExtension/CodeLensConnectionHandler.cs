@@ -17,14 +17,14 @@ namespace Microscope.VSExtension {
     public class CodeLensConnectionHandler : IRemoteVisualStudio, IDisposable {
         private static readonly CodeLensConnections connections = new CodeLensConnections();
 
-        public JsonRpc? rpc;
-        public Guid? dataPointId;
+        private JsonRpc? rpc;
+        private Guid? dataPointId;
 
         public static async Task AcceptCodeLensConnections() {
             try {
                 while (true) {
                     var stream = new NamedPipeServerStream(
-                        Shared.Constants.MicroscopePipe,
+                        Constants.MicroscopePipe,
                         PipeDirection.InOut,
                         NamedPipeServerStream.MaxAllowedServerInstances,
                         PipeTransmissionMode.Byte,

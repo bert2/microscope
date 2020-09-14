@@ -53,6 +53,7 @@ namespace Microscope.VSExtension {
         public void RegisterCodeLensDataPoint(Guid id) {
             dataPointId = id;
             connections[id] = this;
+            Log($"CodeLens data point {id} was registered.");
         }
 
         public static async Task RefreshCodeLensDataPoint(Guid id) {
@@ -66,6 +67,7 @@ namespace Microscope.VSExtension {
         public void Dispose() {
             if (dataPointId.HasValue)
                 _ = connections.TryRemove(dataPointId.Value, out var _);
+            Log($"CodeLens data point {dataPointId} was disposed.");
         }
     }
 }

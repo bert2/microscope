@@ -25,7 +25,10 @@ namespace Microscope.CodeLensProvider {
         private readonly Lazy<ICodeLensCallbackService> callbackService;
 
         [ImportingConstructor]
-        public CodeLensProvider(Lazy<ICodeLensCallbackService> callbackService) => this.callbackService = callbackService;
+        public CodeLensProvider(Lazy<ICodeLensCallbackService> callbackService) {
+            this.callbackService = callbackService;
+            Log(); // logs the PID of the out-of-process CodeLens engine
+        }
 
         public Task<bool> CanCreateDataPointAsync(
             CodeLensDescriptor descriptor,

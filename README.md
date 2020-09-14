@@ -19,7 +19,7 @@ A CodeLens extension for Visual Studio that lets you inspect the intermediate la
 ## Known issues
 
 - Instructions are not updated automatically on code changes. Use the "Refresh" button in the details view to update the instructions manually.
-- The "Refresh" button is not an option, in case a CodeLens could not be created for the method (e.g. when there are compiler errors in the project). In that case you still have to close and re-open the source file after the errors have been fixed.
+- The "Refresh" button is not available in case a CodeLens could not be created for the method (e.g. when there are compiler errors in the project). In that case you have to fix the compiler errors and then either close and re-open the source file or dock the CodeLens popup with the button in the top right of the details view.
 
 ## Contributing
 
@@ -116,6 +116,11 @@ PS> nuke test # build and run tests
 - support more code elements? (properties, classes, ...)
 
 ## Changelog
+
+### 0.1.1
+
+- Fixes a bug where the "Refresh" button was not working properly when too many CodeLenses where loaded at once.
+- Fixes a regression bug where instruction retrieval failures would not be shown in the CodeLens tooltip.
 
 ### 0.1.0
 

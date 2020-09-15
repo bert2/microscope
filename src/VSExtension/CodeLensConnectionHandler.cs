@@ -44,6 +44,7 @@ namespace Microscope.VSExtension {
                     handler.rpc = rpc;
                     await rpc.Completion;
                     handler.Dispose();
+                    stream.Dispose();
                 } catch (Exception ex) {
                     LogVS(ex);
                 }

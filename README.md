@@ -117,6 +117,10 @@ PS> nuke test # build and run tests
 
 ## Changelog
 
+### 0.1.2
+
+- Only fixes development problems with the pipe connections between VS and the CodeLenses by using a different pipe for the VS experimental instance.
+
 ### 0.1.1
 
 - Fixes a bug where the "Refresh" button was not working properly when too many CodeLenses where loaded at once.

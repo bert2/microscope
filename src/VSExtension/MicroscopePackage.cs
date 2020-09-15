@@ -38,7 +38,7 @@ namespace Microscope.VSExtension {
                 _ = CodeLensConnectionHandler.AcceptCodeLensConnections();
                 _ = CodeLensConnectionHandler.AcceptCodeLensConnections();
             } catch (Exception ex) {
-                Log(ex);
+                LogVS(ex);
                 throw;
             }
         }

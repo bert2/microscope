@@ -26,7 +26,7 @@ namespace Microscope.VSExtension {
 
         public async Task<CodeLensData> GetInstructions(Guid projGuid, string filePath, int textStart, int textLen, string methodLongName, CancellationToken ct) {
             try {
-                Log($"IL requested for {methodLongName} in project {projGuid}");
+                LogVS($"IL requested for {methodLongName} in project {projGuid}");
 
                 var doc = workspace.GetDocument(filePath, projGuid);
                 var method = await doc.GetMethodSymbolAt(new TextSpan(textStart, textLen), ct).Caf();
@@ -41,7 +41,7 @@ namespace Microscope.VSExtension {
                     .ToCodeLensData()
                     ?? CodeLensData.Empty();
             } catch (Exception ex) {
-                Log(ex);
+                LogVS(ex);
                 return CodeLensData.Failure(ex.ToString());
             }
         }

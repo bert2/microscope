@@ -68,7 +68,7 @@ namespace Microscope.CodeLensProvider {
                     IntValue = data.Instructions?.Count
                 };
             } catch (Exception ex) {
-                Log(ex);
+                LogCL(ex);
                 throw;
             }
         }
@@ -105,7 +105,7 @@ namespace Microscope.CodeLensProvider {
                     }
                 };
             } catch (Exception ex) {
-                Log(ex);
+                LogCL(ex);
                 throw;
             }
         }

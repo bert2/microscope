@@ -27,7 +27,7 @@ namespace Microscope.CodeLensProvider {
         [ImportingConstructor]
         public CodeLensProvider(Lazy<ICodeLensCallbackService> callbackService) {
             this.callbackService = callbackService;
-            Log(); // logs the PID of the out-of-process CodeLens engine
+            LogCL(); // logs the PID of the out-of-process CodeLens engine
         }
 
         public Task<bool> CanCreateDataPointAsync(
@@ -45,7 +45,7 @@ namespace Microscope.CodeLensProvider {
                 await dp.ConnectToVisualStudio().Caf();
                 return dp;
             } catch (Exception ex) {
-                Log(ex);
+                LogCL(ex);
                 throw;
             }
         }

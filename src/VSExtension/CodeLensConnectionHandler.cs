@@ -33,7 +33,7 @@ namespace Microscope.VSExtension {
                     _ = HandleConnection(stream);
                 }
             } catch (Exception ex) {
-                Log(ex);
+                LogVS(ex);
                 throw;
             }
 
@@ -45,7 +45,7 @@ namespace Microscope.VSExtension {
                     await rpc.Completion;
                     handler.Dispose();
                 } catch (Exception ex) {
-                    Log(ex);
+                    LogVS(ex);
                 }
             }
         }
@@ -53,7 +53,6 @@ namespace Microscope.VSExtension {
         public void RegisterCodeLensDataPoint(Guid id) {
             dataPointId = id;
             connections[id] = this;
-            Log($"CodeLens data point {id} was registered.");
         }
 
         public static async Task RefreshCodeLensDataPoint(Guid id) {
@@ -67,7 +66,6 @@ namespace Microscope.VSExtension {
         public void Dispose() {
             if (dataPointId.HasValue)
                 _ = connections.TryRemove(dataPointId.Value, out var _);
-            Log($"CodeLens data point {dataPointId} was disposed.");
         }
     }
 }

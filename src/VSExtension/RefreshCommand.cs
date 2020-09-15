@@ -41,7 +41,7 @@ namespace Microscope.VSExtension {
 
                 await refreshCodeLens(dataPointId).Caf();
             } catch (Exception ex) {
-                Log(ex);
+                LogVS(ex);
                 throw;
             }
         }

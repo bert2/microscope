@@ -25,17 +25,6 @@ namespace Microscope.VSExtension {
                 await base.InitializeAsync(ct, progress);
                 await JoinableTaskFactory.SwitchToMainThreadAsync(ct);
                 await RefreshCommand.Initialize(this, CodeLensConnectionHandler.RefreshCodeLensDataPoint).Caf();
-
-                // Listen for connecting CodeLenses with multiple threads at once, because they connect concurrently.
-                // Using too few listeners will cause connections to be lost.
-                _ = CodeLensConnectionHandler.AcceptCodeLensConnections();
-                _ = CodeLensConnectionHandler.AcceptCodeLensConnections();
-                _ = CodeLensConnectionHandler.AcceptCodeLensConnections();
-                _ = CodeLensConnectionHandler.AcceptCodeLensConnections();
-                _ = CodeLensConnectionHandler.AcceptCodeLensConnections();
-                _ = CodeLensConnectionHandler.AcceptCodeLensConnections();
-                _ = CodeLensConnectionHandler.AcceptCodeLensConnections();
-                _ = CodeLensConnectionHandler.AcceptCodeLensConnections();
                 _ = CodeLensConnectionHandler.AcceptCodeLensConnections();
             } catch (Exception ex) {
                 LogVS(ex);

@@ -24,7 +24,7 @@ namespace Microscope.VSExtension {
             try {
                 while (true) {
                     var stream = new NamedPipeServerStream(
-                        Constants.MicroscopePipe,
+                        PipeName.Get(Process.GetCurrentProcess().Id),
                         PipeDirection.InOut,
                         NamedPipeServerStream.MaxAllowedServerInstances,
                         PipeTransmissionMode.Byte,

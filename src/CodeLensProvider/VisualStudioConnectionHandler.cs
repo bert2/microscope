@@ -10,21 +10,24 @@ namespace Microscope.CodeLensProvider {
     using StreamJsonRpc;
 
     public class VisualStudioConnectionHandler : IRemoteCodeLens, IDisposable {
-        private readonly NamedPipeClientStream stream = new NamedPipeClientStream(
-            serverName: ".",
-            Constants.MicroscopePipe,
-            PipeDirection.InOut,
-            PipeOptions.Asynchronous);
         private readonly CodeLensDataPoint owner;
+        private readonly NamedPipeClientStream stream;
         private JsonRpc? rpc;
 
-        public async static Task<VisualStudioConnectionHandler> Create(CodeLensDataPoint owner) {
-            var handler = new VisualStudioConnectionHandler(owner);
+        public async static Task<VisualStudioConnectionHandler> Create(CodeLensDataPoint owner, int vspid) {
+            var handler = new VisualStudioConnectionHandler(owner, vspid);
             await handler.Connect().Caf();
             return handler;
         }
 
-        public VisualStudioConnectionHandler(CodeLensDataPoint owner) => this.owner = owner;
+        public VisualStudioConnectionHandler(CodeLensDataPoint owner, int vspid) {
+            this.owner = owner;
+            stream = new NamedPipeClientStream(
+                serverName: ".",
+                PipeName.Get(vspid),
+                PipeDirection.InOut,
+                PipeOptions.Asynchronous);
+        }
 
         public void Dispose() => stream.Dispose();
 

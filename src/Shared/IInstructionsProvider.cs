@@ -7,5 +7,7 @@ namespace Microscope.Shared {
 
     public interface IInstructionsProvider {
         Task<CodeLensData> GetInstructions(Guid projGuid, string filePath, int textStart, int textLen, string methodLongName, CancellationToken ct);
+
+        int GetVisualStudioPid();
     }
 }

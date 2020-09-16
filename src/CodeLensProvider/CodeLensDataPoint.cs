@@ -46,8 +46,8 @@ namespace Microscope.CodeLensProvider {
             dataLoaded.Dispose();
         }
 
-        public async Task ConnectToVisualStudio() =>
-            visualStudioConnection = await VisualStudioConnectionHandler.Create(owner: this).Caf();
+        public async Task ConnectToVisualStudio(int vspid) =>
+            visualStudioConnection = await VisualStudioConnectionHandler.Create(owner: this, vspid).Caf();
 
         public async Task<CodeLensDataPointDescriptor> GetDataAsync(CodeLensDescriptorContext context, CancellationToken ct) {
             try {

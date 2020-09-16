@@ -42,7 +42,11 @@ namespace Microscope.CodeLensProvider {
             CancellationToken ct) {
             try {
                 var dp = new CodeLensDataPoint(callbackService.Value, descriptor);
-                await dp.ConnectToVisualStudio().Caf();
+
+                var vspid = await callbackService.Value
+                    .InvokeAsync<int>(this, nameof(IInstructionsProvider.GetVisualStudioPid)).Caf();
+                await dp.ConnectToVisualStudio(vspid).Caf();
+
                 return dp;
             } catch (Exception ex) {
                 LogCL(ex);

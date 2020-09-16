@@ -3,6 +3,7 @@
 namespace Microscope.VSExtension {
     using System;
     using System.ComponentModel.Composition;
+    using System.Diagnostics;
     using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
@@ -45,5 +46,7 @@ namespace Microscope.VSExtension {
                 return CodeLensData.Failure(ex.ToString());
             }
         }
+
+        public int GetVisualStudioPid() => Process.GetCurrentProcess().Id;
     }
 }

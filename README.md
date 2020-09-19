@@ -6,6 +6,16 @@ A CodeLens extension for Visual Studio that lets you inspect the intermediate la
 
 ![Usage example](img/usage.gif "Usage example")
 
+## Table of contents
+
+- [Usage](#Usage)
+- [Known issues](#known-issues)
+- [Contributing](#contributing)
+- [Roadmap](#roadmap)
+- [Changelog](#changelog)
+- [Versioning scheme](#versioning-scheme)
+- [Credits](#credits)
+
 ## Usage
 
 - Install latest stable release from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=bert.microscope).

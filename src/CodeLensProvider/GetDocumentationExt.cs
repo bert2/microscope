@@ -1,10 +1,22 @@
 ﻿#nullable enable
 
 namespace Microscope.CodeLensProvider {
+    using System.Text.RegularExpressions;
+
     using Microscope.Shared;
 
     public static class GetDocumentationExt {
-        public static string? GetDocumentation(this Instruction instr) => instr.OpCode switch {
+        public static string? GetDocumentation(this Instruction instr) => instr
+            .OpCode
+            .GetDocumentation()?
+            .RegexReplace("<paramref name=\"([^\"]+)\" />", m => $"`{m.Groups[1].Value}`")
+            .RegexReplace("<see cref=\"T:([^\"]+)\" />",    m => $"`{m.Groups[1].Value}`");
+
+        // Generated with ./src/CodeLensProvider/gen-opcode-doc-switch-cases.linq
+        // Yes, this is hard-coded. But to me this solution seems way less brittle than dynamically
+        // locating 'System.Reflection.Primitives.xml' on the user's system and feeding it into a
+        // library that parses the documentation (e.g. LoxSmoke.DocXml).
+        public static string? GetDocumentation(this string opCode) => opCode switch {
             "add"            => "Adds two values and pushes the result onto the evaluation stack.",
             "add.ovf"        => "Adds two integers, performs an overflow check, and pushes the result onto the evaluation stack.",
             "add.ovf.un"     => "Adds two unsigned integer values, performs an overflow check, and pushes the result onto the evaluation stack.",
@@ -233,5 +245,8 @@ namespace Microscope.CodeLensProvider {
             "xor"            => "Computes the bitwise XOR of the top two values on the evaluation stack, pushing the result onto the evaluation stack.",
             _                => null
         };
+
+        private static string RegexReplace(this string s, string pattern, MatchEvaluator evaluator)
+            => Regex.Replace(s, pattern, evaluator);
     }
 }

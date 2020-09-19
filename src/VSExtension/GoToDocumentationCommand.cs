@@ -3,6 +3,7 @@
 namespace Microscope.VSExtension {
     using System;
     using System.ComponentModel.Design;
+    using System.Diagnostics;
 
     using Microscope.Shared;
 
@@ -13,33 +14,32 @@ namespace Microscope.VSExtension {
 
     using Task = System.Threading.Tasks.Task;
 
-    internal sealed class RefreshCommand {
-        public static async Task Initialize(AsyncPackage pkg, Func<Guid, Task> refreshCodeLens) {
+    internal sealed class GoToDocumentationCommand {
+        public static async Task Initialize(AsyncPackage pkg) {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(pkg.DisposalToken);
 
             var cmdService = await pkg.GetServiceAsync<IMenuCommandService, IMenuCommandService>();
             Assumes.Present(cmdService);
 
-            var cmdId = new CommandID(PackageGuids.CmdSetId, PackageIds.RefreshCommandId);
+            var cmdId = new CommandID(PackageGuids.CmdSetId, PackageIds.GoToDocumentationCommandId);
             var cmd = new OleMenuCommand(
                 (_, e) => ThreadHelper.JoinableTaskFactory.RunAsync(async delegate {
-                    await Execute(refreshCodeLens, (OleMenuCmdEventArgs)e).Caf();
+                    await Execute((OleMenuCmdEventArgs)e).Caf();
                 }),
                 cmdId);
             cmdService.AddCommand(cmd);
         }
 
-        private static async Task Execute(Func<Guid, Task> refreshCodeLens, OleMenuCmdEventArgs e) {
+        private static async Task Execute(OleMenuCmdEventArgs e) {
             try {
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-                var arg = e.InValue as string
-                    ?? throw new InvalidOperationException($"{nameof(RefreshCommand)} requires an argument.");
+                var opCode = e.InValue as string
+                    ?? throw new InvalidOperationException($"{nameof(GoToDocumentationCommand)} requires an argument.");
 
-                if (!Guid.TryParse(arg, out var dataPointId))
-                    throw new InvalidOperationException($"{nameof(RefreshCommand)} requires an argument of type Guid.");
+                opCode = opCode.Replace('.', '_');
 
-                await refreshCodeLens(dataPointId).Caf();
+                _ = Process.Start($"https://docs.microsoft.com/dotnet/api/system.reflection.emit.opcodes.{opCode}");
             } catch (Exception ex) {
                 LogVS(ex);
                 throw;

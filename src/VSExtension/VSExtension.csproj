@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="AllParametersMatchExt.cs" />
     <Compile Include="CodeLensConnectionHandler.cs" />
+    <Compile Include="GoToDocumentationCommand.cs" />
     <Compile Include="RefreshCommand.cs" />
     <Compile Include="CompileExt.cs" />
     <Compile Include="GetMethodExt.cs" />
@@ -63,10 +64,10 @@
     <Compile Include="InstructionsProvider.cs" />
     <Compile Include="MicroscopePackage.cs" />
     <Compile Include="GetDocumentExt.cs" />
-    <Compile Include="MicroscopePackage1.cs">
+    <Compile Include="MicroscopeCommands.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MicroscopePackage.vsct</DependentUpon>
+      <DependentUpon>MicroscopeCommands.vsct</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="source.extension.cs">
@@ -90,10 +91,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <VSCTCompile Include="MicroscopePackage.vsct">
+    <VSCTCompile Include="MicroscopeCommands.vsct">
       <Generator>VsctGenerator</Generator>
       <ResourceName>Menus.ctmenu</ResourceName>
-      <LastGenOutput>MicroscopePackage1.cs</LastGenOutput>
+      <LastGenOutput>MicroscopeCommands.cs</LastGenOutput>
     </VSCTCompile>
     <Content Include="Resources\icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

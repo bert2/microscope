@@ -71,17 +71,16 @@ Even though the global tool is not required, it makes life a little bit easier:
 PS> nuke test # build and run tests
 ```
 
-## TODO
+## Roadmap
 
 ### Next release
 
 - I'm not sure yet. Either the auto-update of the CodeLens when the method code changes or retrieval of opcode documentation to show it in the tooltip.
 
-### Release (1.0.0)
+### 1.0.0 release
 
-- update IL when typing, saving, building, or switching the build configuration
+- update IL when typing, saving, or building
 - XML documentation summary of op code as tooltip
-- double-clicking an instruction navigates to MSDN page of op code
 
 ### Future releases
 
@@ -118,6 +117,10 @@ PS> nuke test # build and run tests
 
 ## Changelog
 
+### 0.2.0
+
+- Double-clicking an instruction in the details view now opens its documentation in the browser.
+
 ### 0.1.3
 
 - Fixes an issue where the "Refresh" button might not work when multiple instances of VS where open.
@@ -145,10 +148,7 @@ PS> nuke test # build and run tests
 
 ### 0.0.3
 
-- Overload resolution has been extended to handle more types:
-  - arrays
-  - pointers
-  - `ref`s
+- Overload resolution has been extended to handle more types: arrays, pointers, and `ref`s.
 
 ### 0.0.2
 

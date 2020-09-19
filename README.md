@@ -84,14 +84,9 @@ PS> nuke test # build and run tests
 
 ## Roadmap
 
-### Next release
-
-- I'm not sure yet. Either the auto-update of the CodeLens when the method code changes or retrieval of opcode documentation to show it in the tooltip.
-
 ### 1.0.0 release
 
 - update IL when typing, saving, or building
-- XML documentation summary of op code as tooltip
 
 ### Future releases
 
@@ -127,6 +122,10 @@ PS> nuke test # build and run tests
 - support more code elements? (properties, classes, ...)
 
 ## Changelog
+
+### 0.3.0
+
+- Show XML documentation of OpCode as tooltip when hovering an instruction.
 
 ### 0.2.0
 

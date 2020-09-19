@@ -9,8 +9,8 @@ namespace Microscope.VSExtension {
 
     using Mono.Cecil;
 
-    public static class GetMethodExt {
-        public static MethodDefinition GetMethod(this AssemblyDefinition assembly, IMethodSymbol methodSymbol) {
+    public static class GetMethodDefinitionExt {
+        public static MethodDefinition GetMethodDefinition(this AssemblyDefinition assembly, IMethodSymbol methodSymbol) {
             var nameParts = methodSymbol.ContainingSymbol.GetFullNameParts();
             var @namespace = nameParts.PopNamespace();
             var typeName = nameParts.PopTypeName();

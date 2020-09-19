@@ -36,7 +36,7 @@ namespace Microscope.VSExtension {
                 using var assembly = await doc.Project.Compile(peStream, ct).Caf();
 
                 return assembly
-                    .GetMethod(method)
+                    .GetMethodDefinition(method)
                     .Body?
                     .Instructions
                     .ToCodeLensData()

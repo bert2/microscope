@@ -59,7 +59,7 @@
     <Compile Include="GoToDocumentationCommand.cs" />
     <Compile Include="RefreshCommand.cs" />
     <Compile Include="CompileExt.cs" />
-    <Compile Include="GetMethodExt.cs" />
+    <Compile Include="GetMethodDefinitionExt.cs" />
     <Compile Include="GetMethodSymbolAtExt.cs" />
     <Compile Include="InstructionsProvider.cs" />
     <Compile Include="MicroscopePackage.cs" />

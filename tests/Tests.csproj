@@ -50,9 +50,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GetDocumentExtTests.cs" />
-    <Compile Include="GetMethodExtTestData.cs" />
+    <Compile Include="GetMethodDefinitionExtTestData.cs" />
     <Compile Include="Util\SymbolResolver.cs" />
-    <Compile Include="GetMethodExtTests.cs" />
+    <Compile Include="GetMethodDefinitionExtTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -49,6 +49,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GetDocumentationExtTests.cs" />
     <Compile Include="GetDocumentExtTests.cs" />
     <Compile Include="GetMethodDefinitionExtTestData.cs" />
     <Compile Include="Util\SymbolResolver.cs" />
@@ -102,6 +103,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\src\CodeLensProvider\CodeLensProvider.csproj">
+      <Project>{FA8F7552-7E27-425B-9B81-09E0789179A3}</Project>
+      <Name>CodeLensProvider</Name>
+    </ProjectReference>
     <ProjectReference Include="..\src\Shared\Shared.csproj">
       <Project>{D6F37EEC-CBA3-4DB2-B44C-5F036C6FAA9F}</Project>
       <Name>Shared</Name>

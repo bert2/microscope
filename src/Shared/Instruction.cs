@@ -10,5 +10,6 @@ namespace Microscope.Shared {
             OpCode = opCode;
             Operand = operand;
         }
+        public override string ToString() => OpCode;
     }
 }

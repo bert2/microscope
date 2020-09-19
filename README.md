@@ -22,7 +22,8 @@ A CodeLens extension for Visual Studio that lets you inspect the intermediate la
 - Alternatively you can grab the [VSIX package](https://ci.appveyor.com/project/bert2/microscope/branch/main/artifacts) of the latest build from AppVeyor.
 - The CodeLens appears on C# methods and displays the number of instructions that will be generated for the method.
 - Click the CodeLens to get a detailed list of all instructions including their offsets and operands.
-- Double-click an instruction in the list to navigate to its documentation on [docs.microsoft.com](https://docs.microsoft.com/dotnet/api/system.reflection.emit.opcodes).
+- Hover over an instruction in the list to see its documentation summary as tooltip.
+- Double-click an instruction to navigate to its documentation on [docs.microsoft.com](https://docs.microsoft.com/dotnet/api/system.reflection.emit.opcodes).
 - Hover over the CodeLens to see individual counts for the number of `box` and unconstrained `callvirt` instructions in the method.
 - The CodeLens currently won't be updated after the method has been changed. In order to refresh it you will have to click the "Refresh" button in bottom left of the details view. Auto-update will be implemented for the 1.0 release.
 - In case the retrieval of instructions fails the CodeLens will display `-` instead of a count. Hover over the CodeLens to see the exception that caused the failure.

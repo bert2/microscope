@@ -98,7 +98,7 @@ namespace Microscope.CodeLensProvider {
                                 new CodeLensDetailEntryField { Text = instr.OpCode },
                                 new CodeLensDetailEntryField { Text = instr.Operand }
                             },
-                            Tooltip = $"{instr.Label}: {instr.OpCode} {instr.Operand}",
+                            Tooltip = instr.GetDocumentation(),
                             NavigationCommand = goToDocumentationCmdId,
                             NavigationCommandArgs = new[] { (object)instr.OpCode }
                         })

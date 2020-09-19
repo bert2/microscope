@@ -35,6 +35,7 @@
   <ItemGroup>
     <Compile Include="CodeLensDataPoint.cs" />
     <Compile Include="CodeLensProvider.cs" />
+    <Compile Include="GetDocumentationExt.cs" />
     <Compile Include="LabeledExt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources.Designer.cs">
@@ -67,6 +68,9 @@
     <PackageReference Include="StreamJsonRpc">
       <Version>2.5.46</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="gen-opcode-doc-switch-cases.linq" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

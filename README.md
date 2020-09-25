@@ -25,12 +25,15 @@ A CodeLens extension for Visual Studio that lets you inspect the intermediate la
 - Hover over an instruction in the list to see its documentation summary as tooltip.
 - Double-click an instruction to navigate to its documentation on [docs.microsoft.com](https://docs.microsoft.com/dotnet/api/system.reflection.emit.opcodes).
 - Hover over the CodeLens to see individual counts for the number of `box` and unconstrained `callvirt` instructions in the method.
-- The CodeLens won't update automatically while typing, but as soon as you save the changed file. You can also click the "Refresh" button in bottom left of the details view.
+- The CodeLens won't update automatically while typing, but as soon as you save the changed file. You can also click the "Refresh" button in the bottom left of the details view.
 - In case the retrieval of instructions fails the CodeLens will display `-` instead of a count. Hover over the CodeLens to see the exception that caused the failure.
+- Configuration options are available in the Visual Studio settings ("Tools" > "Options..." > "microscope").
+
+![Settings page](img/settings-page.png "Settings page")
 
 ## Known issues
 
-- The CodeLens will only show you the instructions of the method itself without any instructions from compiler-generated classes and methods. This means that for any methods using e.g. `await`, the CodeLens will only show the instructions that instantiate/start the state machine generated for it. This will be fixed in a future release.
+- The CodeLens will only show you the instructions of the method itself without any instructions from compiler-generated classes and methods. This means that for any methods using e.g. `await`, the CodeLens will only show the instructions that instantiate/start the state machine generated for it. This will be fixed for the 1.0.0 release.
 
 ## Contributing
 
@@ -85,15 +88,14 @@ PS> nuke test # build and run tests
 
 ### 1.0.0 release
 
-- settings page to de/activate instructions CodeLens
-
-### Future releases
-
 - support C# features that use compiler-generated classes (requires custom UI)
   - async state machines
   - enumerator state machines
   - lambdas
   - local functions
+
+### Future releases
+
 - update IL when typing?
   - probably not worth the overhead
 - don't show CodeLens on interface/abstract methods
@@ -122,10 +124,14 @@ PS> nuke test # build and run tests
 
 ## Changelog
 
+### 0.5.0
+
+- Add settings page to de/activate auto-refresh on save.
+
 ### 0.4.0
 
 - Instructions are now refreshed automatically when saving a file.
-- Don't duplicate compiler errors in CodeLens failure message (shown as tooltip when hovering over a failed CodeLens).
+- Don't duplicate compiler errors in the tooltip for failed CodeLenses.
 
 ### 0.3.0
 

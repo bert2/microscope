@@ -5,7 +5,7 @@ namespace Microscope.Shared {
 
     public static class PipeName {
         // Pipe needs to be scoped by PID so multiple VS instances don't compete for connecting CodeLenses.
-        public static string Get(int pid) => string.Format(@"microscope\{0}\vs-to-codelens", pid);
+        public static string Get(int pid) => string.Format(@"microscope\{0}", pid);
     }
 
     public interface IRemoteCodeLens {

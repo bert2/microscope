@@ -15,13 +15,12 @@ namespace Microscope.VSExtension {
     using Mono.Cecil;
 
     public static class CompileExt {
-        public static async Task<AssemblyDefinition> Compile(this Project proj, Stream peStream, CancellationToken ct) {
+        public static async Task<AssemblyDefinition?> Compile(this Project proj, Stream peStream, CancellationToken ct) {
             var compilation = await proj.GetCompilationAsync(ct).Caf()
                 ?? throw new InvalidOperationException($"Project {proj.FilePath} does not support compilation.");
 
             var result = compilation.Emit(peStream);
-            if (!result.Success)
-                throw new InvalidOperationException($"Failed to compile project {proj.FilePath}:\n{result.PrintErrors()}");
+            if (!result.Success) return null;
 
             _ = peStream.Seek(0, SeekOrigin.Begin);
             return AssemblyDefinition.ReadAssembly(peStream);

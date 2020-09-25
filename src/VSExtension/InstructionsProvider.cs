@@ -35,6 +35,8 @@ namespace Microscope.VSExtension {
                 using var peStream = new MemoryStream();
                 using var assembly = await doc.Project.Compile(peStream, ct).Caf();
 
+                if (assembly is null) return CodeLensData.CompilerError();
+
                 return assembly
                     .GetMethodDefinition(method)
                     .Body?

@@ -21,6 +21,8 @@ namespace Microscope.Shared {
         public static CodeLensData Empty()
             => new CodeLensData(new List<Instruction>(), 0, 0);
 
+        public static CodeLensData CompilerError() => Failure("Cannot retrieve instructions due to compiler errors.");
+
         public static CodeLensData Failure(string message)
             => new CodeLensData(default!, default, default) { ErrorMessage = message };
     }

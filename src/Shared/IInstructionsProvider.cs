@@ -9,5 +9,7 @@ namespace Microscope.Shared {
         Task<CodeLensData> GetInstructions(Guid projGuid, string filePath, int textStart, int textLen, CancellationToken ct);
 
         int GetVisualStudioPid();
+
+        Task<bool> IsMicroscopeEnabled();
     }
 }

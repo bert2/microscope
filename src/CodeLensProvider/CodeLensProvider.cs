@@ -30,11 +30,13 @@ namespace Microscope.CodeLensProvider {
             LogCL(); // logs the PID of the out-of-process CodeLens engine
         }
 
-        public Task<bool> CanCreateDataPointAsync(
+        public async Task<bool> CanCreateDataPointAsync(
             CodeLensDescriptor descriptor,
             CodeLensDescriptorContext context,
             CancellationToken ct)
-            => Task.FromResult(descriptor.Kind == CodeElementKinds.Method);
+            => descriptor.Kind == CodeElementKinds.Method
+            && await callbackService.Value
+                .InvokeAsync<bool>(this, nameof(IInstructionsProvider.IsMicroscopeEnabled)).Caf();
 
         public async Task<IAsyncCodeLensDataPoint> CreateDataPointAsync(
             CodeLensDescriptor descriptor,

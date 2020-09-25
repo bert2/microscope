@@ -9,6 +9,7 @@ namespace Microscope.VSExtension {
     using System.Threading.Tasks;
 
     using Microscope.Shared;
+    using Microscope.VSExtension.Options;
 
     using Microsoft.CodeAnalysis.Text;
     using Microsoft.VisualStudio.Language.CodeLens;
@@ -48,5 +49,10 @@ namespace Microscope.VSExtension {
         }
 
         public int GetVisualStudioPid() => Process.GetCurrentProcess().Id;
+
+        public async Task<bool> IsMicroscopeEnabled() {
+            var opts = await GeneralOptions.GetLiveInstanceAsync().Caf();
+            return opts.Enabled;
+        }
     }
 }

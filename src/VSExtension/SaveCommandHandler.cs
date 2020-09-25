@@ -17,8 +17,10 @@
         public string DisplayName => nameof(SaveCommandHandler);
 
         public bool ExecuteCommand(SaveCommandArgs args, CommandExecutionContext executionContext) {
-            if (GeneralOptions.Instance.Enabled) {
-                // CodeLenses usually only live as long as the document is open so we just refresh all connected ones.
+            var opts = GeneralOptions.Instance;
+
+            if (opts.Enabled && opts.RefreshOnSave) {
+                // CodeLenses usually only live as long as the document is open so we just refresh all the connected ones.
                 _ = CodeLensConnectionHandler.RefreshAllCodeLensDataPoints();
             }
 

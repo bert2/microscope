@@ -123,6 +123,10 @@ PS> nuke test # build and run tests
 
 ## Changelog
 
+### 0.3.1
+
+- Don't duplicate compiler errors in CodeLens failure message (shown as tooltip when hovering over a failed CodeLens).
+
 ### 0.3.0
 
 - Show XML documentation of OpCode as tooltip when hovering an instruction.

@@ -30,8 +30,7 @@ A CodeLens extension for Visual Studio that lets you inspect the intermediate la
 
 ## Known issues
 
-- Instructions are not updated automatically on code changes. Use the "Refresh" button in the details view to update the instructions manually.
-- The "Refresh" button is not available in case a CodeLens could not be created for the method (e.g. when there are compiler errors in the project). In that case you have to fix the compiler errors and then either close and re-open the source file or dock the CodeLens popup with the button in the top right of the details view.
+- The CodeLens will only show you the instructions of the method itself without any instructions from compiler-generated classes and methods. This means that for any methods using e.g. `await`, the CodeLens will only show the instructions that instantiate/start the state machine generated for it. This will be fixed in a future release.
 
 ## Contributing
 

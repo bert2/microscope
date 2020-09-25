@@ -117,6 +117,7 @@ namespace Microscope.CodeLensProvider {
             }
         }
 
+        // Called from VS via JSON RPC.
         public void Refresh() => _ = InvalidatedAsync?.InvokeAsync(this, EventArgs.Empty);
 
         private async Task<CodeLensData> GetInstructions(CodeLensDescriptorContext ctx, CancellationToken ct)

@@ -4,6 +4,7 @@ namespace Microscope.VSExtension {
     using System;
     using System.Diagnostics;
     using System.IO.Pipes;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Microscope.Shared;
@@ -51,6 +52,12 @@ namespace Microscope.VSExtension {
             }
         }
 
+        public void Dispose() {
+            if (dataPointId.HasValue)
+                _ = connections.TryRemove(dataPointId.Value, out var _);
+        }
+
+        // Called from each CodeLenseDataPoint via JSON RPC.
         public void RegisterCodeLensDataPoint(Guid id) {
             dataPointId = id;
             connections[id] = this;
@@ -64,9 +71,7 @@ namespace Microscope.VSExtension {
             await conn.rpc!.InvokeAsync(nameof(IRemoteCodeLens.Refresh)).Caf();
         }
 
-        public void Dispose() {
-            if (dataPointId.HasValue)
-                _ = connections.TryRemove(dataPointId.Value, out var _);
-        }
+        public static async Task RefreshAllCodeLensDataPoints()
+            => await Task.WhenAll(connections.Keys.Select(RefreshCodeLensDataPoint)).Caf();
     }
 }

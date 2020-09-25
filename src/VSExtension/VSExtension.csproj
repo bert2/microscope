@@ -57,6 +57,12 @@
     <Compile Include="AllParametersMatchExt.cs" />
     <Compile Include="CodeLensConnectionHandler.cs" />
     <Compile Include="GoToDocumentationCommand.cs" />
+    <Compile Include="Options\BaseOptionModel.cs" />
+    <Compile Include="Options\BaseOptionPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Options\DialogPageProvider.cs" />
+    <Compile Include="Options\GeneralOptions.cs" />
     <Compile Include="RefreshCommand.cs" />
     <Compile Include="CompileExt.cs" />
     <Compile Include="GetMethodDefinitionExt.cs" />

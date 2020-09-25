@@ -2,9 +2,9 @@
     using System.ComponentModel.Composition;
 
     using Microscope.VSExtension;
+    using Microscope.VSExtension.Options;
 
     using Microsoft.VisualStudio.Commanding;
-    using Microsoft.VisualStudio.Shell;
     using Microsoft.VisualStudio.Text.Editor;
     using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
     using Microsoft.VisualStudio.Utilities;
@@ -17,10 +17,10 @@
         public string DisplayName => nameof(SaveCommandHandler);
 
         public bool ExecuteCommand(SaveCommandArgs args, CommandExecutionContext executionContext) {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
-            // CodeLenses usually only live as long as the document is open so we just refresh all connected ones.
-            _ = CodeLensConnectionHandler.RefreshAllCodeLensDataPoints();
+            if (GeneralOptions.Instance.Enabled) {
+                // CodeLenses usually only live as long as the document is open so we just refresh all connected ones.
+                _ = CodeLensConnectionHandler.RefreshAllCodeLensDataPoints();
+            }
 
             return true;
         }

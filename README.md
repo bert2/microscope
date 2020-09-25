@@ -25,7 +25,7 @@ A CodeLens extension for Visual Studio that lets you inspect the intermediate la
 - Hover over an instruction in the list to see its documentation summary as tooltip.
 - Double-click an instruction to navigate to its documentation on [docs.microsoft.com](https://docs.microsoft.com/dotnet/api/system.reflection.emit.opcodes).
 - Hover over the CodeLens to see individual counts for the number of `box` and unconstrained `callvirt` instructions in the method.
-- The CodeLens currently won't be updated after the method has been changed. In order to refresh it you will have to click the "Refresh" button in bottom left of the details view. Auto-update will be implemented for the 1.0 release.
+- The CodeLens won't update automatically while typing, but as soon as you save the changed file. You can also click the "Refresh" button in bottom left of the details view.
 - In case the retrieval of instructions fails the CodeLens will display `-` instead of a count. Hover over the CodeLens to see the exception that caused the failure.
 
 ## Known issues

@@ -85,10 +85,17 @@ PS> nuke test # build and run tests
 
 ### 1.0.0 release
 
-- update IL when typing, saving, or building
+- settings page to de/activate instructions CodeLens
 
 ### Future releases
 
+- support C# features that use compiler-generated classes (requires custom UI)
+  - async state machines
+  - enumerator state machines
+  - lambdas
+  - local functions
+- update IL when typing?
+  - probably not worth the overhead
 - don't show CodeLens on interface/abstract methods
 - cache `AssemblyDefintion`s?
     - results of basic performance measurement:
@@ -102,7 +109,6 @@ PS> nuke test # build and run tests
 - edge cases:
     - what happens when opening a project instead of a solution?
     - what happens when opening a file without opening the project?
-- settings page to configure update frequency
 - reduce namespace noise in operands column of details view
   - setting for that
   - checkbox in details view for the setting as well
@@ -112,18 +118,13 @@ PS> nuke test # build and run tests
 - F# support?
 - is it possible to move in-memory compiling and IL retrieval out of the VS process?
     - can we even access the `Compilation` out-of-proc?
-- custom UI?
-- support C# features that use compiler-generated classes (would benefit from custom UI)
-  - async state machines
-  - enumerator state machines
-  - lambdas
-  - local functions
-- support more code elements? (properties, classes, ...)
+- support more code elements like properties, classes, etc. (requires custom UI)
 
 ## Changelog
 
-### 0.3.1
+### 0.4.0
 
+- Instructions are now refreshed automatically when saving a file.
 - Don't duplicate compiler errors in CodeLens failure message (shown as tooltip when hovering over a failed CodeLens).
 
 ### 0.3.0

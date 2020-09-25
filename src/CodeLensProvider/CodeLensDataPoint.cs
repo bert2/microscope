@@ -131,8 +131,7 @@ namespace Microscope.CodeLensProvider {
                         ctx.ApplicableSpan != null
                             ? ctx.ApplicableSpan.Value.Start
                             : throw new InvalidOperationException($"No ApplicableSpan given for {ctx.FullName()}."),
-                        ctx.ApplicableSpan!.Value.Length,
-                        ctx.FullName()
+                        ctx.ApplicableSpan!.Value.Length
                     },
                     ct).Caf();
     }

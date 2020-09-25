@@ -25,24 +25,22 @@ namespace Microscope.VSExtension {
         [ImportingConstructor]
         public InstructionsProvider(VisualStudioWorkspace workspace) => this.workspace = workspace;
 
-        public async Task<CodeLensData> GetInstructions(Guid projGuid, string filePath, int textStart, int textLen, string methodLongName, CancellationToken ct) {
+        public async Task<CodeLensData> GetInstructions(Guid projGuid, string filePath, int textStart, int textLen, CancellationToken ct) {
             try {
-                LogVS($"IL requested for {methodLongName} in project {projGuid}");
-
                 var doc = workspace.GetDocument(filePath, projGuid);
                 var method = await doc.GetMethodSymbolAt(new TextSpan(textStart, textLen), ct).Caf();
 
                 using var peStream = new MemoryStream();
                 using var assembly = await doc.Project.Compile(peStream, ct).Caf();
 
-                if (assembly is null) return CodeLensData.CompilerError();
-
-                return assembly
-                    .GetMethodDefinition(method)
-                    .Body?
-                    .Instructions
-                    .ToCodeLensData()
-                    ?? CodeLensData.Empty();
+                return assembly is null
+                    ? CodeLensData.CompilerError()
+                    : assembly
+                        .GetMethodDefinition(method)
+                        .Body?
+                        .Instructions
+                        .ToCodeLensData()
+                        ?? CodeLensData.Empty();
             } catch (Exception ex) {
                 LogVS(ex);
                 return CodeLensData.Failure(ex.ToString());

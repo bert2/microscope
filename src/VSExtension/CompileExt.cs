@@ -3,14 +3,12 @@
 namespace Microscope.VSExtension {
     using System;
     using System.IO;
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Microscope.Shared;
 
     using Microsoft.CodeAnalysis;
-    using Microsoft.CodeAnalysis.Emit;
 
     using Mono.Cecil;
 
@@ -24,11 +22,6 @@ namespace Microscope.VSExtension {
 
             _ = peStream.Seek(0, SeekOrigin.Begin);
             return AssemblyDefinition.ReadAssembly(peStream);
-        }
-
-        private static string PrintErrors(this EmitResult result) {
-            var errs = result.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error);
-            return string.Join("\n", errs);
         }
     }
 }

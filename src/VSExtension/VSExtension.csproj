@@ -56,10 +56,10 @@
   <ItemGroup>
     <Compile Include="AllParametersMatchExt.cs" />
     <Compile Include="CodeLensConnectionHandler.cs" />
-    <Compile Include="CodeLensDetailsUserControl.xaml.cs">
+    <Compile Include="UI\CodeLensDetailsUserControl.xaml.cs">
       <DependentUpon>CodeLensDetailsUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CodeLensDetailsViewElementFactory.cs" />
+    <Compile Include="UI\CodeLensDetailsViewElementFactory.cs" />
     <Compile Include="GoToDocumentationCommand.cs" />
     <Compile Include="Options\BaseOptionModel.cs" />
     <Compile Include="Options\BaseOptionPage.cs">
@@ -154,11 +154,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="CodeLensDetailsUserControl.xaml">
+    <Page Include="UI\CodeLensDetailsUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ListViewStyle.xaml">
+    <Page Include="UI\ListViewStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

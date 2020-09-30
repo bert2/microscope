@@ -1,6 +1,7 @@
-﻿namespace CodeLensOopProviderVsix {
+﻿#nullable enable
+
+namespace Microscope.VSExtension.UI {
     using Microscope.Shared;
-    using Microscope.VSExtension;
 
     using Microsoft.VisualStudio.Text.Adornments;
     using Microsoft.VisualStudio.Text.Editor;
@@ -14,7 +15,7 @@
     [TypeConversion(from: typeof(CodeLensDetails), to: typeof(FrameworkElement))]
     [Order]
     public class CodeLensDetailsViewElementFactory : IViewElementFactory {
-        public TView CreateViewElement<TView>(ITextView textView, object model) where TView : class
+        public TView? CreateViewElement<TView>(ITextView textView, object model) where TView : class
             => new CodeLensDetailsUserControl((CodeLensDetails)model) as TView;
     }
 }

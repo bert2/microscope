@@ -1,4 +1,6 @@
-﻿namespace Microscope.Shared {
+﻿#nullable enable
+
+namespace Microscope.Shared {
     using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
 

@@ -1,4 +1,6 @@
-﻿namespace Microscope.Tests {
+﻿#nullable enable
+
+namespace Microscope.Tests {
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection.Emit;
@@ -32,7 +34,7 @@
             .GetDocumentation()
             .ShouldBe("Throws `System.ArithmeticException` if value is not a finite number.");
 
-        private static Instruction Instruction(string opCode) => new Instruction(label: null, opCode, operand: null);
+        private static Instruction Instruction(string opCode) => new Instruction(label: null!, opCode, operand: null!);
 
         private static IEnumerable<Instruction> AllKnownInstructions => typeof(OpCodes)
             .GetFields()

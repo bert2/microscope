@@ -1,4 +1,6 @@
-﻿namespace Microscope.VSExtension {
+﻿#nullable enable
+
+namespace Microscope.VSExtension.UI {
     using System.Windows.Controls;
     using Microscope.Shared;
 

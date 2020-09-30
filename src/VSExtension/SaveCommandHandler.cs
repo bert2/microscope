@@ -1,4 +1,6 @@
-﻿namespace CodeCleanupOnSave {
+﻿#nullable enable
+
+namespace CodeCleanupOnSave {
     using System.ComponentModel.Composition;
 
     using Microscope.VSExtension;

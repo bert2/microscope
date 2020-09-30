@@ -12,7 +12,7 @@ namespace Microscope.VSExtension.Options {
     /// <summary>
     /// A base class for a DialogPage to show in Tools -> Options.
     /// </summary>
-    internal class BaseOptionPage<T> : DialogPage where T : BaseOptionModel<T>, new() {
+    public class BaseOptionPage<T> : DialogPage where T : BaseOptionModel<T>, new() {
         private BaseOptionModel<T> _model;
 
         public BaseOptionPage() {

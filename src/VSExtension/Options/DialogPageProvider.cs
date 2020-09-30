@@ -1,5 +1,7 @@
-﻿namespace Microscope.VSExtension.Options {
-    internal class DialogPageProvider {
+﻿#nullable enable
+
+namespace Microscope.VSExtension.Options {
+    public static class DialogPageProvider {
         public class General : BaseOptionPage<GeneralOptions> { }
     }
 }

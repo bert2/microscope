@@ -1,7 +1,9 @@
-﻿namespace Microscope.VSExtension.Options {
+﻿#nullable enable
+
+namespace Microscope.VSExtension.Options {
     using System.ComponentModel;
 
-    internal class GeneralOptions : BaseOptionModel<GeneralOptions> {
+    public class GeneralOptions : BaseOptionModel<GeneralOptions> {
         [Category("General")]
         [DisplayName("Enabled")]
         [Description("Specifies whether to activate the CodeLens for IL instructions or not.")]

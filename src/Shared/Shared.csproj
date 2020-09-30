@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="CodeLensData.cs" />
     <Compile Include="ConfigureAwaitAlias.cs" />
+    <Compile Include="CodeLensDetails.cs" />
     <Compile Include="RemoteConnection.cs" />
     <Compile Include="IInstructionsProvider.cs" />
     <Compile Include="Instruction.cs" />

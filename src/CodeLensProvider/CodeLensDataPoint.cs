@@ -15,20 +15,10 @@ namespace Microscope.CodeLensProvider {
     using static Microscope.Shared.Logging;
 
     public class CodeLensDataPoint : IAsyncCodeLensDataPoint, IDisposable {
-        private static readonly CodeLensDetailHeaderDescriptor[] detailHeaders = new[] {
-            new CodeLensDetailHeaderDescriptor { UniqueName = "Label",   DisplayName = "Label",   Width = .1 },
-            new CodeLensDetailHeaderDescriptor { UniqueName = "OpCode",  DisplayName = "Op Code", Width = .15 },
-            new CodeLensDetailHeaderDescriptor { UniqueName = "Operand", DisplayName = "Operand", Width = .75 }
-        };
         private static readonly CodeLensDetailEntryCommand refreshCmdId = new CodeLensDetailEntryCommand {
             // Defined in file `src/VSExtension/MicroscopeCommands.vsct`.
             CommandSet = new Guid("32872e4d-3d0e-4b26-9ef8-d3a90080429f"),
             CommandId = 0x0100
-        };
-        private static readonly CodeLensDetailEntryCommand goToDocumentationCmdId = new CodeLensDetailEntryCommand {
-            // Defined in file `src/VSExtension/MicroscopeCommands.vsct`.
-            CommandSet = new Guid("32872e4d-3d0e-4b26-9ef8-d3a90080429f"),
-            CommandId = 0x0200
         };
 
         public readonly Guid id = Guid.NewGuid();
@@ -89,20 +79,12 @@ namespace Microscope.CodeLensProvider {
                     throw new InvalidOperationException($"Getting CodeLens details for {context.FullName()} failed: {data.ErrorMessage}");
 
                 return new CodeLensDetailsDescriptor {
-                    Headers = detailHeaders,
-                    Entries = data
-                        .Instructions
-                        .Select(instr => new CodeLensDetailEntryDescriptor {
-                            Fields = new[] {
-                                new CodeLensDetailEntryField { Text = instr.Label },
-                                new CodeLensDetailEntryField { Text = instr.OpCode },
-                                new CodeLensDetailEntryField { Text = instr.Operand }
-                            },
-                            Tooltip = instr.GetDocumentation(),
-                            NavigationCommand = goToDocumentationCmdId,
-                            NavigationCommandArgs = new[] { (object)instr.OpCode }
-                        })
-                        .ToList(),
+                    // Since it's impossible to figure out how to use [DetailsTemplateName], we'll
+                    // just use the default grid template without any headers/entries and stuff
+                    // everything in the custom data.
+                    Headers = Enumerable.Empty<CodeLensDetailHeaderDescriptor>(),
+                    Entries = Enumerable.Empty<CodeLensDetailEntryDescriptor>(),
+                    CustomData = new[] { new CodeLensDetails(data.Instructions!) },
                     PaneNavigationCommands = new[] {
                         new CodeLensDetailPaneCommand {
                             CommandDisplayName = "Refresh",

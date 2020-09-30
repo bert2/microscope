@@ -29,7 +29,10 @@
                     <GridViewColumn Header="OpCode">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock FontWeight="Bold" Text="{Binding OpCode}" />
+                                <TextBlock
+                                    FontWeight="Bold"
+                                    Text="{Binding OpCode}"
+                                    ToolTip="{Binding Documentation}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

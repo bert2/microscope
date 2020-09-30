@@ -7,6 +7,10 @@ namespace Microscope.VSExtension.UI {
     public partial class CodeLensDetailsUserControl : UserControl {
         public CodeLensDetailsUserControl(CodeLensDetails details) {
             InitializeComponent();
+
+            foreach (var instr in details.Instructions)
+                instr.Documentation = Documentation.For(instr);
+
             listView.ItemsSource = details.Instructions;
         }
     }

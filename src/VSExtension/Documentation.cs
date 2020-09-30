@@ -1,14 +1,13 @@
 ﻿#nullable enable
 
-namespace Microscope.CodeLensProvider {
+namespace Microscope.VSExtension {
     using System.Text.RegularExpressions;
 
     using Microscope.Shared;
 
-    public static class GetDocumentationExt {
-        public static string? GetDocumentation(this Instruction instr) => instr
-            .OpCode
-            .GetDocumentation()?
+    public static class Documentation {
+        public static string? For(Instruction instr) =>
+            For(instr.OpCode)?
             .RegexReplace("<paramref name=\"([^\"]+)\" />", m => $"`{m.Groups[1].Value}`")
             .RegexReplace("<see cref=\"T:([^\"]+)\" />",    m => $"`{m.Groups[1].Value}`");
 
@@ -16,7 +15,7 @@ namespace Microscope.CodeLensProvider {
         // Yes, this is hard-coded. But to me this solution seems way less brittle than dynamically
         // locating 'System.Reflection.Primitives.xml' on the user's system and feeding it into a
         // library that parses the documentation (e.g. LoxSmoke.DocXml).
-        public static string? GetDocumentation(this string opCode) => opCode switch {
+        private static string? For(string opCode) => opCode switch {
             "add"            => "Adds two values and pushes the result onto the evaluation stack.",
             "add.ovf"        => "Adds two integers, performs an overflow check, and pushes the result onto the evaluation stack.",
             "add.ovf.un"     => "Adds two unsigned integer values, performs an overflow check, and pushes the result onto the evaluation stack.",

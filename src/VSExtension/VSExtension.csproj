@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="AllParametersMatchExt.cs" />
     <Compile Include="CodeLensConnectionHandler.cs" />
+    <Compile Include="Documentation.cs" />
     <Compile Include="UI\CodeLensDetailsUserControl.xaml.cs">
       <DependentUpon>CodeLensDetailsUserControl.xaml</DependentUpon>
     </Compile>
@@ -94,6 +95,7 @@
       <Link>Resources\LICENSE</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <None Include="gen-opcode-doc-switch-cases.linq" />
     <None Include="Microscope.VSExtension.snk" />
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>

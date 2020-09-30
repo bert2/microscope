@@ -5,33 +5,29 @@ namespace Microscope.Tests {
     using System.Linq;
     using System.Reflection.Emit;
 
-    using Microscope.CodeLensProvider;
     using Microscope.Shared;
-
+    using Microscope.VSExtension;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using Shouldly;
 
     [TestClass]
-    public class GetDocumentationExtTests {
+    public class DocumentationTests {
         [TestMethod] public void ReturnsNullForUnknownOpCode() =>
-            Instruction("unknown")
-            .GetDocumentation()
+            Documentation.For(Instruction("unknown"))
             .ShouldBeNull();
 
         [TestMethod] public void KnowsAllOpCodes() =>
             AllKnownInstructions
-            .Where(i => i.GetDocumentation() == null)
+            .Where(i => Documentation.For(i) == null)
             .ShouldBeEmpty();
 
         [TestMethod] public void RemovesParamrefTags() =>
-            Instruction("brtrue")
-            .GetDocumentation()
+            Documentation.For(Instruction("brtrue"))
             .ShouldBe("Transfers control to a target instruction if `value` is true, not null, or non-zero.");
 
         [TestMethod] public void RemovesSeeCrefTags() =>
-            Instruction("ckfinite")
-            .GetDocumentation()
+            Documentation.For(Instruction("ckfinite"))
             .ShouldBe("Throws `System.ArithmeticException` if value is not a finite number.");
 
         private static Instruction Instruction(string opCode) => new Instruction(label: null!, opCode, operand: null!);

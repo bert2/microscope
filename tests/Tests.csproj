@@ -49,7 +49,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GetDocumentationExtTests.cs" />
+    <Compile Include="DocumentationTests.cs" />
     <Compile Include="GetDocumentExtTests.cs" />
     <Compile Include="GetMethodDefinitionExtTestData.cs" />
     <Compile Include="Util\SymbolResolver.cs" />

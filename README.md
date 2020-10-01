@@ -22,10 +22,10 @@ A CodeLens extension for Visual Studio that lets you inspect the intermediate la
 - Alternatively you can grab the [VSIX package](https://ci.appveyor.com/project/bert2/microscope/branch/main/artifacts) of the latest build from AppVeyor.
 - The CodeLens appears on C# methods and displays the number of instructions that will be generated for the method.
 - Click the CodeLens to get a detailed list of all instructions including their offsets and operands.
-- Hover over an instruction in the list to see its documentation summary as tooltip.
-- Double-click an instruction to navigate to its documentation on [docs.microsoft.com](https://docs.microsoft.com/dotnet/api/system.reflection.emit.opcodes).
+- Hover over an instruction's opcode in the list to see its documentation summary in a tooltip.
+- Click on an instruction's opcode to navigate to its documentation on [docs.microsoft.com](https://docs.microsoft.com/dotnet/api/system.reflection.emit.opcodes).
 - Hover over the CodeLens to see individual counts for the number of `box` and unconstrained `callvirt` instructions in the method.
-- The CodeLens won't update automatically while typing, but as soon as you save the changed file. You can also click the "Refresh" button in the bottom left of the details view.
+- The CodeLens will automatically update everytime you save the current document. You can also click the "Refresh" button in the bottom left of the details view.
 - In case the retrieval of instructions fails the CodeLens will display `-` instead of a count. Hover over the CodeLens to see the exception that caused the failure.
 - Configuration options are available in the Visual Studio settings ("Tools" > "Options..." > "microscope").
 
@@ -34,6 +34,7 @@ A CodeLens extension for Visual Studio that lets you inspect the intermediate la
 ## Known issues
 
 - The CodeLens will only show you the instructions of the method itself without any instructions from compiler-generated classes and methods. This means that for any methods using e.g. `await`, the CodeLens will only show the instructions that instantiate/start the state machine generated for it. This will be fixed for the 1.0.0 release.
+- Visual Studio might freeze for a couple of seconds when you open the details view for a method with a huge amount of instructions (i.e. multiple thousands). This might be fixed in a future release.
 
 ## Contributing
 
@@ -88,7 +89,7 @@ PS> nuke test # build and run tests
 
 ### 1.0.0 release
 
-- support C# features that use compiler-generated classes (requires custom UI)
+- support C# features that use compiler-generated classes
   - async state machines
   - enumerator state machines
   - lambdas
@@ -96,6 +97,11 @@ PS> nuke test # build and run tests
 
 ### Future releases
 
+- support more code elements like properties, classes, etc.
+- show C# code in details view
+- VB support
+- F# support?
+- lazy load when method has too many instructions to prevent temporarily freezing VS
 - update IL when typing?
   - probably not worth the overhead
 - don't show CodeLens on interface/abstract methods
@@ -114,15 +120,15 @@ PS> nuke test # build and run tests
 - reduce namespace noise in operands column of details view
   - setting for that
   - checkbox in details view for the setting as well
-- show C# code in details view
-  - extra column or above first instruction? (latter needs custom UI)
-- VB support
-- F# support?
 - is it possible to move in-memory compiling and IL retrieval out of the VS process?
     - can we even access the `Compilation` out-of-proc?
-- support more code elements like properties, classes, etc. (requires custom UI)
 
 ## Changelog
+
+### 0.5.1
+
+- Fixes a bug where the documentation of instructions with opcodes that have a trailing dot in their name could not be retrieved or navigated to.
+- Adds a new custom UI for the details view, replacing the default grid UI. This is only a minor visual change, but enables future features like including instructions from compiler-generated classes or showing the CodeLens on classes.
 
 ### 0.5.0
 

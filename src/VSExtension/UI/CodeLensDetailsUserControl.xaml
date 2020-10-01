@@ -30,7 +30,9 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock
+                                    Cursor="Hand"
                                     FontWeight="Bold"
+                                    MouseDown="GoToDocumentation"
                                     Text="{Binding OpCode}"
                                     ToolTip="{Binding Documentation}" />
                             </DataTemplate>

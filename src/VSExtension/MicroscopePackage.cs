@@ -29,7 +29,6 @@ namespace Microscope.VSExtension {
                 await JoinableTaskFactory.SwitchToMainThreadAsync(ct);
                 _ = CodeLensConnectionHandler.AcceptCodeLensConnections();
                 await RefreshCommand.Initialize(this, CodeLensConnectionHandler.RefreshCodeLensDataPoint).Caf();
-                await GoToDocumentationCommand.Initialize(this).Caf();
             } catch (Exception ex) {
                 LogVS(ex);
                 throw;

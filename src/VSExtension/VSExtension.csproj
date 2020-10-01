@@ -61,7 +61,6 @@
       <DependentUpon>CodeLensDetailsUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\CodeLensDetailsViewElementFactory.cs" />
-    <Compile Include="GoToDocumentationCommand.cs" />
     <Compile Include="Options\BaseOptionModel.cs" />
     <Compile Include="Options\BaseOptionPage.cs">
       <SubType>Component</SubType>

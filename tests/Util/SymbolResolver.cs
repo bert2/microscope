@@ -2,6 +2,7 @@
 
 namespace Microscope.Tests.Util {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
@@ -50,7 +51,11 @@ namespace Microscope.Tests.Util {
         public void Dispose() => workspace.Dispose();
 
         public static async Task<SymbolResolver> ForMyTests(CancellationToken ct, [CallerFilePath] string? testClassFile = null) {
-            var workspace = MSBuildWorkspace.Create();
+            var workspace = MSBuildWorkspace.Create(new Dictionary<string, string> {
+                ["AlwaysCompileMarkupFilesInSeparateDomain"] = "false",
+                //["BuildingInsideVisualStudio"] = "true"
+            });
+            workspace.LoadMetadataForReferencedProjects = true;
             workspace.WorkspaceFailed += (_, e) => {
                 if (e.Diagnostic.Kind == WorkspaceDiagnosticKind.Failure)
                     throw new InvalidOperationException(e.Diagnostic.ToString());

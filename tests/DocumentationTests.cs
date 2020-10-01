@@ -30,8 +30,12 @@ namespace Microscope.Tests {
             Documentation.For("ckfinite")
             .ShouldBe("Throws `System.ArithmeticException` if value is not a finite number.");
 
+        [TestMethod] public void ReturnsDocumentationForInstructionWithTrailingDot() =>
+            Documentation.For("constrained.")
+            .ShouldBe("Constrains the type on which a virtual method call is made.");
+
         private static IEnumerable<string> AllKnownInstructions => typeof(OpCodes)
             .GetFields()
-            .Select(f => f.Name.ToLower().Replace('_', '.'));
+            .Select(f => ((OpCode)f.GetValue(null)).Name);
     }
 }

@@ -57,7 +57,7 @@ namespace Microscope.VSExtension {
                 _ = connections.TryRemove(dataPointId.Value, out var _);
         }
 
-        // Called from each CodeLenseDataPoint via JSON RPC.
+        // Called from each DataPoint via JSON RPC.
         public void RegisterCodeLensDataPoint(Guid id) {
             dataPointId = id;
             connections[id] = this;

@@ -1,4 +1,6 @@
-﻿<!--
+﻿<!--  Code adapted from https://github.com/microsoft/VSSDK-Extensibility-Samples/blob/master/ArchivedSamples/WPF_Toolwindow/C%23/ListViewStyle.xaml  -->
+
+<!--
     Copyright (c) Microsoft Corporation. All rights reserved.
     THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
     ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY
@@ -34,26 +36,6 @@
             <Trigger Property="IsMouseOver" Value="true">
                 <Setter Property="Background" Value="{DynamicResource {x:Static vsp:EnvironmentColors.ScrollBarThumbGlyphBrushKey}}" />
             </Trigger>
-
-            <!--  Selected  -->
-            <Trigger Property="IsSelected" Value="True">
-                <!--
-                    A subset of TreeViewColors are used for applying styles to the ListView.  A TreeView is
-                    has a superset of the colors required by a ListView (for expanders).
-                -->
-                <Setter Property="Background" Value="{DynamicResource {x:Static vsp:TreeViewColors.SelectedItemActiveBrushKey}}" />
-                <Setter Property="Foreground" Value="{DynamicResource {x:Static vsp:TreeViewColors.SelectedItemActiveTextBrushKey}}" />
-            </Trigger>
-
-            <!--  Selected but not active (control focused)  -->
-            <MultiTrigger>
-                <MultiTrigger.Conditions>
-                    <Condition Property="IsSelected" Value="True" />
-                    <Condition Property="Selector.IsSelectionActive" Value="False" />
-                </MultiTrigger.Conditions>
-                <Setter Property="Background" Value="{DynamicResource {x:Static vsp:TreeViewColors.SelectedItemInactiveBrushKey}}" />
-                <Setter Property="Foreground" Value="{DynamicResource {x:Static vsp:TreeViewColors.SelectedItemInactiveTextBrushKey}}" />
-            </MultiTrigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
@@ -63,6 +45,7 @@
         <Setter Property="Margin" Value="0" />
         <Setter Property="Template" Value="{StaticResource ListViewItemTemplate}" />
         <Setter Property="Foreground" Value="{DynamicResource {x:Static vsp:EnvironmentColors.CommandBarTextActiveBrushKey}}" />
+        <Setter Property="Focusable" Value="False" />
     </Style>
 
     <!--  List View Column Header Gripper Control Temlate  -->

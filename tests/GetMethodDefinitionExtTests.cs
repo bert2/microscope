@@ -5,10 +5,10 @@ namespace Microscope.Tests {
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
+    using Microscope.CodeAnalysis;
     using Microscope.Shared;
     using Microscope.Tests.TestData;
     using Microscope.Tests.Util;
-    using Microscope.VSExtension;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 

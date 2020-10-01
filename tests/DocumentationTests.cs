@@ -5,7 +5,8 @@ namespace Microscope.Tests {
     using System.Linq;
     using System.Reflection.Emit;
 
-    using Microscope.VSExtension;
+    using Microscope.CodeAnalysis;
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using Shouldly;

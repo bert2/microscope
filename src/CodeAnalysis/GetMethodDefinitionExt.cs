@@ -1,6 +1,6 @@
 ﻿#nullable enable
 
-namespace Microscope.VSExtension {
+namespace Microscope.CodeAnalysis {
     using System;
     using System.Collections.Generic;
     using System.Linq;

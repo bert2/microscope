@@ -1,6 +1,6 @@
 ﻿#nullable enable
 
-namespace Microscope.VSExtension {
+namespace Microscope.CodeAnalysis {
     using System.Text.RegularExpressions;
 
     public static class Documentation {

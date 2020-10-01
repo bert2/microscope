@@ -103,6 +103,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\src\CodeAnalysis\CodeAnalysis.csproj">
+      <Project>{f98bb94e-cf38-466b-adfd-9bb26d8493b7}</Project>
+      <Name>CodeAnalysis</Name>
+    </ProjectReference>
     <ProjectReference Include="..\src\CodeLensProvider\CodeLensProvider.csproj">
       <Project>{FA8F7552-7E27-425B-9B81-09E0789179A3}</Project>
       <Name>CodeLensProvider</Name>
@@ -110,10 +114,6 @@
     <ProjectReference Include="..\src\Shared\Shared.csproj">
       <Project>{D6F37EEC-CBA3-4DB2-B44C-5F036C6FAA9F}</Project>
       <Name>Shared</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\src\VSExtension\VSExtension.csproj">
-      <Project>{a0920311-8835-4915-9e9b-384f5d8f1113}</Project>
-      <Name>VSExtension</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

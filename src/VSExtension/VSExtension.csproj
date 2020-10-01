@@ -54,9 +54,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AllParametersMatchExt.cs" />
     <Compile Include="CodeLensConnectionHandler.cs" />
-    <Compile Include="Documentation.cs" />
     <Compile Include="UI\CodeLensDetailsUserControl.xaml.cs">
       <DependentUpon>CodeLensDetailsUserControl.xaml</DependentUpon>
     </Compile>
@@ -68,12 +66,8 @@
     <Compile Include="Options\DialogPageProvider.cs" />
     <Compile Include="Options\GeneralOptions.cs" />
     <Compile Include="RefreshCommand.cs" />
-    <Compile Include="CompileExt.cs" />
-    <Compile Include="GetMethodDefinitionExt.cs" />
-    <Compile Include="GetMethodSymbolAtExt.cs" />
     <Compile Include="InstructionsProvider.cs" />
     <Compile Include="MicroscopePackage.cs" />
-    <Compile Include="GetDocumentExt.cs" />
     <Compile Include="MicroscopeCommands.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -86,8 +80,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>source.extension.vsixmanifest</DependentUpon>
     </Compile>
-    <Compile Include="SymbolNameExt.cs" />
-    <Compile Include="ToCodeLensDataExt.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\LICENSE">
@@ -114,6 +106,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CodeAnalysis\CodeAnalysis.csproj">
+      <Project>{f98bb94e-cf38-466b-adfd-9bb26d8493b7}</Project>
+      <Name>CodeAnalysis</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CodeLensProvider\CodeLensProvider.csproj">
       <Project>{FA8F7552-7E27-425B-9B81-09E0789179A3}</Project>
       <Name>CodeLensProvider</Name>

@@ -8,6 +8,7 @@ namespace Microscope.VSExtension {
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Microscope.CodeAnalysis;
     using Microscope.Shared;
     using Microscope.VSExtension.Options;
 

@@ -5,6 +5,7 @@ namespace Microscope.VSExtension.UI {
     using System.Windows.Controls;
     using System.Windows.Input;
 
+    using Microscope.CodeAnalysis;
     using Microscope.Shared;
     using Microsoft.VisualStudio.Shell;
 

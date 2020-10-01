@@ -1,6 +1,6 @@
 ﻿#nullable enable
 
-namespace Microscope.VSExtension {
+namespace Microscope.CodeAnalysis {
     using System;
     using System.IO;
     using System.Threading;

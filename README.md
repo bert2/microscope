@@ -127,7 +127,7 @@ PS> nuke test # build and run tests
 
 ### 0.5.1
 
-- Fixes a bug where the documentation of instructions with opcodes that have a trailing dot in their name could not be retrieved or navigated to.
+- Fixes a bug where the documentation of instructions with opcodes that have a trailing dot in their name could not be retrieved.
 - Adds a new custom UI for the details view, replacing the default grid UI. This is only a minor visual change, but enables future features like including instructions from compiler-generated classes or showing the CodeLens on classes.
 
 ### 0.5.0

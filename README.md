@@ -125,6 +125,10 @@ PS> nuke test # build and run tests
 
 ## Changelog
 
+### 0.5.2
+
+- Fixes a bug where clicking on an instruction's opcode that has a trailing dot in its name would not open the correct documentation page.
+
 ### 0.5.1
 
 - Fixes a bug where the documentation of instructions with opcodes that have a trailing dot in their name could not be retrieved.

@@ -23,7 +23,7 @@ namespace Microscope.VSExtension.UI {
             ThreadHelper.ThrowIfNotOnUIThread();
 
             if (sender is TextBlock tb && tb.DataContext is Instruction instr) {
-                var opCode = instr.OpCode.Replace('.', '_');
+                var opCode = instr.OpCode.TrimEnd('.').Replace('.', '_');
                 var url = $"https://docs.microsoft.com/dotnet/api/system.reflection.emit.opcodes.{opCode}";
                 _ = Process.Start(url);
                 e.Handled = true;

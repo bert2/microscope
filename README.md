@@ -125,6 +125,10 @@ PS> nuke test # build and run tests
 
 ## Changelog
 
+### 0.5.3
+
+- Refactoring to greatly reduce the amount of data exchanged between the out-of-process CodeLens engine and Visual Studio.
+
 ### 0.5.2
 
 - Fixes a bug where clicking on an instruction's opcode that has a trailing dot in its name would not open the correct documentation page.

@@ -9,14 +9,19 @@ namespace Microscope.VSExtension {
 
     using Microscope.Shared;
 
+    using Mono.Cecil.Cil;
+    using Mono.Collections.Generic;
+
     using StreamJsonRpc;
 
     using static Microscope.Shared.Logging;
 
     using CodeLensConnections = System.Collections.Concurrent.ConcurrentDictionary<System.Guid, CodeLensConnectionHandler>;
+    using CodeLensInstructions = System.Collections.Concurrent.ConcurrentDictionary<System.Guid, Mono.Collections.Generic.Collection<Mono.Cecil.Cil.Instruction>>;
 
     public class CodeLensConnectionHandler : IRemoteVisualStudio, IDisposable {
         private static readonly CodeLensConnections connections = new CodeLensConnections();
+        private static readonly CodeLensInstructions instructions = new CodeLensInstructions();
 
         private JsonRpc? rpc;
         private Guid? dataPointId;
@@ -53,8 +58,10 @@ namespace Microscope.VSExtension {
         }
 
         public void Dispose() {
-            if (dataPointId.HasValue)
+            if (dataPointId.HasValue) {
                 _ = connections.TryRemove(dataPointId.Value, out var _);
+                _ = instructions.TryRemove(dataPointId.Value, out var _);
+            }
         }
 
         // Called from each CodeLensDataPoint via JSON RPC.
@@ -62,6 +69,11 @@ namespace Microscope.VSExtension {
             dataPointId = id;
             connections[id] = this;
         }
+
+        public static void StoreInstructions(Guid id, Collection<Instruction> instrs)
+            => instructions[id] = instrs;
+
+        public static Collection<Instruction> GetInstructions(Guid id) => instructions[id];
 
         public static async Task RefreshCodeLensDataPoint(Guid id) {
             if (!connections.TryGetValue(id, out var conn))

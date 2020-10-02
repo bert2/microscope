@@ -46,21 +46,21 @@ namespace Microscope.CodeLensProvider {
 
         public async Task<CodeLensDataPointDescriptor> GetDataAsync(CodeLensDescriptorContext context, CancellationToken ct) {
             try {
-                data = await GetInstructions(context, ct).Caf();
+                data = await LoadInstructions(context, ct).Caf();
                 dataLoaded.Set();
 
-                var (description, tooltip) = data.ErrorMessage switch {
-                    null => (
-                        data.Instructions!.Count.Labeled("instruction"),
-                        $"{data.BoxOpsCount.Labeled("boxing")}, {data.CallvirtOpsCount.Labeled("unconstrained virtual call")}"),
-                    var err => ("- instructions", err)
-                };
+                var description = data.IsFailure
+                    ? "- instructions"
+                    : data.InstructionsCount!.Value.Labeled("instruction");
+                var tooltip = data.IsFailure
+                    ? data.ErrorMessage!
+                    : $"{data.BoxOpsCount!.Value.Labeled("boxing")}, {data.CallvirtOpsCount!.Value.Labeled("unconstrained virtual call")}";
 
                 return new CodeLensDataPointDescriptor {
                     Description = description,
                     TooltipText = tooltip,
                     ImageId = null,
-                    IntValue = data.Instructions?.Count
+                    IntValue = data.InstructionsCount
                 };
             } catch (Exception ex) {
                 LogCL(ex);
@@ -73,18 +73,18 @@ namespace Microscope.CodeLensProvider {
                 // When opening the details pane, the data point is re-created leaving `data` uninitialized. VS will
                 // then call `GetDataAsync()` and `GetDetailsAsync()` concurrently.
                 if (!dataLoaded.Wait(timeout: TimeSpan.FromSeconds(.5), ct))
-                    data = await GetInstructions(context, ct).Caf();
+                    data = await LoadInstructions(context, ct).Caf();
 
-                if (data!.ErrorMessage != null)
+                if (data!.IsFailure)
                     throw new InvalidOperationException($"Getting CodeLens details for {context.FullName()} failed: {data.ErrorMessage}");
 
                 return new CodeLensDetailsDescriptor {
                     // Since it's impossible to figure out how to use [DetailsTemplateName], we'll
-                    // just use the default grid template without any headers/entries and stuff
-                    // everything in the custom data.
+                    // just use the default grid template without any headers/entries and add
+                    // what we want to transmit to the custom data.
                     Headers = Enumerable.Empty<CodeLensDetailHeaderDescriptor>(),
                     Entries = Enumerable.Empty<CodeLensDetailEntryDescriptor>(),
-                    CustomData = new[] { new CodeLensDetails(data.Instructions!) },
+                    CustomData = new[] { new CodeLensDetails(id) },
                     PaneNavigationCommands = new[] {
                         new CodeLensDetailPaneCommand {
                             CommandDisplayName = "Refresh",
@@ -102,12 +102,13 @@ namespace Microscope.CodeLensProvider {
         // Called from VS via JSON RPC.
         public void Refresh() => _ = InvalidatedAsync?.InvokeAsync(this, EventArgs.Empty);
 
-        private async Task<CodeLensData> GetInstructions(CodeLensDescriptorContext ctx, CancellationToken ct)
+        private async Task<CodeLensData> LoadInstructions(CodeLensDescriptorContext ctx, CancellationToken ct)
             => await callbackService
                 .InvokeAsync<CodeLensData>(
                     this,
-                    nameof(IInstructionsProvider.GetInstructions),
+                    nameof(IInstructionsProvider.LoadInstructions),
                     new object[] {
+                        id,
                         Descriptor.ProjectGuid,
                         Descriptor.FilePath,
                         ctx.ApplicableSpan != null

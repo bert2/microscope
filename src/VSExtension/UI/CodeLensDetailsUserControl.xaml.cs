@@ -2,27 +2,25 @@
 
 namespace Microscope.VSExtension.UI {
     using System.Diagnostics;
+    using System.Linq;
     using System.Windows.Controls;
     using System.Windows.Input;
 
-    using Microscope.CodeAnalysis;
     using Microscope.Shared;
     using Microsoft.VisualStudio.Shell;
 
     public partial class CodeLensDetailsUserControl : UserControl {
         public CodeLensDetailsUserControl(CodeLensDetails details) {
             InitializeComponent();
-
-            foreach (var instr in details.Instructions)
-                instr.Documentation = Documentation.For(instr.OpCode);
-
-            listView.ItemsSource = details.Instructions;
+            listView.ItemsSource = CodeLensConnectionHandler
+                .GetInstructions(details.DataPointId)
+                .Select(ViewModel.From);
         }
 
         private void GoToDocumentation(object sender, MouseButtonEventArgs e) {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            if (sender is TextBlock tb && tb.DataContext is Instruction instr) {
+            if (sender is TextBlock tb && tb.DataContext is ViewModel instr) {
                 var opCode = instr.OpCode.TrimEnd('.').Replace('.', '_');
                 var url = $"https://docs.microsoft.com/dotnet/api/system.reflection.emit.opcodes.{opCode}";
                 _ = Process.Start(url);

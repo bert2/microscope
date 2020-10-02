@@ -3,9 +3,12 @@
 namespace Microscope.CodeAnalysis {
     using System.Text.RegularExpressions;
 
-    public static class Documentation {
-        public static string? For(string opCode) =>
-            GetRaw(opCode)?
+    using Mono.Cecil.Cil;
+
+    public static class GetDocumentationExt {
+        public static string? GetDocumentation(this OpCode opCode) => opCode
+            .Name
+            .GetRawDocumentation()?
             .RegexReplace("<paramref name=\"([^\"]+)\" />", m => $"`{m.Groups[1].Value}`")
             .RegexReplace("<see cref=\"T:([^\"]+)\" />",    m => $"`{m.Groups[1].Value}`");
 
@@ -13,7 +16,7 @@ namespace Microscope.CodeAnalysis {
         // Yes, this is hard-coded. But to me this solution seems way less brittle than dynamically
         // locating 'System.Reflection.Primitives.xml' on the user's system and feeding it into a
         // library that parses the documentation (e.g. LoxSmoke.DocXml).
-        private static string? GetRaw(string opCode) => opCode switch {
+        public static string? GetRawDocumentation(this string opCode) => opCode switch {
             "add"            => "Adds two values and pushes the result onto the evaluation stack.",
             "add.ovf"        => "Adds two integers, performs an overflow check, and pushes the result onto the evaluation stack.",
             "add.ovf.un"     => "Adds two unsigned integer values, performs an overflow check, and pushes the result onto the evaluation stack.",

@@ -17,6 +17,9 @@ namespace Microscope.VSExtension {
     using Microsoft.VisualStudio.LanguageServices;
     using Microsoft.VisualStudio.Utilities;
 
+    using Mono.Cecil.Cil;
+    using Mono.Collections.Generic;
+
     using static Microscope.Shared.Logging;
 
     [Export(typeof(ICodeLensCallbackListener))]
@@ -27,22 +30,24 @@ namespace Microscope.VSExtension {
         [ImportingConstructor]
         public InstructionsProvider(VisualStudioWorkspace workspace) => this.workspace = workspace;
 
-        public async Task<CodeLensData> GetInstructions(Guid projGuid, string filePath, int textStart, int textLen, CancellationToken ct) {
+        public async Task<CodeLensData> LoadInstructions(Guid dataPointId, Guid projGuid, string filePath, int textStart, int textLen, CancellationToken ct) {
             try {
                 var doc = workspace.GetDocument(filePath, projGuid);
                 var method = await doc.GetMethodSymbolAt(new TextSpan(textStart, textLen), ct).Caf();
 
                 using var peStream = new MemoryStream();
                 using var assembly = await doc.Project.Compile(peStream, ct).Caf();
+                if (assembly is null) return CodeLensData.CompilerError();
 
-                return assembly is null
-                    ? CodeLensData.CompilerError()
-                    : assembly
-                        .GetMethodDefinition(method)
-                        .Body?
-                        .Instructions
-                        .ToCodeLensData()
-                        ?? CodeLensData.Empty();
+                var instructions = assembly
+                    .GetMethodDefinition(method)
+                    .Body?
+                    .Instructions
+                    ?? new Collection<Instruction>(capacity: 0);
+
+                CodeLensConnectionHandler.StoreInstructions(dataPointId, instructions);
+
+                return instructions.ToCodeLensData();
             } catch (Exception ex) {
                 LogVS(ex);
                 return CodeLensData.Failure(ex.ToString());

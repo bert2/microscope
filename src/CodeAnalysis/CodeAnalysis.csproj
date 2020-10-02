@@ -45,10 +45,11 @@
   <ItemGroup>
     <Compile Include="AllParametersMatchExt.cs" />
     <Compile Include="CompileExt.cs" />
-    <Compile Include="Documentation.cs" />
+    <Compile Include="GetDocumentationExt.cs" />
     <Compile Include="GetDocumentExt.cs" />
     <Compile Include="GetMethodDefinitionExt.cs" />
     <Compile Include="GetMethodSymbolAtExt.cs" />
+    <Compile Include="PrintInstructionExt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SymbolNameExt.cs" />
     <Compile Include="ToCodeLensDataExt.cs" />

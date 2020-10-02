@@ -24,6 +24,5 @@ namespace Microscope.VSExtension
     internal sealed partial class PackageIds
     {
         public const int RefreshCommandId = 0x0100;
-        public const int GoToDocumentationCommandId = 0x0200;
     }
 }

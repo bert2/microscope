@@ -9,9 +9,9 @@
 
 var r = new DocXmlReader(@"C:\Program Files (x86)\Microsoft SDKs\NuGetPackages\System.Reflection.Primitives\4.0.1\ref\netstandard1.0\System.Reflection.Primitives.xml");
 
-string QuotedOpCode(FieldInfo f) => $"\"{((OpCode)f.GetValue(null)).Name}\"";
+string QuotedOpCode(FieldInfo f) => $"\"{((OpCode)f.GetValue(null)!).Name}\"";
 
-typeof(System.Reflection.Emit.OpCodes)
+typeof(OpCodes)
     .GetFields()
     .OrderBy(f => f.Name)
     .Select(f => $"{QuotedOpCode(f),-16} => \"{r.GetMemberComment(f).Replace("\"", "\\\"")}\",")

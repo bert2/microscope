@@ -3,7 +3,7 @@
 namespace Microscope.Shared {
     using System;
 
-    // Only holds the ID the `CodeLenseDataPoint` for which the details have been requested.
+    // Only holds the ID the `CodeLensDataPoint` for which the details have been requested.
     // The actual instructions to display are stored in the VS process and can be accessed
     // using the ID.
     public class CodeLensDetails {

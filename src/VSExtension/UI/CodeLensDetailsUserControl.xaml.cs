@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 namespace Microscope.VSExtension.UI {
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
     using System.Windows.Controls;
@@ -12,9 +13,42 @@ namespace Microscope.VSExtension.UI {
     public partial class CodeLensDetailsUserControl : UserControl {
         public CodeLensDetailsUserControl(CodeLensDetails details) {
             InitializeComponent();
-            listView.ItemsSource = CodeLensConnectionHandler
-                .GetInstructions(details.DataPointId)
-                .Select(ViewModel.From);
+
+            DataContext = new {
+                Types = new[] {
+                    new {
+                        Name = "FooType",
+                        Methods = new[] {
+                            new {
+                                Name = "BarMethod",
+                                Instructions = CodeLensConnectionHandler
+                                    .GetInstructions(details.DataPointId)
+                                    .Select(ViewModel.From)
+                                    .ToList()
+                            }
+                        }.ToList()
+                    },
+                    new {
+                        Name = "QuxType",
+                        Methods = new[] {
+                            new {
+                                Name = "BazMethod",
+                                Instructions = new List<ViewModel> {
+                                    new ViewModel("IL_0001", "nop", "", null),
+                                    new ViewModel("IL_0002", "ret", "", null)
+                                }
+                            },
+                            new {
+                                Name = "OnkMethod",
+                                Instructions = new List<ViewModel> {
+                                    new ViewModel("IL_0001", "nop", "", null),
+                                    new ViewModel("IL_0002", "ret", "", null)
+                                }
+                            }
+                        }.ToList()
+                    }
+                }.ToList(),
+            };
         }
 
         private void GoToDocumentation(object sender, MouseButtonEventArgs e) {

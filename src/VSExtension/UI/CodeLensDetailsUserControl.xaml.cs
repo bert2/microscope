@@ -14,17 +14,24 @@ namespace Microscope.VSExtension.UI {
         public CodeLensDetailsUserControl(CodeLensDetails details) {
             InitializeComponent();
 
-            DataContext = new {
-                Types = new[] {
+            var instructions = CodeLensConnectionHandler
+                .GetInstructions(details.DataPointId)
+                .Select(ViewModel.From)
+                .ToList();
+
+            var data = new {
+                Instructions = instructions,
+                HasCompilerGeneratedTypes = instructions.Count <= 15,
+                CompilerGeneratedTypes = new[] {
                     new {
                         Name = "FooType",
                         Methods = new[] {
                             new {
                                 Name = "BarMethod",
-                                Instructions = CodeLensConnectionHandler
-                                    .GetInstructions(details.DataPointId)
-                                    .Select(ViewModel.From)
-                                    .ToList()
+                                Instructions = new List<ViewModel> {
+                                    new ViewModel("IL_0001", "nop", "", null),
+                                    new ViewModel("IL_0002", "ret", "", null)
+                                }
                             }
                         }.ToList()
                     },
@@ -49,6 +56,10 @@ namespace Microscope.VSExtension.UI {
                     }
                 }.ToList(),
             };
+
+            if (data.Instructions.Count > 15) data.CompilerGeneratedTypes.Clear();
+
+            DataContext = data;
         }
 
         private void GoToDocumentation(object sender, MouseButtonEventArgs e) {

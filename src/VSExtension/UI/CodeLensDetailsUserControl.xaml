@@ -13,6 +13,8 @@
         <ResourceDictionary Source="ListViewStyle.xaml" />
       </ResourceDictionary.MergedDictionaries>
 
+      <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+
       <DataTemplate x:Key="InstructionsListContent">
         <ListView ItemsSource="{Binding}">
           <ListView.View>
@@ -22,7 +24,7 @@
                   <Setter Property="Visibility" Value="Collapsed" />
                 </Style>
               </GridView.ColumnHeaderContainerStyle>
-              <GridViewColumn DisplayMemberBinding="{Binding Label}" Header="Label" />
+              <GridViewColumn DisplayMemberBinding="{Binding Label, Mode=OneWay}" Header="Label" />
               <GridViewColumn Header="OpCode">
                 <GridViewColumn.CellTemplate>
                   <DataTemplate>
@@ -30,55 +32,49 @@
                       Cursor="Hand"
                       FontWeight="Bold"
                       MouseDown="GoToDocumentation"
-                      Text="{Binding OpCode}"
-                      ToolTip="{Binding Documentation}" />
+                      Text="{Binding OpCode, Mode=OneWay}"
+                      ToolTip="{Binding Documentation, Mode=OneWay}" />
                   </DataTemplate>
                 </GridViewColumn.CellTemplate>
               </GridViewColumn>
-              <GridViewColumn DisplayMemberBinding="{Binding Operand}" Header="Operand" />
+              <GridViewColumn DisplayMemberBinding="{Binding Operand, Mode=OneWay}" Header="Operand" />
             </GridView>
           </ListView.View>
         </ListView>
       </DataTemplate>
+    </ResourceDictionary>
+  </UserControl.Resources>
 
-      <DataTemplate x:Key="SingleMethodContent">
-        <ContentPresenter Content="{Binding Types[0].Methods[0].Instructions}" ContentTemplate="{StaticResource InstructionsListContent}" />
-      </DataTemplate>
+  <StackPanel>
+    <ContentPresenter Content="{Binding Instructions, Mode=OneWay}" ContentTemplate="{StaticResource InstructionsListContent}" />
 
-      <DataTemplate x:Key="MultipleMethodsContent">
-        <ItemsControl ItemsSource="{Binding Types}">
-          <ItemsControl.ItemTemplate>
-            <DataTemplate>
-              <StackPanel>
-                <TextBlock FontWeight="Bold" Text="{Binding Name}" />
-                <ItemsControl ItemsSource="{Binding Methods}">
+    <StackPanel Visibility="{Binding HasCompilerGeneratedTypes, Converter={StaticResource BoolToVisConverter}, Mode=OneWay}">
+      <TextBlock Margin="0,20,0,10" Text="Compiler-generated code:" />
+
+      <ItemsControl ItemsSource="{Binding CompilerGeneratedTypes, Mode=OneWay}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <StackPanel>
+              <Expander Header="{Binding Name, Mode=OneWay}">
+                <ItemsControl ItemsSource="{Binding Methods, Mode=OneWay}">
                   <ItemsControl.ItemTemplate>
                     <DataTemplate>
                       <StackPanel>
-                        <TextBlock Text="{Binding Name}" />
-                        <ContentPresenter Content="{Binding Instructions}" ContentTemplate="{StaticResource InstructionsListContent}" />
+                        <Expander
+                          Margin="20,0"
+                          Header="{Binding Name, Mode=OneWay}"
+                          IsExpanded="True">
+                          <ContentPresenter Content="{Binding Instructions, Mode=OneWay}" ContentTemplate="{StaticResource InstructionsListContent}" />
+                        </Expander>
                       </StackPanel>
                     </DataTemplate>
                   </ItemsControl.ItemTemplate>
                 </ItemsControl>
-              </StackPanel>
-            </DataTemplate>
-          </ItemsControl.ItemTemplate>
-        </ItemsControl>
-      </DataTemplate>
-    </ResourceDictionary>
-  </UserControl.Resources>
-
-  <ContentPresenter Content="{Binding}">
-    <ContentPresenter.Style>
-      <Style TargetType="ContentPresenter">
-        <Setter Property="ContentTemplate" Value="{StaticResource MultipleMethodsContent}" />
-        <Style.Triggers>
-          <DataTrigger Binding="{Binding Types.Count}" Value="1">
-            <Setter Property="ContentTemplate" Value="{StaticResource SingleMethodContent}" />
-          </DataTrigger>
-        </Style.Triggers>
-      </Style>
-    </ContentPresenter.Style>
-  </ContentPresenter>
+              </Expander>
+            </StackPanel>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </StackPanel>
+  </StackPanel>
 </UserControl>

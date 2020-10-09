@@ -45,7 +45,6 @@
     <Setter Property="Margin" Value="0" />
     <Setter Property="Template" Value="{StaticResource ListViewItemTemplate}" />
     <Setter Property="Foreground" Value="{DynamicResource {x:Static vsp:EnvironmentColors.CommandBarTextActiveBrushKey}}" />
-    <Setter Property="Focusable" Value="False" />
   </Style>
 
   <!--  List View Column Header Gripper Control Temlate  -->

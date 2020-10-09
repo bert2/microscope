@@ -24,7 +24,7 @@
                   <Setter Property="Visibility" Value="Collapsed" />
                 </Style>
               </GridView.ColumnHeaderContainerStyle>
-              <GridViewColumn DisplayMemberBinding="{Binding Label, Mode=OneWay}" Header="Label" />
+              <GridViewColumn DisplayMemberBinding="{Binding Label, Mode=OneTime}" Header="Label" />
               <GridViewColumn Header="OpCode">
                 <GridViewColumn.CellTemplate>
                   <DataTemplate>
@@ -32,12 +32,12 @@
                       Cursor="Hand"
                       FontWeight="Bold"
                       MouseDown="GoToDocumentation"
-                      Text="{Binding OpCode, Mode=OneWay}"
-                      ToolTip="{Binding Documentation, Mode=OneWay}" />
+                      Text="{Binding OpCode, Mode=OneTime}"
+                      ToolTip="{Binding Documentation, Mode=OneTime}" />
                   </DataTemplate>
                 </GridViewColumn.CellTemplate>
               </GridViewColumn>
-              <GridViewColumn DisplayMemberBinding="{Binding Operand, Mode=OneWay}" Header="Operand" />
+              <GridViewColumn DisplayMemberBinding="{Binding Operand, Mode=OneTime}" Header="Operand" />
             </GridView>
           </ListView.View>
         </ListView>
@@ -46,32 +46,28 @@
   </UserControl.Resources>
 
   <StackPanel>
-    <ContentPresenter Content="{Binding Instructions, Mode=OneWay}" ContentTemplate="{StaticResource InstructionsListContent}" />
+    <ContentPresenter Content="{Binding Instructions, Mode=OneTime}" ContentTemplate="{StaticResource InstructionsListContent}" />
 
-    <StackPanel Visibility="{Binding HasCompilerGeneratedTypes, Converter={StaticResource BoolToVisConverter}, Mode=OneWay}">
+    <StackPanel Visibility="{Binding HasCompilerGeneratedTypes, Converter={StaticResource BoolToVisConverter}, Mode=OneTime}">
       <TextBlock Margin="0,20,0,10" Text="Compiler-generated code:" />
 
-      <ItemsControl ItemsSource="{Binding CompilerGeneratedTypes, Mode=OneWay}">
+      <ItemsControl ItemsSource="{Binding CompilerGeneratedTypes, Mode=OneTime}">
         <ItemsControl.ItemTemplate>
           <DataTemplate>
-            <StackPanel>
-              <Expander Header="{Binding Name, Mode=OneWay}">
-                <ItemsControl ItemsSource="{Binding Methods, Mode=OneWay}">
-                  <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                      <StackPanel>
-                        <Expander
-                          Margin="20,0"
-                          Header="{Binding Name, Mode=OneWay}"
-                          IsExpanded="True">
-                          <ContentPresenter Content="{Binding Instructions, Mode=OneWay}" ContentTemplate="{StaticResource InstructionsListContent}" />
-                        </Expander>
-                      </StackPanel>
-                    </DataTemplate>
-                  </ItemsControl.ItemTemplate>
-                </ItemsControl>
-              </Expander>
-            </StackPanel>
+            <Expander Header="{Binding Name, Mode=OneTime}">
+              <ItemsControl ItemsSource="{Binding Methods, Mode=OneTime}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <Expander
+                      Margin="20,0"
+                      Header="{Binding Name, Mode=OneTime}"
+                      IsExpanded="True">
+                      <ContentPresenter Content="{Binding Instructions, Mode=OneTime}" ContentTemplate="{StaticResource InstructionsListContent}" />
+                    </Expander>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </Expander>
           </DataTemplate>
         </ItemsControl.ItemTemplate>
       </ItemsControl>

@@ -52,6 +52,29 @@
     <StackPanel Visibility="{Binding HasCompilerGeneratedTypes, Converter={StaticResource BoolToVisConverter}, Mode=OneTime}">
       <TextBlock Margin="0,20,0,10" Text="Compiler-generated code:" />
 
+      <TreeView
+        x:Name="MainTreeView"
+        Margin="10"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch"
+        ItemsSource="{Binding CompilerGeneratedTypes, Mode=OneTime}">
+        <TreeView.ItemTemplate>
+          <HierarchicalDataTemplate ItemsSource="{Binding Methods, Mode=OneTime}">
+            <Label Content="{Binding Name, Mode=OneTime}" />
+            <HierarchicalDataTemplate.ItemTemplate>
+              <HierarchicalDataTemplate ItemsSource="{Binding Instructions, Mode=OneTime}">
+                <Label Content="{Binding Name, Mode=OneTime}" />
+                <HierarchicalDataTemplate.ItemTemplate>
+                  <DataTemplate>
+                    <Label Content="{Binding OpCode, Mode=OneTime}" />
+                  </DataTemplate>
+                </HierarchicalDataTemplate.ItemTemplate>
+              </HierarchicalDataTemplate>
+            </HierarchicalDataTemplate.ItemTemplate>
+          </HierarchicalDataTemplate>
+        </TreeView.ItemTemplate>
+      </TreeView>
+
       <ItemsControl ItemsSource="{Binding CompilerGeneratedTypes, Mode=OneTime}">
         <ItemsControl.ItemTemplate>
           <DataTemplate>

@@ -309,7 +309,7 @@
     </Setter>
   </Style>
 
-  <Style x:Key="ExpanderStyle" TargetType="{x:Type Expander}">
+  <Style TargetType="{x:Type Expander}">
     <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
     <Setter Property="Background" Value="Transparent" />
     <Setter Property="HorizontalContentAlignment" Value="Stretch" />

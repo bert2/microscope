@@ -11,6 +11,7 @@
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="ListViewStyle.xaml" />
+        <ResourceDictionary Source="ExpanderStyle.xaml" />
       </ResourceDictionary.MergedDictionaries>
 
       <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />

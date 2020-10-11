@@ -21,7 +21,7 @@ namespace Microscope.VSExtension.UI {
 
             var data = new {
                 Instructions = instructions,
-                HasCompilerGeneratedTypes = instructions.Count <= 15,
+                HasCompilerGeneratedTypes = instructions.Count >= 15,
                 CompilerGeneratedTypes = new[] {
                     new {
                         Name = "FooType",
@@ -48,7 +48,7 @@ namespace Microscope.VSExtension.UI {
                                     new {
                                         Instrucions = new[] {
                                             new ViewModel("IL_0001", "nop", "some operand", "some docs"),
-                                            new ViewModel("IL_0002", "ret", "another operand, but much lone than the other one", "some docs")
+                                            new ViewModel("IL_0002", "ret", "This is a really long operand. One which should cause the list view inside the tree view to be wider than the code lense details view. I'm doing this to test if there will be a second horizontal scollbar inside the TreeView.", "some docs")
                                         }
                                     }
                                 }
@@ -69,7 +69,7 @@ namespace Microscope.VSExtension.UI {
                 }.ToList(),
             };
 
-            if (data.Instructions.Count > 15) data.CompilerGeneratedTypes.Clear();
+            if (!data.HasCompilerGeneratedTypes) data.CompilerGeneratedTypes.Clear();
 
             DataContext = data;
         }

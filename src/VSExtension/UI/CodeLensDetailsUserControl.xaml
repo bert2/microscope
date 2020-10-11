@@ -52,14 +52,7 @@
     <StackPanel Visibility="{Binding HasCompilerGeneratedTypes, Converter={StaticResource BoolToVisConverter}, Mode=OneTime}">
       <TextBlock Margin="0,20,0,10" Text="Compiler-generated code:" />
 
-      <TreeView
-        HorizontalAlignment="Stretch"
-        VerticalAlignment="Stretch"
-        Background="Transparent"
-        BorderThickness="0"
-        ItemContainerStyle="{DynamicResource TreeViewItemStyle}"
-        ItemsSource="{Binding CompilerGeneratedTypes, Mode=OneTime}"
-        Style="{DynamicResource TreeViewStyle}">
+      <TreeView ItemsSource="{Binding CompilerGeneratedTypes, Mode=OneTime}">
         <TreeView.ItemTemplate>
           <HierarchicalDataTemplate ItemsSource="{Binding Methods, Mode=OneTime}">
             <Label Content="{Binding Name, Mode=OneTime}" />

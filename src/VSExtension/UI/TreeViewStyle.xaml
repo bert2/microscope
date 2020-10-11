@@ -10,7 +10,6 @@
   <SolidColorBrush x:Key="TreeViewItem.TreeArrow.MouseOver.Checked.Fill" Color="#FF82DFFB" />
   <SolidColorBrush x:Key="TreeViewItem.TreeArrow.Static.Fill" Color="#FFFFFFFF" />
   <SolidColorBrush x:Key="TreeViewItem.TreeArrow.Static.Stroke" Color="#FF818181" />
-  <SolidColorBrush x:Key="ListBorder" Color="#828790" />
 
   <PathGeometry x:Key="TreeArrow" Figures="M0,0 L0,6 L6,0 z" />
 
@@ -158,11 +157,11 @@
     </Style.Triggers>
   </Style>
 
-  <Style x:Key="TreeViewStyle" TargetType="{x:Type TreeView}">
-    <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
-    <Setter Property="BorderBrush" Value="{StaticResource ListBorder}" />
-    <Setter Property="BorderThickness" Value="1" />
-    <Setter Property="Padding" Value="1" />
+  <Style TargetType="{x:Type TreeView}">
+    <Setter Property="ItemContainerStyle" Value="{StaticResource TreeViewItemStyle}" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="Padding" Value="0" />
     <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
     <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
     <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />

@@ -11,6 +11,7 @@
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="ListViewStyle.xaml" />
+        <ResourceDictionary Source="TreeViewStyle.xaml" />
       </ResourceDictionary.MergedDictionaries>
 
       <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
@@ -56,7 +57,9 @@
         VerticalAlignment="Stretch"
         Background="Transparent"
         BorderThickness="0"
-        ItemsSource="{Binding CompilerGeneratedTypes, Mode=OneTime}">
+        ItemContainerStyle="{DynamicResource TreeViewItemStyle}"
+        ItemsSource="{Binding CompilerGeneratedTypes, Mode=OneTime}"
+        Style="{DynamicResource TreeViewStyle}">
         <TreeView.ItemTemplate>
           <HierarchicalDataTemplate ItemsSource="{Binding Methods, Mode=OneTime}">
             <Label Content="{Binding Name, Mode=OneTime}" />

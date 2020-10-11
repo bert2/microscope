@@ -28,9 +28,13 @@ namespace Microscope.VSExtension.UI {
                         Methods = new[] {
                             new {
                                 Name = "BarMethod",
-                                Instructions = new List<ViewModel> {
-                                    new ViewModel("IL_0001", "nop", "", null),
-                                    new ViewModel("IL_0002", "ret", "", null)
+                                InstructionLists = new[] {
+                                    new {
+                                        Instrucions = new[] {
+                                            new ViewModel("IL_0001", "nop", "some operand", "some docs"),
+                                            new ViewModel("IL_0002", "ret", "another operand, but much lone than the other one", "some docs")
+                                        }
+                                    }
                                 }
                             }
                         }.ToList()
@@ -40,16 +44,24 @@ namespace Microscope.VSExtension.UI {
                         Methods = new[] {
                             new {
                                 Name = "BazMethod",
-                                Instructions = new List<ViewModel> {
-                                    new ViewModel("IL_0001", "nop", "", null),
-                                    new ViewModel("IL_0002", "ret", "", null)
+                                InstructionLists = new[] {
+                                    new {
+                                        Instrucions = new[] {
+                                            new ViewModel("IL_0001", "nop", "some operand", "some docs"),
+                                            new ViewModel("IL_0002", "ret", "another operand, but much lone than the other one", "some docs")
+                                        }
+                                    }
                                 }
                             },
                             new {
                                 Name = "OnkMethod",
-                                Instructions = new List<ViewModel> {
-                                    new ViewModel("IL_0001", "nop", "", null),
-                                    new ViewModel("IL_0002", "ret", "", null)
+                                InstructionLists = new[] {
+                                    new {
+                                        Instrucions = new[] {
+                                            new ViewModel("IL_0001", "nop", "some operand", "some docs"),
+                                            new ViewModel("IL_0002", "ret", "another operand, but much lone than the other one", "some docs")
+                                        }
+                                    }
                                 }
                             }
                         }.ToList()

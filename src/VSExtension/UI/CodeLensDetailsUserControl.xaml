@@ -62,11 +62,11 @@
           <HierarchicalDataTemplate ItemsSource="{Binding Methods, Mode=OneTime}">
             <Label Content="{Binding Name, Mode=OneTime}" />
             <HierarchicalDataTemplate.ItemTemplate>
-              <HierarchicalDataTemplate ItemsSource="{Binding Instructions, Mode=OneTime}">
+              <HierarchicalDataTemplate ItemsSource="{Binding InstructionLists, Mode=OneTime}">
                 <Label Content="{Binding Name, Mode=OneTime}" />
                 <HierarchicalDataTemplate.ItemTemplate>
                   <DataTemplate>
-                    <Label Content="{Binding OpCode, Mode=OneTime}" />
+                    <ContentPresenter Content="{Binding Instrucions, Mode=OneTime}" ContentTemplate="{StaticResource InstructionsListContent}" />
                   </DataTemplate>
                 </HierarchicalDataTemplate.ItemTemplate>
               </HierarchicalDataTemplate>

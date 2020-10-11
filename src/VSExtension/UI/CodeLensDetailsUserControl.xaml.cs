@@ -1,7 +1,6 @@
 ﻿#nullable enable
 
 namespace Microscope.VSExtension.UI {
-    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
     using System.Windows.Controls;

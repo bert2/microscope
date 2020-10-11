@@ -55,6 +55,8 @@
       <TreeView
         HorizontalAlignment="Stretch"
         VerticalAlignment="Stretch"
+        Background="Transparent"
+        BorderThickness="0"
         ItemsSource="{Binding CompilerGeneratedTypes, Mode=OneTime}">
         <TreeView.ItemTemplate>
           <HierarchicalDataTemplate ItemsSource="{Binding Methods, Mode=OneTime}">

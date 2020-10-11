@@ -55,10 +55,10 @@
       <TreeView ItemsSource="{Binding CompilerGeneratedTypes, Mode=OneTime}">
         <TreeView.ItemTemplate>
           <HierarchicalDataTemplate ItemsSource="{Binding Methods, Mode=OneTime}">
-            <Label Content="{Binding Name, Mode=OneTime}" />
+            <TextBlock Text="{Binding Name, Mode=OneTime}" />
             <HierarchicalDataTemplate.ItemTemplate>
               <HierarchicalDataTemplate ItemsSource="{Binding InstructionLists, Mode=OneTime}">
-                <Label Content="{Binding Name, Mode=OneTime}" />
+                <TextBlock Text="{Binding Name, Mode=OneTime}" />
                 <HierarchicalDataTemplate.ItemTemplate>
                   <DataTemplate>
                     <ContentPresenter Content="{Binding Instrucions, Mode=OneTime}" ContentTemplate="{StaticResource InstructionsListContent}" />

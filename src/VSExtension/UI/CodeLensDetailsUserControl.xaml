@@ -74,27 +74,6 @@
           </HierarchicalDataTemplate>
         </TreeView.ItemTemplate>
       </TreeView>
-
-      <ItemsControl ItemsSource="{Binding CompilerGeneratedTypes, Mode=OneTime}">
-        <ItemsControl.ItemTemplate>
-          <DataTemplate>
-            <Expander Header="{Binding Name, Mode=OneTime}">
-              <ItemsControl ItemsSource="{Binding Methods, Mode=OneTime}">
-                <ItemsControl.ItemTemplate>
-                  <DataTemplate>
-                    <Expander
-                      Margin="20,0"
-                      Header="{Binding Name, Mode=OneTime}"
-                      IsExpanded="True">
-                      <ContentPresenter Content="{Binding Instructions, Mode=OneTime}" ContentTemplate="{StaticResource InstructionsListContent}" />
-                    </Expander>
-                  </DataTemplate>
-                </ItemsControl.ItemTemplate>
-              </ItemsControl>
-            </Expander>
-          </DataTemplate>
-        </ItemsControl.ItemTemplate>
-      </ItemsControl>
     </StackPanel>
   </StackPanel>
 </UserControl>

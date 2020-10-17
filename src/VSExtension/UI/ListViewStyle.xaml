@@ -67,75 +67,6 @@
     <Setter Property="Foreground" Value="{DynamicResource {x:Static vsp:EnvironmentColors.CommandBarTextActiveBrushKey}}" />
   </Style>
 
-  <!--  List View Column Header Gripper Control Temlate  -->
-  <ControlTemplate x:Key="GridViewColumnHeaderGripperTemplate" TargetType="{x:Type Thumb}">
-    <Border Padding="{TemplateBinding Padding}" Background="Transparent">
-      <Rectangle
-        Width="1"
-        HorizontalAlignment="Center"
-        Fill="{TemplateBinding Background}" />
-    </Border>
-  </ControlTemplate>
-
-  <!--  ListView Gripper Style  -->
-  <Style x:Key="GridViewColumnHeaderGripper" TargetType="Thumb">
-    <Setter Property="Width" Value="8" />
-    <Setter Property="Background" Value="{DynamicResource {x:Static vsp:HeaderColors.SeparatorLineBrushKey}}" />
-    <Setter Property="Template" Value="{StaticResource GridViewColumnHeaderGripperTemplate}" />
-  </Style>
-
-  <!--  Listview Grid header column style  -->
-  <ControlTemplate x:Key="GridViewColumnHeaderTemplate" TargetType="GridViewColumnHeader">
-    <Grid>
-      <Border
-        Name="HeaderBorder"
-        Margin="0"
-        Padding="{TemplateBinding Padding}"
-        Background="{TemplateBinding Background}"
-        BorderBrush="{TemplateBinding BorderBrush}"
-        BorderThickness="0,0,0,1">
-        <ContentPresenter
-          Name="HeaderContent"
-          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-          RecognizesAccessKey="True"
-          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-      </Border>
-      <!--  Note the negative margin on the thumb, which gives the gripper a bigger hit area than the actual visual appearance  -->
-      <Thumb
-        x:Name="PART_HeaderGripper"
-        Margin="0,0,-4,0"
-        HorizontalAlignment="Right"
-        Style="{StaticResource GridViewColumnHeaderGripper}" />
-    </Grid>
-    <ControlTemplate.Triggers>
-      <!--  Hover  -->
-      <Trigger Property="IsMouseOver" Value="true">
-        <Setter Property="Background" Value="{DynamicResource {x:Static vsp:HeaderColors.MouseOverBrushKey}}" />
-        <Setter Property="Foreground" Value="{DynamicResource {x:Static vsp:HeaderColors.MouseOverTextBrushKey}}" />
-      </Trigger>
-
-      <!--  Clicked (Mouse down)  -->
-      <Trigger Property="IsPressed" Value="true">
-        <Setter Property="Background" Value="{DynamicResource {x:Static vsp:HeaderColors.MouseDownBrushKey}}" />
-        <Setter Property="Foreground" Value="{DynamicResource {x:Static vsp:HeaderColors.MouseDownTextBrushKey}}" />
-      </Trigger>
-    </ControlTemplate.Triggers>
-  </ControlTemplate>
-
-  <!--  ListView Grid header glyph style  -->
-  <Style TargetType="{x:Type Path}">
-    <Setter Property="Fill" Value="{DynamicResource {x:Static vsp:HeaderColors.GlyphBrushKey}}" />
-    <Style.Triggers>
-      <DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type GridViewColumnHeader}}}" Value="True">
-        <Setter Property="Fill" Value="{DynamicResource {x:Static vsp:HeaderColors.MouseOverGlyphBrushKey}}" />
-      </DataTrigger>
-      <DataTrigger Binding="{Binding Path=IsPressed, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type GridViewColumnHeader}}}" Value="True">
-        <Setter Property="Fill" Value="{DynamicResource {x:Static vsp:HeaderColors.MouseDownGlyphBrushKey}}" />
-      </DataTrigger>
-    </Style.Triggers>
-  </Style>
-
   <!--  ListView Style  -->
   <Style TargetType="{x:Type ListView}">
     <Style.Resources>
@@ -163,11 +94,8 @@
                     VerticalScrollBarVisibility="Hidden">
                     <GridViewHeaderRowPresenter
                       Margin="0"
-                      AllowsColumnReorder="{Binding Path=TemplatedParent.View.AllowsColumnReorder, RelativeSource={RelativeSource TemplatedParent}}"
-                      ColumnHeaderContextMenu="{Binding Path=TemplatedParent.View.ColumnHeaderContextMenu, RelativeSource={RelativeSource TemplatedParent}}"
                       ColumnHeaderTemplate="{Binding Path=TemplatedParent.View.ColumnHeaderTemplate, RelativeSource={RelativeSource TemplatedParent}}"
                       ColumnHeaderTemplateSelector="{Binding Path=TemplatedParent.View.ColumnHeaderTemplateSelector, RelativeSource={RelativeSource TemplatedParent}}"
-                      ColumnHeaderToolTip="{Binding Path=TemplatedParent.View.ColumnHeaderToolTip, RelativeSource={RelativeSource TemplatedParent}}"
                       Columns="{Binding Path=TemplatedParent.View.Columns, RelativeSource={RelativeSource TemplatedParent}}"
                       SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                       <GridViewHeaderRowPresenter.ColumnHeaderContainerStyle>
@@ -208,18 +136,8 @@
           </Setter.Value>
         </Setter>
       </Style>
-
-      <!--  Style for header columns  -->
-      <Style x:Key="{x:Type GridViewColumnHeader}" TargetType="{x:Type GridViewColumnHeader}">
-        <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Foreground" Value="{DynamicResource {x:Static vsp:HeaderColors.DefaultTextBrushKey}}" />
-        <Setter Property="Background" Value="{DynamicResource {x:Static vsp:HeaderColors.DefaultBrushKey}}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static vsp:HeaderColors.SeparatorLineBrushKey}}" />
-        <Setter Property="Padding" Value="8,4,4,4" />
-        <Setter Property="Template" Value="{StaticResource GridViewColumnHeaderTemplate}" />
-      </Style>
     </Style.Resources>
+
     <Setter Property="ItemContainerStyle" Value="{StaticResource ListViewItemStyle}" />
     <Setter Property="BorderThickness" Value="0" />
     <Setter Property="Background" Value="Transparent" />

@@ -20,11 +20,6 @@
         <ListView ItemsSource="{Binding}">
           <ListView.View>
             <GridView>
-              <GridView.ColumnHeaderContainerStyle>
-                <Style TargetType="GridViewColumnHeader">
-                  <Setter Property="Visibility" Value="Collapsed" />
-                </Style>
-              </GridView.ColumnHeaderContainerStyle>
               <GridViewColumn DisplayMemberBinding="{Binding Label, Mode=OneTime}" Header="Label" />
               <GridViewColumn Header="OpCode">
                 <GridViewColumn.CellTemplate>

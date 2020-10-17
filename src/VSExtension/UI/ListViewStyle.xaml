@@ -164,13 +164,18 @@
                     <GridViewHeaderRowPresenter
                       Margin="0"
                       AllowsColumnReorder="{Binding Path=TemplatedParent.View.AllowsColumnReorder, RelativeSource={RelativeSource TemplatedParent}}"
-                      ColumnHeaderContainerStyle="{Binding Path=TemplatedParent.View.ColumnHeaderContainerStyle, RelativeSource={RelativeSource TemplatedParent}}"
                       ColumnHeaderContextMenu="{Binding Path=TemplatedParent.View.ColumnHeaderContextMenu, RelativeSource={RelativeSource TemplatedParent}}"
                       ColumnHeaderTemplate="{Binding Path=TemplatedParent.View.ColumnHeaderTemplate, RelativeSource={RelativeSource TemplatedParent}}"
                       ColumnHeaderTemplateSelector="{Binding Path=TemplatedParent.View.ColumnHeaderTemplateSelector, RelativeSource={RelativeSource TemplatedParent}}"
                       ColumnHeaderToolTip="{Binding Path=TemplatedParent.View.ColumnHeaderToolTip, RelativeSource={RelativeSource TemplatedParent}}"
                       Columns="{Binding Path=TemplatedParent.View.Columns, RelativeSource={RelativeSource TemplatedParent}}"
-                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                      <GridViewHeaderRowPresenter.ColumnHeaderContainerStyle>
+                        <Style TargetType="GridViewColumnHeader">
+                          <Setter Property="Visibility" Value="Collapsed" />
+                        </Style>
+                      </GridViewHeaderRowPresenter.ColumnHeaderContainerStyle>
+                    </GridViewHeaderRowPresenter>
                   </ScrollViewer>
 
                   <ScrollContentPresenter

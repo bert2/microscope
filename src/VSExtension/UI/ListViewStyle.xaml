@@ -36,6 +36,26 @@
       <Trigger Property="IsMouseOver" Value="true">
         <Setter Property="Background" Value="{DynamicResource {x:Static vsp:SearchControlColors.PopupControlMouseDownBackgroundGradientBeginBrushKey}}" />
       </Trigger>
+
+      <!--  Selected  -->
+      <Trigger Property="IsSelected" Value="True">
+        <!--
+          A subset of TreeViewColors are used for applying styles to the ListView.  A TreeView is
+          has a superset of the colors required by a ListView (for expanders).
+        -->
+        <Setter Property="Background" Value="{DynamicResource {x:Static vsp:CommonControlsColors.ButtonBorderPressedBrushKey}}" />
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static vsp:EnvironmentColors.SystemHighlightTextBrushKey}}" />
+      </Trigger>
+
+      <!--  Selected but not active (control focused)  -->
+      <MultiTrigger>
+        <MultiTrigger.Conditions>
+          <Condition Property="IsSelected" Value="True" />
+          <Condition Property="Selector.IsSelectionActive" Value="False" />
+        </MultiTrigger.Conditions>
+        <Setter Property="Background" Value="{DynamicResource {x:Static vsp:CommonControlsColors.ButtonBorderDisabledBrushKey}}" />
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static vsp:TreeViewColors.SelectedItemInactiveTextBrushKey}}" />
+      </MultiTrigger>
     </ControlTemplate.Triggers>
   </ControlTemplate>
 

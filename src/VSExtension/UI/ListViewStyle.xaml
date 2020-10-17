@@ -92,12 +92,7 @@
                     Focusable="false"
                     HorizontalScrollBarVisibility="Hidden"
                     VerticalScrollBarVisibility="Hidden">
-                    <GridViewHeaderRowPresenter
-                      Margin="0"
-                      ColumnHeaderTemplate="{Binding Path=TemplatedParent.View.ColumnHeaderTemplate, RelativeSource={RelativeSource TemplatedParent}}"
-                      ColumnHeaderTemplateSelector="{Binding Path=TemplatedParent.View.ColumnHeaderTemplateSelector, RelativeSource={RelativeSource TemplatedParent}}"
-                      Columns="{Binding Path=TemplatedParent.View.Columns, RelativeSource={RelativeSource TemplatedParent}}"
-                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                    <GridViewHeaderRowPresenter Columns="{Binding Path=TemplatedParent.View.Columns, RelativeSource={RelativeSource TemplatedParent}}">
                       <GridViewHeaderRowPresenter.ColumnHeaderContainerStyle>
                         <Style TargetType="GridViewColumnHeader">
                           <Setter Property="Visibility" Value="Collapsed" />

@@ -34,7 +34,7 @@
     <ControlTemplate.Triggers>
       <!--  Hover  -->
       <Trigger Property="IsMouseOver" Value="true">
-        <Setter Property="Background" Value="{DynamicResource {x:Static vsp:EnvironmentColors.ScrollBarThumbGlyphBrushKey}}" />
+        <Setter Property="Background" Value="{DynamicResource {x:Static vsp:SearchControlColors.PopupControlMouseDownBackgroundGradientBeginBrushKey}}" />
       </Trigger>
     </ControlTemplate.Triggers>
   </ControlTemplate>

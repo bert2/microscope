@@ -30,13 +30,26 @@ namespace Microscope.VSExtension {
         [ImportingConstructor]
         public InstructionsProvider(VisualStudioWorkspace workspace) => this.workspace = workspace;
 
-        public async Task<CodeLensData> LoadInstructions(Guid dataPointId, Guid projGuid, string filePath, int textStart, int textLen, CancellationToken ct) {
+        public async Task<bool> IsMicroscopeEnabled() {
+            var opts = await GeneralOptions.GetLiveInstanceAsync().Caf();
+            return opts.Enabled;
+        }
+
+        public int GetVisualStudioPid() => Process.GetCurrentProcess().Id;
+
+        public async Task<CodeLensData> LoadInstructions(
+            Guid dataPointId,
+            Guid projGuid,
+            string filePath,
+            int textStart,
+            int textLen,
+            CancellationToken ct) {
             try {
-                var doc = workspace.GetDocument(filePath, projGuid);
-                var method = await doc.GetMethodSymbolAt(new TextSpan(textStart, textLen), ct).Caf();
+                var document = workspace.GetDocument(filePath, projGuid);
+                var method = await document.GetMethodSymbolAt(new TextSpan(textStart, textLen), ct).Caf();
 
                 using var peStream = new MemoryStream();
-                using var assembly = await doc.Project.Compile(peStream, ct).Caf();
+                using var assembly = await document.Project.Compile(peStream, ct).Caf();
                 if (assembly is null) return CodeLensData.CompilerError();
 
                 var instructions = assembly
@@ -52,13 +65,6 @@ namespace Microscope.VSExtension {
                 LogVS(ex);
                 return CodeLensData.Failure(ex.ToString());
             }
-        }
-
-        public int GetVisualStudioPid() => Process.GetCurrentProcess().Id;
-
-        public async Task<bool> IsMicroscopeEnabled() {
-            var opts = await GeneralOptions.GetLiveInstanceAsync().Caf();
-            return opts.Enabled;
         }
     }
 }

@@ -84,6 +84,11 @@
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type TreeViewItem}">
           <Grid>
+            <!--
+              how to strech horizontally:
+              https://leecampbell.com/2009/01/14/horizontal-stretch-on-treeviewitems
+              https://wpf.2000things.com/2017/09/23/1218-stretching-items-in-treeview-across-entire-control
+            -->
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="Auto" MinWidth="19" />
               <ColumnDefinition Width="Auto" />
@@ -124,6 +129,9 @@
             </Trigger>
             <Trigger Property="HasItems" Value="false">
               <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="true">
+              <Setter Property="Background" Value="{DynamicResource {x:Static vsp:SearchControlColors.PopupControlMouseDownBackgroundGradientBeginBrushKey}}" />
             </Trigger>
             <Trigger Property="IsSelected" Value="true">
               <Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />

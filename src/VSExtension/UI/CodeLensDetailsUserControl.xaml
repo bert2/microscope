@@ -11,13 +11,22 @@
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="ListViewStyle.xaml" />
-        <ResourceDictionary Source="TreeViewStyle.xaml" />
       </ResourceDictionary.MergedDictionaries>
 
       <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
 
+      <CollectionViewSource x:Key="groupedCompilerGeneratedInstrucions" Source="{Binding CompilerGeneratedInstrucions, Mode=OneTime}">
+        <CollectionViewSource.GroupDescriptions>
+          <PropertyGroupDescription PropertyName="DeclaringType" />
+          <PropertyGroupDescription PropertyName="Method" />
+        </CollectionViewSource.GroupDescriptions>
+      </CollectionViewSource>
+
       <DataTemplate x:Key="InstructionsListContent">
         <ListView ItemsSource="{Binding}">
+          <ListView.GroupStyle>
+            <x:Static Member="GroupStyle.Default" />
+          </ListView.GroupStyle>
           <ListView.View>
             <GridView>
               <GridViewColumn DisplayMemberBinding="{Binding Label, Mode=OneTime}" Header="Label" />
@@ -47,23 +56,7 @@
     <StackPanel Visibility="{Binding HasCompilerGeneratedTypes, Converter={StaticResource BoolToVisConverter}, Mode=OneTime}">
       <TextBlock Margin="0,20,0,10" Text="Compiler-generated code:" />
 
-      <TreeView ItemsSource="{Binding CompilerGeneratedTypes, Mode=OneTime}">
-        <TreeView.ItemTemplate>
-          <HierarchicalDataTemplate ItemsSource="{Binding Methods, Mode=OneTime}">
-            <TextBlock Text="{Binding Name, Mode=OneTime}" />
-            <HierarchicalDataTemplate.ItemTemplate>
-              <HierarchicalDataTemplate ItemsSource="{Binding InstructionLists, Mode=OneTime}">
-                <TextBlock Text="{Binding Name, Mode=OneTime}" />
-                <HierarchicalDataTemplate.ItemTemplate>
-                  <DataTemplate>
-                    <ContentPresenter Content="{Binding Instrucions, Mode=OneTime}" ContentTemplate="{StaticResource InstructionsListContent}" />
-                  </DataTemplate>
-                </HierarchicalDataTemplate.ItemTemplate>
-              </HierarchicalDataTemplate>
-            </HierarchicalDataTemplate.ItemTemplate>
-          </HierarchicalDataTemplate>
-        </TreeView.ItemTemplate>
-      </TreeView>
+      <ContentPresenter Content="{Binding Source={StaticResource groupedCompilerGeneratedInstrucions}}" ContentTemplate="{StaticResource InstructionsListContent}" />
     </StackPanel>
   </StackPanel>
 </UserControl>

@@ -21,54 +21,17 @@ namespace Microscope.VSExtension.UI {
             var data = new {
                 Instructions = instructions,
                 HasCompilerGeneratedTypes = instructions.Count >= 15,
-                CompilerGeneratedTypes = new[] {
-                    new {
-                        Name = "FooType",
-                        Methods = new[] {
-                            new {
-                                Name = "BarMethod",
-                                InstructionLists = new[] {
-                                    new {
-                                        Instrucions = new[] {
-                                            new ViewModel("IL_0001", "nop", "some operand", "some docs"),
-                                            new ViewModel("IL_0002", "ret", "another operand, but much lone than the other one", "some docs")
-                                        }
-                                    }
-                                }
-                            }
-                        }.ToList()
-                    },
-                    new {
-                        Name = "QuxType",
-                        Methods = new[] {
-                            new {
-                                Name = "BazMethod",
-                                InstructionLists = new[] {
-                                    new {
-                                        Instrucions = new[] {
-                                            new ViewModel("IL_0001", "nop", "some operand", "some docs"),
-                                            new ViewModel("IL_0002", "ret", "This is a really long operand. One which should cause the list view inside the tree view to be wider than the code lense details view. I'm doing this to test if there will be a second horizontal scollbar inside the TreeView.", "some docs")
-                                        }
-                                    }
-                                }
-                            },
-                            new {
-                                Name = "OnkMethod",
-                                InstructionLists = new[] {
-                                    new {
-                                        Instrucions = new[] {
-                                            new ViewModel("IL_0001", "nop", "some operand", "some docs"),
-                                            new ViewModel("IL_0002", "ret", "another operand, but much lone than the other one", "some docs")
-                                        }
-                                    }
-                                }
-                            }
-                        }.ToList()
-                    }
+                CompilerGeneratedInstrucions = new[] {
+                    new ViewModel("IL_0001", "nop", "some operand", "some docs", "FooType", "BarMethod"),
+                    new ViewModel("IL_0002", "ret", "another operand, but longer than the other one", "some docs", "FooType", "BarMethod"),
+                    new ViewModel("IL_0001", "nop", "some operand", "some docs", "QuxType", "BazMethod"),
+                    new ViewModel("IL_0002", "ret", "This is a really long operand. One which should cause the list view inside the tree view to be wider than the code lense details view. I'm doing this to test if there will be a second horizontal scollbar inside the TreeView.", "some docs", "QuxType", "BazMethod"),
+                    new ViewModel("IL_0001", "nop", "some operand", "some docs", "QuxType", "OnkMethod"),
+                    new ViewModel("IL_0002", "ret", "another operand, but longer than the other one", "some docs", "QuxType", "OnkMethod")
                 }.ToList(),
             };
 
-            if (!data.HasCompilerGeneratedTypes) data.CompilerGeneratedTypes.Clear();
+            if (!data.HasCompilerGeneratedTypes) data.CompilerGeneratedInstrucions.Clear();
 
             DataContext = data;
         }

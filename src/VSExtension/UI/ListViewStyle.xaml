@@ -18,7 +18,6 @@
     the ListView's style updates accordingly.
   -->
 
-  <!--  ListView Item Control Template  -->
   <ControlTemplate x:Key="ListViewItemTemplate" TargetType="{x:Type ListViewItem}">
     <!--  Simplified template of the default List*View* Style, removes much of the chrome  -->
     <Border
@@ -32,22 +31,15 @@
         SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
     </Border>
     <ControlTemplate.Triggers>
-      <!--  Hover  -->
       <Trigger Property="IsMouseOver" Value="true">
         <Setter Property="Background" Value="{DynamicResource {x:Static vsp:SearchControlColors.PopupControlMouseDownBackgroundGradientBeginBrushKey}}" />
       </Trigger>
 
-      <!--  Selected  -->
       <Trigger Property="IsSelected" Value="True">
-        <!--
-          A subset of TreeViewColors are used for applying styles to the ListView.  A TreeView is
-          has a superset of the colors required by a ListView (for expanders).
-        -->
         <Setter Property="Background" Value="{DynamicResource {x:Static vsp:CommonControlsColors.ButtonBorderPressedBrushKey}}" />
         <Setter Property="Foreground" Value="{DynamicResource {x:Static vsp:EnvironmentColors.SystemHighlightTextBrushKey}}" />
       </Trigger>
 
-      <!--  Selected but not active (control focused)  -->
       <MultiTrigger>
         <MultiTrigger.Conditions>
           <Condition Property="IsSelected" Value="True" />
@@ -59,7 +51,6 @@
     </ControlTemplate.Triggers>
   </ControlTemplate>
 
-  <!--  List View Item Style  -->
   <Style x:Key="ListViewItemStyle" TargetType="{x:Type ListViewItem}">
     <Setter Property="Padding" Value="2" />
     <Setter Property="Margin" Value="0" />
@@ -67,7 +58,6 @@
     <Setter Property="Foreground" Value="{DynamicResource {x:Static vsp:EnvironmentColors.CommandBarTextActiveBrushKey}}" />
   </Style>
 
-  <!--  ListView Style  -->
   <Style TargetType="{x:Type ListView}">
     <Style.Resources>
       <!--  Override the template for the scrollviewer to adjust the margins on the header of the list view  -->

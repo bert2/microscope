@@ -8,14 +8,21 @@
 
   <Style BasedOn="{StaticResource {x:Static vs:CodeSenseResources.ListViewStyleKey}}" TargetType="{x:Type ListView}">
     <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+    <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True" />
+    <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling" />
   </Style>
 
-  <Style BasedOn="{StaticResource {x:Static vs:CodeSenseResources.ListViewItemStyleKey}}" TargetType="{x:Type ListViewItem}">
+  <Style
+    x:Key="ListViewItemStyle"
+    BasedOn="{StaticResource {x:Static vs:CodeSenseResources.ListViewItemStyleKey}}"
+    TargetType="{x:Type ListViewItem}">
     <Setter Property="FocusVisualStyle" Value="{x:Null}" />
   </Style>
 
   <Style BasedOn="{StaticResource {x:Static vs:CodeSenseResources.TreeViewStyleKey}}" TargetType="{x:Type TreeView}">
     <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+    <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True" />
+    <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling" />
   </Style>
 
   <Style BasedOn="{StaticResource {x:Static vs:CodeSenseResources.TreeViewItemStyleKey}}" TargetType="{x:Type TreeViewItem}" />

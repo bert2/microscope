@@ -28,9 +28,7 @@
 
           <TextBlock
             Grid.Column="1"
-            Cursor="Hand"
             FontWeight="Bold"
-            MouseDown="GoToDocumentation"
             Text="{Binding OpCode, Mode=OneTime}"
             ToolTip="{Binding Documentation, Mode=OneTime}" />
 
@@ -41,7 +39,13 @@
   </UserControl.Resources>
 
   <StackPanel>
-    <ListView ItemTemplate="{StaticResource InstructionTemplate}" ItemsSource="{Binding Instructions, Mode=OneTime}" />
+    <ListView ItemTemplate="{StaticResource InstructionTemplate}" ItemsSource="{Binding Instructions, Mode=OneTime}">
+      <ListView.ItemContainerStyle>
+        <Style BasedOn="{StaticResource ListViewItemStyle}" TargetType="{x:Type ListViewItem}">
+          <EventSetter Event="MouseDoubleClick" Handler="OnInstructionDoubleClick" />
+        </Style>
+      </ListView.ItemContainerStyle>
+    </ListView>
 
     <StackPanel Visibility="{Binding HasCompilerGeneratedTypes, Converter={StaticResource BoolToVisConverter}, Mode=OneTime}">
       <TextBlock Margin="0,20,0,10" Text="Compiler-generated code:" />
@@ -53,6 +57,11 @@
 
             <HierarchicalDataTemplate.ItemTemplate>
               <HierarchicalDataTemplate ItemTemplate="{StaticResource InstructionTemplate}" ItemsSource="{Binding Instructions, Mode=OneTime}">
+                <HierarchicalDataTemplate.ItemContainerStyle>
+                  <Style BasedOn="{StaticResource IndentedTreeViewItemStyle}" TargetType="{x:Type TreeViewItem}">
+                    <EventSetter Event="MouseDoubleClick" Handler="OnInstructionDoubleClick" />
+                  </Style>
+                </HierarchicalDataTemplate.ItemContainerStyle>
                 <TextBlock Text="{Binding MethodName, Mode=OneTime}" />
               </HierarchicalDataTemplate>
             </HierarchicalDataTemplate.ItemTemplate>

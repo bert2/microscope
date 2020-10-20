@@ -7,7 +7,6 @@ namespace Microscope.VSExtension.UI {
     using System.Windows.Input;
 
     using Microscope.Shared;
-    using Microsoft.VisualStudio.Shell;
 
     public partial class CodeLensDetailsUserControl : UserControl {
         public CodeLensDetailsUserControl(CodeLensDetails details) {
@@ -62,15 +61,17 @@ namespace Microscope.VSExtension.UI {
             DataContext = data;
         }
 
-        private void GoToDocumentation(object sender, MouseButtonEventArgs e) {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
-            if (sender is TextBlock tb && tb.DataContext is ViewModel instr) {
-                var opCode = instr.OpCode.TrimEnd('.').Replace('.', '_');
-                var url = $"https://docs.microsoft.com/dotnet/api/system.reflection.emit.opcodes.{opCode}";
-                _ = Process.Start(url);
-                e.Handled = true;
+        private void OnInstructionDoubleClick(object sender, MouseButtonEventArgs args) {
+            if (sender is Control c && c.DataContext is ViewModel instr) {
+                GoToDocumentation(instr);
+                args.Handled = true;
             }
+        }
+
+        private void GoToDocumentation(ViewModel instr) {
+            var opCode = instr.OpCode.TrimEnd('.').Replace('.', '_');
+            var url = $"https://docs.microsoft.com/dotnet/api/system.reflection.emit.opcodes.{opCode}";
+            _ = Process.Start(url);
         }
     }
 }

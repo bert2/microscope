@@ -2,7 +2,9 @@
   x:Class="Microscope.VSExtension.UI.CodeLensDetailsUserControl"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:controls="clr-namespace:Microsoft.VisualStudio.CodeSense.Controls;assembly=Microsoft.VisualStudio.CodeSense.Common"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:local="clr-namespace:Microscope.VSExtension.UI"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   d:DesignHeight="200"
   d:DesignWidth="600"
@@ -10,53 +12,67 @@
   <UserControl.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="ListViewStyle.xaml" />
+        <x:Static Member="controls:SharedResources.Default" />
+        <!--<ResourceDictionary Source="ListViewStyle.xaml" />-->
+        <!--<ResourceDictionary Source="TreeViewStyle.xaml" />-->
       </ResourceDictionary.MergedDictionaries>
 
       <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
 
-      <CollectionViewSource x:Key="groupedCompilerGeneratedInstrucions" Source="{Binding CompilerGeneratedInstrucions, Mode=OneTime}">
-        <CollectionViewSource.GroupDescriptions>
-          <PropertyGroupDescription PropertyName="DeclaringType" />
-          <PropertyGroupDescription PropertyName="Method" />
-        </CollectionViewSource.GroupDescriptions>
-      </CollectionViewSource>
-
-      <DataTemplate x:Key="InstructionsListContent">
-        <ListView ItemsSource="{Binding}">
-          <ListView.GroupStyle>
-            <x:Static Member="GroupStyle.Default" />
-          </ListView.GroupStyle>
-          <ListView.View>
-            <GridView>
-              <GridViewColumn DisplayMemberBinding="{Binding Label, Mode=OneTime}" Header="Label" />
-              <GridViewColumn Header="OpCode">
-                <GridViewColumn.CellTemplate>
-                  <DataTemplate>
-                    <TextBlock
-                      Cursor="Hand"
-                      FontWeight="Bold"
-                      MouseDown="GoToDocumentation"
-                      Text="{Binding OpCode, Mode=OneTime}"
-                      ToolTip="{Binding Documentation, Mode=OneTime}" />
-                  </DataTemplate>
-                </GridViewColumn.CellTemplate>
-              </GridViewColumn>
-              <GridViewColumn DisplayMemberBinding="{Binding Operand, Mode=OneTime}" Header="Operand" />
-            </GridView>
-          </ListView.View>
-        </ListView>
+      <DataTemplate x:Key="InstructionTemplate">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50" />
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+          <TextBlock Grid.Column="0" Text="{Binding Label, Mode=OneTime}" />
+          <TextBlock
+            Grid.Column="1"
+            Cursor="Hand"
+            FontWeight="Bold"
+            MouseDown="GoToDocumentation"
+            Text="{Binding OpCode, Mode=OneTime}"
+            ToolTip="{Binding Documentation, Mode=OneTime}" />
+          <TextBlock Grid.Column="2" Text="{Binding Operand, Mode=OneTime}" />
+        </Grid>
       </DataTemplate>
     </ResourceDictionary>
   </UserControl.Resources>
 
   <StackPanel>
-    <ContentPresenter Content="{Binding Instructions, Mode=OneTime}" ContentTemplate="{StaticResource InstructionsListContent}" />
+    <ListView
+      FocusVisualStyle="{x:Null}"
+      ItemContainerStyle="{StaticResource {x:Static controls:CodeSenseResources.ListViewItemStyleKey}}"
+      ItemTemplate="{StaticResource InstructionTemplate}"
+      ItemsSource="{Binding Instructions, Mode=OneTime}"
+      Style="{StaticResource {x:Static controls:CodeSenseResources.ListViewStyleKey}}" />
 
     <StackPanel Visibility="{Binding HasCompilerGeneratedTypes, Converter={StaticResource BoolToVisConverter}, Mode=OneTime}">
       <TextBlock Margin="0,20,0,10" Text="Compiler-generated code:" />
 
-      <ContentPresenter Content="{Binding Source={StaticResource groupedCompilerGeneratedInstrucions}}" ContentTemplate="{StaticResource InstructionsListContent}" />
+      <TreeView
+        FocusVisualStyle="{x:Null}"
+        ItemContainerStyle="{StaticResource {x:Static controls:CodeSenseResources.TreeViewItemStyleKey}}"
+        ItemsSource="{Binding CompilerGeneratedInstrucions, Mode=OneTime}"
+        Style="{StaticResource {x:Static controls:CodeSenseResources.TreeViewStyleKey}}">
+        <TreeView.ItemTemplate>
+          <HierarchicalDataTemplate ItemsSource="{Binding Methods, Mode=OneTime}">
+            <TextBlock Text="{Binding DeclaringTypeName, Mode=OneTime}" />
+            <HierarchicalDataTemplate.ItemContainerStyle>
+              <Style BasedOn="{StaticResource {x:Static controls:CodeSenseResources.TreeViewItemStyleKey}}" TargetType="{x:Type TreeViewItem}">
+                <!--  indent the 2nd level (methods)  -->
+                <Setter Property="Padding" Value="16,0,0,0" />
+              </Style>
+            </HierarchicalDataTemplate.ItemContainerStyle>
+            <HierarchicalDataTemplate.ItemTemplate>
+              <HierarchicalDataTemplate ItemTemplate="{StaticResource InstructionTemplate}" ItemsSource="{Binding Instructions, Mode=OneTime}">
+                <TextBlock Text="{Binding MethodName, Mode=OneTime}" />
+              </HierarchicalDataTemplate>
+            </HierarchicalDataTemplate.ItemTemplate>
+          </HierarchicalDataTemplate>
+        </TreeView.ItemTemplate>
+      </TreeView>
     </StackPanel>
   </StackPanel>
 </UserControl>

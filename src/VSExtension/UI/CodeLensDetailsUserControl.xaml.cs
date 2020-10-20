@@ -22,12 +22,38 @@ namespace Microscope.VSExtension.UI {
                 Instructions = instructions,
                 HasCompilerGeneratedTypes = instructions.Count >= 15,
                 CompilerGeneratedInstrucions = new[] {
-                    new ViewModel("IL_0001", "nop", "some operand", "some docs", "FooType", "BarMethod"),
-                    new ViewModel("IL_0002", "ret", "another operand, but longer than the other one", "some docs", "FooType", "BarMethod"),
-                    new ViewModel("IL_0001", "nop", "some operand", "some docs", "QuxType", "BazMethod"),
-                    new ViewModel("IL_0002", "ret", "This is a really long operand. One which should cause the list view inside the tree view to be wider than the code lense details view. I'm doing this to test if there will be a second horizontal scollbar inside the TreeView.", "some docs", "QuxType", "BazMethod"),
-                    new ViewModel("IL_0001", "nop", "some operand", "some docs", "QuxType", "OnkMethod"),
-                    new ViewModel("IL_0002", "ret", "another operand, but longer than the other one", "some docs", "QuxType", "OnkMethod")
+                    new {
+                        DeclaringTypeName = "foo",
+                        Methods = new[] {
+                            new {
+                                MethodName = "bar",
+                                Instructions = new[] {
+                                    new ViewModel("IL_0001", "conv.ovf.u8.un", "some operand", "some docs"),
+                                    new ViewModel("IL_0002", "conv.ovf.u2.un", "another operand, but longer than the other one", "some docs"),
+                                    new ViewModel("IL_0002", "ret", "another operand, but longer than the other one", "some docs")
+                                }
+                            }
+                        }
+                    },
+                    new {
+                        DeclaringTypeName = "qux",
+                        Methods = new[] {
+                            new {
+                                MethodName = "baz",
+                                Instructions = new[] {
+                                    new ViewModel("IL_0001", "conv.ovf.u4.un", "some operand", "some docs"),
+                                    new ViewModel("IL_0002", "ret", "another operand, but longer than the other one", "some docs")
+                                }
+                            },
+                            new {
+                                MethodName = "fonk",
+                                Instructions = new[] {
+                                    new ViewModel("IL_0001", "nop", "some operand", "some docs"),
+                                    new ViewModel("IL_0002", "constrained.", "another operand, but longer than the other one", "some docs"),
+                                }
+                            }
+                        }
+                    }
                 }.ToList(),
             };
 

@@ -1,20 +1,56 @@
-﻿<UserControl
-  x:Class="Microscope.VSExtension.UI.CodeLensDetailsUserControl"
-  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-  xmlns:local="clr-namespace:Microscope.VSExtension.UI"
-  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-  d:DesignHeight="200"
-  d:DesignWidth="600"
-  mc:Ignorable="d">
+﻿<UserControl x:Class="Microscope.VSExtension.UI.CodeLensDetailsUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Microscope.VSExtension.UI"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vs="clr-namespace:Microsoft.VisualStudio.CodeSense.Controls;assembly=Microsoft.VisualStudio.CodeSense.Common"
+             d:DesignHeight="200"
+             d:DesignWidth="600"
+             mc:Ignorable="d">
   <UserControl.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="Styles.xaml" />
+        <x:Static Member="vs:SharedResources.Default" />
       </ResourceDictionary.MergedDictionaries>
 
       <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+
+      <Style TargetType="{x:Type ListView}"
+             BasedOn="{StaticResource {x:Static vs:CodeSenseResources.ListViewStyleKey}}">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True" />
+        <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling" />
+      </Style>
+
+      <Style TargetType="{x:Type ListViewItem}"
+             BasedOn="{StaticResource {x:Static vs:CodeSenseResources.ListViewItemStyleKey}}">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <EventSetter Event="MouseDoubleClick" Handler="OnInstructionDoubleClick" />
+      </Style>
+
+      <Style TargetType="{x:Type TreeView}"
+             BasedOn="{StaticResource {x:Static vs:CodeSenseResources.TreeViewStyleKey}}">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True" />
+        <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling" />
+      </Style>
+
+      <Style TargetType="{x:Type TreeViewItem}"
+             BasedOn="{StaticResource {x:Static vs:CodeSenseResources.TreeViewItemStyleKey}}" />
+
+      <Style x:Key="MethodTreeViewItemStyle"
+             TargetType="{x:Type TreeViewItem}"
+             BasedOn="{StaticResource {x:Static vs:CodeSenseResources.TreeViewItemStyleKey}}">
+        <Setter Property="Padding" Value="16,0,0,0" />
+      </Style>
+
+      <Style x:Key="InstructionTreeViewItemStyle"
+             TargetType="{x:Type TreeViewItem}"
+             BasedOn="{StaticResource {x:Static vs:CodeSenseResources.TreeViewItemStyleKey}}">
+        <Setter Property="Padding" Value="16,0,0,0" />
+        <EventSetter Event="MouseDoubleClick" Handler="OnInstructionDoubleClick" />
+      </Style>
 
       <DataTemplate x:Key="InstructionTemplate">
         <Grid>
@@ -24,44 +60,39 @@
             <ColumnDefinition Width="*" />
           </Grid.ColumnDefinitions>
 
-          <TextBlock Grid.Column="0" Text="{Binding Label, Mode=OneTime}" />
+          <TextBlock Grid.Column="0"
+                     Text="{Binding Label, Mode=OneTime}" />
 
-          <TextBlock
-            Grid.Column="1"
-            FontWeight="Bold"
-            Text="{Binding OpCode, Mode=OneTime}"
-            ToolTip="{Binding Documentation, Mode=OneTime}" />
+          <TextBlock Grid.Column="1"
+                     FontWeight="Bold"
+                     Text="{Binding OpCode, Mode=OneTime}"
+                     ToolTip="{Binding Documentation, Mode=OneTime}" />
 
-          <TextBlock Grid.Column="2" Text="{Binding Operand, Mode=OneTime}" />
+          <TextBlock Grid.Column="2"
+                     Text="{Binding Operand, Mode=OneTime}" />
         </Grid>
       </DataTemplate>
     </ResourceDictionary>
   </UserControl.Resources>
 
   <StackPanel>
-    <ListView ItemTemplate="{StaticResource InstructionTemplate}" ItemsSource="{Binding Instructions, Mode=OneTime}">
-      <ListView.ItemContainerStyle>
-        <Style BasedOn="{StaticResource ListViewItemStyle}" TargetType="{x:Type ListViewItem}">
-          <EventSetter Event="MouseDoubleClick" Handler="OnInstructionDoubleClick" />
-        </Style>
-      </ListView.ItemContainerStyle>
-    </ListView>
+    <ListView ItemTemplate="{StaticResource InstructionTemplate}"
+              ItemsSource="{Binding Instructions, Mode=OneTime}" />
 
     <StackPanel Visibility="{Binding HasCompilerGeneratedTypes, Converter={StaticResource BoolToVisConverter}, Mode=OneTime}">
-      <TextBlock Margin="0,20,0,10" Text="Compiler-generated code:" />
+      <TextBlock Margin="0,20,0,10"
+                 Text="Compiler-generated code:" />
 
       <TreeView ItemsSource="{Binding CompilerGeneratedInstrucions, Mode=OneTime}">
         <TreeView.ItemTemplate>
-          <HierarchicalDataTemplate ItemContainerStyle="{StaticResource IndentedTreeViewItemStyle}" ItemsSource="{Binding Methods, Mode=OneTime}">
+          <HierarchicalDataTemplate ItemContainerStyle="{StaticResource MethodTreeViewItemStyle}"
+                                    ItemsSource="{Binding Methods, Mode=OneTime}">
             <TextBlock Text="{Binding DeclaringTypeName, Mode=OneTime}" />
 
             <HierarchicalDataTemplate.ItemTemplate>
-              <HierarchicalDataTemplate ItemTemplate="{StaticResource InstructionTemplate}" ItemsSource="{Binding Instructions, Mode=OneTime}">
-                <HierarchicalDataTemplate.ItemContainerStyle>
-                  <Style BasedOn="{StaticResource IndentedTreeViewItemStyle}" TargetType="{x:Type TreeViewItem}">
-                    <EventSetter Event="MouseDoubleClick" Handler="OnInstructionDoubleClick" />
-                  </Style>
-                </HierarchicalDataTemplate.ItemContainerStyle>
+              <HierarchicalDataTemplate ItemContainerStyle="{StaticResource InstructionTreeViewItemStyle}"
+                                        ItemTemplate="{StaticResource InstructionTemplate}"
+                                        ItemsSource="{Binding Instructions, Mode=OneTime}">
                 <TextBlock Text="{Binding MethodName, Mode=OneTime}" />
               </HierarchicalDataTemplate>
             </HierarchicalDataTemplate.ItemTemplate>

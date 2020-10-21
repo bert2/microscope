@@ -7,12 +7,12 @@ namespace Microscope.CodeAnalysis.Model {
     using Mono.Cecil;
 
     public readonly struct GeneratedType {
-        public string TypeName { get; }
+        public string Name { get; }
 
         public IReadOnlyList<GeneratedMethod> Methods { get; }
 
-        public GeneratedType(string typeName, IReadOnlyList<GeneratedMethod> methods) {
-            TypeName = typeName;
+        public GeneratedType(string name, IReadOnlyList<GeneratedMethod> methods) {
+            Name = name;
             Methods = methods;
         }
 
@@ -20,6 +20,6 @@ namespace Microscope.CodeAnalysis.Model {
             type.Name,
             type.Methods.Select(GeneratedMethod.From).ToArray());
 
-        public override string ToString() => TypeName;
+        public override string ToString() => Name;
     }
 }

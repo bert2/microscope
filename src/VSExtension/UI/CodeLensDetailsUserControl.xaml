@@ -1,7 +1,12 @@
 ﻿<UserControl x:Class="Microscope.VSExtension.UI.CodeLensDetailsUserControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vs="clr-namespace:Microsoft.VisualStudio.CodeSense.Controls;assembly=Microsoft.VisualStudio.CodeSense.Common">
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:model="clr-namespace:Microscope.CodeAnalysis.Model;assembly=Microscope.CodeAnalysis"
+             xmlns:vs="clr-namespace:Microsoft.VisualStudio.CodeSense.Controls;assembly=Microsoft.VisualStudio.CodeSense.Common"
+             d:DataContext="{d:DesignInstance Type=model:DetailsData}"
+             mc:Ignorable="d">
   <UserControl.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
@@ -46,7 +51,8 @@
         <EventSetter Event="MouseDoubleClick" Handler="OnInstructionDoubleClick" />
       </Style>
 
-      <DataTemplate x:Key="InstructionTemplate">
+      <DataTemplate x:Key="InstructionTemplate"
+                    DataType="{x:Type model:InstructionData}">
         <Grid>
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50" />
@@ -79,15 +85,17 @@
 
       <TreeView ItemsSource="{Binding CompilerGeneratedTypes, Mode=OneTime}">
         <TreeView.ItemTemplate>
-          <HierarchicalDataTemplate ItemContainerStyle="{StaticResource MethodTreeViewItemStyle}"
+          <HierarchicalDataTemplate DataType="{x:Type model:GeneratedType}"
+                                    ItemContainerStyle="{StaticResource MethodTreeViewItemStyle}"
                                     ItemsSource="{Binding Methods, Mode=OneTime}">
-            <TextBlock Text="{Binding TypeName, Mode=OneTime}" />
+            <TextBlock Text="{Binding Name, Mode=OneTime}" />
 
             <HierarchicalDataTemplate.ItemTemplate>
-              <HierarchicalDataTemplate ItemContainerStyle="{StaticResource InstructionTreeViewItemStyle}"
+              <HierarchicalDataTemplate DataType="{x:Type model:GeneratedMethod}"
+                                        ItemContainerStyle="{StaticResource InstructionTreeViewItemStyle}"
                                         ItemTemplate="{StaticResource InstructionTemplate}"
                                         ItemsSource="{Binding Instructions, Mode=OneTime}">
-                <TextBlock Text="{Binding MethodName, Mode=OneTime}" />
+                <TextBlock Text="{Binding Name, Mode=OneTime}" />
               </HierarchicalDataTemplate>
             </HierarchicalDataTemplate.ItemTemplate>
           </HierarchicalDataTemplate>

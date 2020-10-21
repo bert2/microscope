@@ -34,7 +34,7 @@ namespace Microscope.Tests {
         [TestMethod] public void RemovesDuplicateReferencesToGeneratedClasses() =>
             MethodInstructions(x => x.Lambda())
             .CollectCompilerGeneratedInstructions()
-            .Select(t => t.TypeName)
+            .Select(t => t.Name)
             .ShouldBeUnique();
 
         private static Collection<Instruction> MethodInstructions(

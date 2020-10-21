@@ -3,14 +3,16 @@
 namespace Microscope.CodeAnalysis.Model {
     using System.Collections.Generic;
 
-    public class DetailsData {
-        public List<InstructionData> MethodInstructions { get; set; }
+    public readonly struct DetailsData {
+        public IReadOnlyList<InstructionData> MethodInstructions { get; }
 
-        public List<GeneratedType> CompilerGeneratedTypes { get; set; }
+        public IReadOnlyList<GeneratedType> CompilerGeneratedTypes { get; }
 
         public bool HasCompilerGeneratedTypes => CompilerGeneratedTypes.Count > 0;
 
-        public DetailsData(List<InstructionData> methodInstructions, List<GeneratedType> compilerGeneratedTypes) {
+        public DetailsData(
+            IReadOnlyList<InstructionData> methodInstructions,
+            IReadOnlyList<GeneratedType> compilerGeneratedTypes) {
             MethodInstructions = methodInstructions;
             CompilerGeneratedTypes = compilerGeneratedTypes;
         }

@@ -3,14 +3,14 @@
 namespace Microscope.CodeAnalysis.Model {
     using Mono.Cecil.Cil;
 
-    public class InstructionData {
-        public string Label { get; set; }
+    public readonly struct InstructionData {
+        public string Label { get; }
 
-        public string OpCode { get; set; }
+        public string OpCode { get; }
 
-        public string Operand { get; set; }
+        public string Operand { get; }
 
-        public string? Documentation { get; set; }
+        public string? Documentation { get; }
 
         public InstructionData(string label, string opCode, string operand, string? documentation) {
             Label = label;

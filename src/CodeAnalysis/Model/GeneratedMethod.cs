@@ -6,19 +6,19 @@ namespace Microscope.CodeAnalysis.Model {
 
     using Mono.Cecil;
 
-    public class GeneratedMethod {
-        public string MethodName { get; set; }
+    public readonly struct GeneratedMethod {
+        public string MethodName { get; }
 
-        public List<InstructionData> Instructions { get; set; }
+        public IReadOnlyList<InstructionData> Instructions { get; }
 
-        public GeneratedMethod(string methodName, List<InstructionData> instructions) {
+        public GeneratedMethod(string methodName, IReadOnlyList<InstructionData> instructions) {
             MethodName = methodName;
             Instructions = instructions;
         }
 
         public static GeneratedMethod From(MethodDefinition method) => new GeneratedMethod(
             method.Name,
-            method.Body.Instructions.Select(InstructionData.From).ToList());
+            method.Body.Instructions.Select(InstructionData.From).ToArray());
 
         public override string ToString() => MethodName;
     }

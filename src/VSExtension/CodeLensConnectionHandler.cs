@@ -7,6 +7,7 @@ namespace Microscope.VSExtension {
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Microscope.CodeAnalysis.Model;
     using Microscope.Shared;
 
     using Mono.Cecil.Cil;
@@ -17,11 +18,11 @@ namespace Microscope.VSExtension {
     using static Microscope.Shared.Logging;
 
     using CodeLensConnections = System.Collections.Concurrent.ConcurrentDictionary<System.Guid, CodeLensConnectionHandler>;
-    using CodeLensInstructions = System.Collections.Concurrent.ConcurrentDictionary<System.Guid, Mono.Collections.Generic.Collection<Mono.Cecil.Cil.Instruction>>;
+    using CodeLensDetails = System.Collections.Concurrent.ConcurrentDictionary<System.Guid, CodeAnalysis.Model.DetailsData>;
 
     public class CodeLensConnectionHandler : IRemoteVisualStudio, IDisposable {
         private static readonly CodeLensConnections connections = new CodeLensConnections();
-        private static readonly CodeLensInstructions instructions = new CodeLensInstructions();
+        private static readonly CodeLensDetails detailsData = new CodeLensDetails();
 
         private JsonRpc? rpc;
         private Guid? dataPointId;
@@ -60,7 +61,7 @@ namespace Microscope.VSExtension {
         public void Dispose() {
             if (dataPointId.HasValue) {
                 _ = connections.TryRemove(dataPointId.Value, out var _);
-                _ = instructions.TryRemove(dataPointId.Value, out var _);
+                _ = detailsData.TryRemove(dataPointId.Value, out var _);
             }
         }
 
@@ -70,10 +71,9 @@ namespace Microscope.VSExtension {
             connections[id] = this;
         }
 
-        public static void StoreInstructions(Guid id, Collection<Instruction> instrs)
-            => instructions[id] = instrs;
+        public static void StoreDetailsData(Guid id, DetailsData details) => detailsData[id] = details;
 
-        public static Collection<Instruction> GetInstructions(Guid id) => instructions[id];
+        public static DetailsData GetDetailsData(Guid id) => detailsData[id];
 
         public static async Task RefreshCodeLensDataPoint(Guid id) {
             if (!connections.TryGetValue(id, out var conn))

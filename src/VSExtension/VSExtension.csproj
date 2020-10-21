@@ -81,7 +81,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>source.extension.vsixmanifest</DependentUpon>
     </Compile>
-    <Compile Include="UI\ViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\LICENSE">

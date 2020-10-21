@@ -1,26 +1,25 @@
 ﻿#nullable enable
 
-namespace Microscope.VSExtension.UI {
-    using Microscope.CodeAnalysis;
+namespace Microscope.CodeAnalysis.Model {
+    using Mono.Cecil.Cil;
 
-    public class ViewModel {
+    public class InstructionData {
         public string Label { get; set; }
-        public string OpCode { get; set; }
-        public string Operand { get; set; }
-        public string? Documentation { get; set; }
-        public string? DeclaringType { get; set; }
-        public string? Method { get; set; }
 
-        public ViewModel(string label, string opCode, string operand, string? documentation, string? declaringType = null, string? method = null) {
+        public string OpCode { get; set; }
+
+        public string Operand { get; set; }
+
+        public string? Documentation { get; set; }
+
+        public InstructionData(string label, string opCode, string operand, string? documentation) {
             Label = label;
             OpCode = opCode;
             Operand = operand;
             Documentation = documentation;
-            DeclaringType = declaringType;
-            Method = method;
         }
 
-        public static ViewModel From(Mono.Cecil.Cil.Instruction instr) => new ViewModel(
+        public static InstructionData From(Instruction instr) => new InstructionData(
             label:         instr.PrintLabel(),
             opCode:        instr.OpCode.Name,
             operand:       instr.PrintOperand(),

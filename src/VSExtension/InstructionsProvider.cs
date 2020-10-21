@@ -5,10 +5,12 @@ namespace Microscope.VSExtension {
     using System.ComponentModel.Composition;
     using System.Diagnostics;
     using System.IO;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Microscope.CodeAnalysis;
+    using Microscope.CodeAnalysis.Model;
     using Microscope.Shared;
     using Microscope.VSExtension.Options;
 
@@ -58,7 +60,11 @@ namespace Microscope.VSExtension {
                     .Instructions
                     ?? new Collection<Instruction>(capacity: 0);
 
-                CodeLensConnectionHandler.StoreInstructions(dataPointId, instructions);
+                var details = new DetailsData(
+                    instructions.Select(InstructionData.From).ToList(),
+                    instructions.CollectCompilerGeneratedInstructions());
+
+                CodeLensConnectionHandler.StoreDetailsData(dataPointId, details);
 
                 return instructions.ToCodeLensData();
             } catch (Exception ex) {

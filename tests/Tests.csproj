@@ -49,9 +49,12 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CollectCompilerGeneratedInstructionsExtTestData.cs" />
+    <Compile Include="CollectCompilerGeneratedInstructionsExtTests.cs" />
     <Compile Include="DocumentationTests.cs" />
     <Compile Include="GetDocumentExtTests.cs" />
     <Compile Include="GetMethodDefinitionExtTestData.cs" />
+    <Compile Include="Util\DebugExt.cs" />
     <Compile Include="Util\SymbolResolver.cs" />
     <Compile Include="GetMethodDefinitionExtTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

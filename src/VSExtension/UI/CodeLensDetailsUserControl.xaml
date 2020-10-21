@@ -77,17 +77,17 @@
 
   <StackPanel>
     <ListView ItemTemplate="{StaticResource InstructionTemplate}"
-              ItemsSource="{Binding Instructions, Mode=OneTime}" />
+              ItemsSource="{Binding MethodInstructions, Mode=OneTime}" />
 
     <StackPanel Visibility="{Binding HasCompilerGeneratedTypes, Converter={StaticResource BoolToVisConverter}, Mode=OneTime}">
       <TextBlock Margin="0,20,0,10"
                  Text="Compiler-generated code:" />
 
-      <TreeView ItemsSource="{Binding CompilerGeneratedInstrucions, Mode=OneTime}">
+      <TreeView ItemsSource="{Binding CompilerGeneratedTypes, Mode=OneTime}">
         <TreeView.ItemTemplate>
           <HierarchicalDataTemplate ItemContainerStyle="{StaticResource MethodTreeViewItemStyle}"
                                     ItemsSource="{Binding Methods, Mode=OneTime}">
-            <TextBlock Text="{Binding DeclaringTypeName, Mode=OneTime}" />
+            <TextBlock Text="{Binding TypeName, Mode=OneTime}" />
 
             <HierarchicalDataTemplate.ItemTemplate>
               <HierarchicalDataTemplate ItemContainerStyle="{StaticResource InstructionTreeViewItemStyle}"

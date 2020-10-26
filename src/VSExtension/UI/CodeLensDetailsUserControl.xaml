@@ -53,7 +53,7 @@
 
       <DataTemplate x:Key="InstructionTemplate"
                     DataType="{x:Type model:InstructionData}">
-        <Grid>
+        <Grid ToolTip="{Binding Documentation, Mode=OneTime}">
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50" />
             <ColumnDefinition Width="100" />
@@ -65,8 +65,7 @@
 
           <TextBlock Grid.Column="1"
                      FontWeight="Bold"
-                     Text="{Binding OpCode, Mode=OneTime}"
-                     ToolTip="{Binding Documentation, Mode=OneTime}" />
+                     Text="{Binding OpCode, Mode=OneTime}" />
 
           <TextBlock Grid.Column="2"
                      Text="{Binding Operand, Mode=OneTime}" />

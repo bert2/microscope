@@ -22,10 +22,11 @@ A CodeLens extension for Visual Studio that lets you inspect the intermediate la
 - Alternatively you can grab the [VSIX package](https://ci.appveyor.com/project/bert2/microscope/branch/main/artifacts) of the latest build from AppVeyor.
 - The CodeLens appears on C# methods and displays the number of instructions that will be generated for the method.
 - Click the CodeLens to get a detailed list of all instructions including their offsets and operands.
-- Hover over an instruction's opcode in the list to see its documentation summary in a tooltip.
-- Click on an instruction's opcode to navigate to its documentation on [docs.microsoft.com](https://docs.microsoft.com/dotnet/api/system.reflection.emit.opcodes).
+- Hover over an instruction in the list to see its documentation summary in a tooltip.
+- Double-click an instruction in the list to navigate to its documentation on [docs.microsoft.com](https://docs.microsoft.com/dotnet/api/system.reflection.emit.opcodes).
 - Hover over the CodeLens to see individual counts for the number of `box` and unconstrained `callvirt` instructions in the method.
 - The CodeLens will automatically update everytime you save the current document. You can also click the "Refresh" button in the bottom left of the details view.
+- Any types that the compiler generated for the method (e.g. for lambdas) will be shown below the list of instructions together with their methods and instructions.
 - In case the retrieval of instructions fails the CodeLens will display `-` instead of a count. Hover over the CodeLens to see the exception that caused the failure.
 - Configuration options are available in the Visual Studio settings ("Tools" > "Options..." > "microscope").
 
@@ -33,7 +34,6 @@ A CodeLens extension for Visual Studio that lets you inspect the intermediate la
 
 ## Known issues
 
-- The CodeLens will only show you the instructions of the method itself without any instructions from compiler-generated classes and methods. This means that for any methods using e.g. `await`, the CodeLens will only show the instructions that instantiate/start the state machine generated for it. This will be fixed for the 1.0.0 release.
 - Visual Studio might freeze for a couple of seconds when you open the details view for a method with a huge amount of instructions (i.e. multiple thousands). This might be fixed in a future release.
 
 ## Contributing
@@ -87,13 +87,7 @@ PS> nuke test # build and run tests
 
 ## Roadmap
 
-### 1.0.0 release
-
-- support C# features that use compiler-generated classes
-  - async state machines
-  - enumerator state machines
-  - lambdas
-  - local functions
+Since the 1.0.0 release has all the features I wanted this extension to have, I will devote my time to other projects now. New features will still be released in the future, but they will come less frequently.
 
 ### Future releases
 
@@ -124,6 +118,10 @@ PS> nuke test # build and run tests
     - can we even access the `Compilation` out-of-proc?
 
 ## Changelog
+
+### 1.0.0
+
+- Instructions of compiler-generated types/methods are now also shown below the instructions of the code-lensed method.
 
 ### 0.5.3
 

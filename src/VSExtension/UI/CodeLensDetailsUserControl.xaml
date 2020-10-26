@@ -95,7 +95,10 @@
                                         ItemContainerStyle="{StaticResource InstructionTreeViewItemStyle}"
                                         ItemTemplate="{StaticResource InstructionTemplate}"
                                         ItemsSource="{Binding Instructions, Mode=OneTime}">
-                <TextBlock Text="{Binding Name, Mode=OneTime}" />
+                <TextBlock ToolTip="{Binding FullName, Mode=OneTime}">
+                  <Run Text="{Binding ReturnTypeName, Mode=OneTime}" /> <Run FontWeight="Bold"
+                       Text="{Binding Name, Mode=OneTime}" /><Run Text="{Binding ParameterList, Mode=OneTime}" />
+                </TextBlock>
               </HierarchicalDataTemplate>
             </HierarchicalDataTemplate.ItemTemplate>
           </HierarchicalDataTemplate>

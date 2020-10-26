@@ -197,5 +197,5 @@ Microscope's versioning scheme uses a manually maintained [semantic version](htt
 ### Dependencies
 
 - [Roslyn](https://github.com/dotnet/roslyn) compiles the current project in memory.
-- [Mono.Ceceil](https://github.com/jbevain/cecil) retrieves the IL instructions from the compiled project.
+- [Mono.Cecil](https://github.com/jbevain/cecil) retrieves the IL instructions from the compiled project.
 - [nuke](https://github.com/nuke-build/nuke) orchestrates the builds for microscope.

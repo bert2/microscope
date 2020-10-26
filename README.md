@@ -91,23 +91,12 @@ Since the 1.0.0 release has all the features I wanted this extension to have, I 
 
 ### Future releases
 
-- support more code elements like properties, classes, etc.
+- support more code elements? (properties, classes, ...)
 - show C# code in details view
 - VB support
 - F# support?
 - lazy load when method has too many instructions to prevent temporarily freezing VS
-- update IL when typing?
-  - probably not worth the overhead
 - don't show CodeLens on interface/abstract methods
-- cache `AssemblyDefintion`s?
-    - results of basic performance measurement:
-        - first CodeLens takes ~1 sec, because in-memory compiling takes long
-        - everything seems to be cached afterwards and instructions can be retrieved in 15 - 40 ms
-        - compiling still takes most of the time (10 - 30 ms)
-    - would shave off most of the runtime cost
-    - cash needs to be invalidated on code changes
-    - is it worth the memory cost in big solutions?
-    - reading an `AssemblyDefintion` is not thread-safe
 - edge cases:
     - what happens when opening a project instead of a solution?
     - what happens when opening a file without opening the project?

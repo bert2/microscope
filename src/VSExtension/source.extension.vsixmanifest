@@ -10,7 +10,7 @@
         <Icon>Resources\icon.png</Icon>
         <PreviewImage>Resources\icon.png</PreviewImage>
         <Tags>CodeLens, CIL, MSIL, IL, intermediate language</Tags>
-        <Preview>true</Preview>
+        <Preview>false</Preview>
     </Metadata>
     <Installation>
         <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[16.0, 17.0)" />

@@ -88,7 +88,8 @@
           <HierarchicalDataTemplate DataType="{x:Type model:GeneratedType}"
                                     ItemContainerStyle="{StaticResource MethodTreeViewItemStyle}"
                                     ItemsSource="{Binding Methods, Mode=OneTime}">
-            <TextBlock Text="{Binding Name, Mode=OneTime}" />
+            <TextBlock Text="{Binding Name, Mode=OneTime}"
+                       ToolTip="{Binding FullName, Mode=OneTime}" />
 
             <HierarchicalDataTemplate.ItemTemplate>
               <HierarchicalDataTemplate DataType="{x:Type model:GeneratedMethod}"

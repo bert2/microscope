@@ -60,8 +60,8 @@ namespace Microscope.VSExtension {
                     .Instructions
                     ?? new Collection<Instruction>(capacity: 0);
                 var details = new DetailsData(
-                    instructions.Select(InstructionData.From).ToList(),
-                    methodDefinition.CollectCompilerGeneratedInstructions());
+                    instructions.Select(InstructionData.From).ToArray(),
+                    methodDefinition.CollectGeneratedCode());
 
                 CodeLensConnectionHandler.StoreDetailsData(dataPointId, details);
 

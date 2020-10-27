@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AllParametersMatchExt.cs" />
-    <Compile Include="CollectCompilerGeneratedInstructionsExt.cs" />
+    <Compile Include="CollectGeneratedCodeExt.cs" />
     <Compile Include="CompileExt.cs" />
     <Compile Include="GetDocumentationExt.cs" />
     <Compile Include="GetDocumentExt.cs" />

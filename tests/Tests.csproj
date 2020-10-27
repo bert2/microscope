@@ -49,8 +49,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CollectCompilerGeneratedInstructionsExtTestData.cs" />
-    <Compile Include="CollectCompilerGeneratedInstructionsExtTests.cs" />
+    <Compile Include="CollectGeneratedCodeExtTestData.cs" />
+    <Compile Include="CollectGeneratedCodeExtTests.cs" />
     <Compile Include="DocumentationTests.cs" />
     <Compile Include="GetDocumentExtTests.cs" />
     <Compile Include="GetMethodDefinitionExtTestData.cs" />

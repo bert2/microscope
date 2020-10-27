@@ -5,7 +5,7 @@ namespace Microscope.Tests {
     using System.Linq;
     using System.Threading.Tasks;
 
-    public class CollectCompilerGeneratedInstructionsExtTestData {
+    public class CollectGeneratedCodeExtTestData {
         public bool Lambda() => new int[0].Any(x => x > 0);
 
         public bool NestedLambda() => new int[0].Any(x => new int[0].Any(y => x > y));

@@ -6,6 +6,8 @@ namespace Microscope.CodeAnalysis.Model {
 
     using Mono.Cecil;
 
+    using static CollectGeneratedCodeExt;
+
     public readonly struct GeneratedType {
         public string Name { get; }
 
@@ -19,10 +21,13 @@ namespace Microscope.CodeAnalysis.Model {
             Methods = methods;
         }
 
-        public static GeneratedType From(TypeDefinition type) => new GeneratedType(
+        public static GeneratedType From(TypeDefinition type, MethodDefinition sourceMethod) => new GeneratedType(
             type.Name,
             type.FullName,
-            type.Methods.Select(GeneratedMethod.From).ToArray());
+            type.Methods
+                .Where(IsRelatedTo(sourceMethod))
+                .Select(GeneratedMethod.From)
+                .ToArray());
 
         public override string ToString() => Name;
     }

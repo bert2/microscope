@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 namespace Microscope.CodeAnalysis {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Runtime.CompilerServices;
@@ -23,30 +24,40 @@ namespace Microscope.CodeAnalysis {
                 .Body
                 .Instructions
                 .Select(instr => instr.Operand)
-                .OfType<IMemberDefinition>()
-                .Select(operand => operand.DeclaringType)
+                .Where(IsReferencingMember)
+                .Select(DeclaringType)
                 .Where(IsCompilerGenerated)
                 .Distinct()
-                .ToArray();
+                .Where(t => visited.Add(t));
 
             var result = new List<TypeDefinition>();
 
             foreach (var type in types) {
-                if (visited.Add(type)) {
-                    result.Add(type);
+                result.Add(type);
 
-                    foreach (var m in type.Methods) {
-                        if (!m.Name.StartsWith("<")
-                            || m.Name.StartsWith("<>")
-                            || m.Name.StartsWith($"<{method.Name}>")) {
-                            result.AddRange(m.Collect(visited));
-                        }
+                foreach (var m in type.Methods) {
+                    if (!m.Name.StartsWith("<")
+                        || m.Name.StartsWith("<>")
+                        || m.Name.StartsWith($"<{method.Name}>")) {
+                        result.AddRange(m.Collect(visited));
                     }
                 }
             }
 
             return result;
         }
+
+        private static bool IsReferencingMember(object operand) => operand switch {
+            IMemberDefinition _ => true,
+            MethodReference _   => true,
+            _ => false
+        };
+
+        private static TypeDefinition DeclaringType(object operand) => operand switch {
+            IMemberDefinition d => d.DeclaringType,
+            MethodReference r   => r.Resolve().DeclaringType,
+            _ => throw new ArgumentException($"Cannot get DeclaringType of operand {operand}.")
+        };
 
         private static bool IsCompilerGenerated(TypeDefinition type)
             => type.HasCustomAttributes

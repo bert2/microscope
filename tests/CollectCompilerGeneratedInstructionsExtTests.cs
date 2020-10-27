@@ -22,7 +22,7 @@ namespace Microscope.Tests {
             .MainModule
             .GetType(typeof(CollectCompilerGeneratedInstructionsExtTestData).FullName)
             .GetMethods()
-            .ToDictionary(m => m.Name, m => m);
+            .ToDictionary(m => m.Name);
 
         [TestMethod] public void FindsClassGeneratedForLambda() =>
             Method(x => x.Lambda())
@@ -43,6 +43,11 @@ namespace Microscope.Tests {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             Method(x => x.AsyncMethod())
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            .CollectCompilerGeneratedInstructions()
+            .ShouldHaveSingleItem();
+
+        [TestMethod] public void FindsClassGeneratedForAnonymousType() =>
+            Method(x => x.AnonymousType())
             .CollectCompilerGeneratedInstructions()
             .ShouldHaveSingleItem();
 

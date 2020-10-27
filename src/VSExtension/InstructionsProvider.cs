@@ -48,21 +48,20 @@ namespace Microscope.VSExtension {
             CancellationToken ct) {
             try {
                 var document = workspace.GetDocument(filePath, projGuid);
-                var method = await document.GetMethodSymbolAt(new TextSpan(textStart, textLen), ct).Caf();
+                var methodSymbol = await document.GetMethodSymbolAt(new TextSpan(textStart, textLen), ct).Caf();
 
                 using var peStream = new MemoryStream();
                 using var assembly = await document.Project.Compile(peStream, ct).Caf();
                 if (assembly is null) return CodeLensData.CompilerError();
 
-                var instructions = assembly
-                    .GetMethodDefinition(method)
+                var methodDefinition = assembly.GetMethodDefinition(methodSymbol);
+                var instructions = methodDefinition
                     .Body?
                     .Instructions
                     ?? new Collection<Instruction>(capacity: 0);
-
                 var details = new DetailsData(
                     instructions.Select(InstructionData.From).ToList(),
-                    instructions.CollectCompilerGeneratedInstructions());
+                    methodDefinition.CollectCompilerGeneratedInstructions());
 
                 CodeLensConnectionHandler.StoreDetailsData(dataPointId, details);
 

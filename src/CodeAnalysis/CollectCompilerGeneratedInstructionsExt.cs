@@ -8,18 +8,45 @@ namespace Microscope.CodeAnalysis {
     using Microscope.CodeAnalysis.Model;
 
     using Mono.Cecil;
-    using Mono.Cecil.Cil;
 
     public static class CollectCompilerGeneratedInstructionsExt {
-        public static List<GeneratedType> CollectCompilerGeneratedInstructions(this IEnumerable<Instruction> instructions)
-            => instructions
+        public static List<GeneratedType> CollectCompilerGeneratedInstructions(this MethodDefinition method)
+            => method
+                .Collect(new HashSet<TypeDefinition>())
+                .Select(GeneratedType.From)
+                .ToList();
+
+        private static IEnumerable<TypeDefinition> Collect(this MethodDefinition method, ISet<TypeDefinition> visited) {
+            if (!method.HasBody) return Enumerable.Empty<TypeDefinition>();
+
+            var types = method
+                .Body
+                .Instructions
                 .Select(instr => instr.Operand)
                 .OfType<IMemberDefinition>()
                 .Select(operand => operand.DeclaringType)
-                .Distinct()
                 .Where(IsCompilerGenerated)
-                .Select(GeneratedType.From)
-                .ToList();
+                .Distinct()
+                .ToArray();
+
+            var result = new List<TypeDefinition>();
+
+            foreach (var type in types) {
+                if (visited.Add(type)) {
+                    result.Add(type);
+
+                    foreach (var m in type.Methods) {
+                        if (!m.Name.StartsWith("<")
+                            || m.Name.StartsWith("<>")
+                            || m.Name.StartsWith($"<{method.Name}>")) {
+                            result.AddRange(m.Collect(visited));
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
 
         private static bool IsCompilerGenerated(TypeDefinition type)
             => type.HasCustomAttributes

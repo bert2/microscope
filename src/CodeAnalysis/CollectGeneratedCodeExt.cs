@@ -50,13 +50,21 @@ namespace Microscope.CodeAnalysis {
 
         private static TypeDefinition? DeclaringType(object operand) => operand switch {
             IMemberDefinition d => d.DeclaringType,
-            MethodReference r   => r.Resolve().DeclaringType,
+            MethodReference r   => r.TryResolve()?.DeclaringType,
             _ => throw new ArgumentException($"Cannot get DeclaringType of operand {operand}.")
         };
 
         private static bool IsCompilerGenerated(TypeDefinition type)
             => type.HasCustomAttributes
             && type.CustomAttributes.Any(attr => attr.AttributeType.FullName == typeof(CompilerGeneratedAttribute).FullName);
+
+        private static IMemberDefinition? TryResolve(this MemberReference reference) {
+            try {
+                return reference.Resolve();
+            } catch (AssemblyResolutionException) {
+                return null;
+            }
+        }
 
         // All lambdas in a class will be turned into methods on the same generated class `<>c`.
         // This filter ensures we only return lambda implementations related to our method.

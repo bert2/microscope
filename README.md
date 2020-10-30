@@ -110,6 +110,10 @@ Since the 1.0.0 release has all the features I wanted this extension to have, I 
 
 ## Changelog
 
+### 1.0.2
+
+- Fixes a null reference exception during retrieval of generated code.
+
 ### 1.0.1
 
 - Fixes a bug where the compiler-generated code for nested lambdas would not be shown.

@@ -110,9 +110,13 @@ Since the 1.0.0 release has all the features I wanted this extension to have, I 
 
 ## Changelog
 
+### 1.0.3
+
+- Fixes `Mono.Cecil.AssemblyResolutionException`s during retrieval of compiler-generated code.
+
 ### 1.0.2
 
-- Fixes a null reference exception during retrieval of generated code.
+- Fixes `NullReferenceException`s during retrieval of compiler-generated code.
 
 ### 1.0.1
 

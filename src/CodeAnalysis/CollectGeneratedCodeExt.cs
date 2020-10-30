@@ -24,6 +24,8 @@ namespace Microscope.CodeAnalysis {
                 .Select(instr => instr.Operand)
                 .Where(IsMemberReference)
                 .Select(DeclaringType)
+                .Where(t => t != null)
+                .Cast<TypeDefinition>()
                 .Where(IsCompilerGenerated)
                 .Where(t => visited.Add(t))
                 .Aggregate(
@@ -46,7 +48,7 @@ namespace Microscope.CodeAnalysis {
             _ => false
         };
 
-        private static TypeDefinition DeclaringType(object operand) => operand switch {
+        private static TypeDefinition? DeclaringType(object operand) => operand switch {
             IMemberDefinition d => d.DeclaringType,
             MethodReference r   => r.Resolve().DeclaringType,
             _ => throw new ArgumentException($"Cannot get DeclaringType of operand {operand}.")

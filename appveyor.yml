@@ -12,9 +12,9 @@ artifacts:
 - path: ./src/VSExtension/bin/Release/Microscope.VSExtension.vsix
   name: Latest build
 deploy_script:
-- cmd: |
+- cmd: >-
     if "%APPVEYOR_REPO_TAG%" == "true" (
       .\build.cmd publish --build-number %APPVEYOR_BUILD_NUMBER% --no-logo
     ) else (
-      echo 'Not publishing, because no tag was pushed.'
+      echo Not publishing, because no tag was pushed.
     )

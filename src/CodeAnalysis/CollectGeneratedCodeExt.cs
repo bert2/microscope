@@ -2,7 +2,6 @@
 
 namespace Microscope.CodeAnalysis {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using System.Runtime.CompilerServices;
@@ -35,26 +34,31 @@ namespace Microscope.CodeAnalysis {
                 .Where(m => visited.Add(m))
                 .Aggregate(
                     Enumerable.Empty<MethodDefinition>(),
-                    (ms, m) => ms
-                        .Append(m)
-                        .Concat(m.CollectGeneratedMethods(visited))
-                        .Concat(m.DeclaringType.CollectEnumeratorMethods(visited))
-                        .Concat(m.DeclaringType.CollectAsyncStateMachineMethods(visited)))
+                    (ms, m) => ms.Append(m).Concat(m.CollectGeneratedMethods(visited)))
+                .Concat(method.CollectAsyncStateMachineMethods(visited))
+                .Concat(method.CollectIteratorStateMachineMethods(visited))
                 ?? Enumerable.Empty<MethodDefinition>();
 
-        private static IEnumerable<MethodDefinition> CollectEnumeratorMethods(
-            this TypeDefinition type,
-            ISet<MethodDefinition> visited)
-            => type.Implements<IEnumerator>()
-                ? type.CollectMethod("MoveNext", visited)
-                : Enumerable.Empty<MethodDefinition>();
-
         private static IEnumerable<MethodDefinition> CollectAsyncStateMachineMethods(
-            this TypeDefinition type,
+            this MethodDefinition method,
             ISet<MethodDefinition> visited)
-            => type.Implements<IAsyncStateMachine>()
-                ? type.CollectMethod("MoveNext", visited)
-                : Enumerable.Empty<MethodDefinition>();
+            => method
+                .TryGetCustomAttribute<AsyncStateMachineAttribute>()?
+                .GetStateMachineImplementation()
+                .CollectMethod("MoveNext", visited)
+                ?? Enumerable.Empty<MethodDefinition>();
+
+        private static IEnumerable<MethodDefinition> CollectIteratorStateMachineMethods(
+            this MethodDefinition method,
+            ISet<MethodDefinition> visited)
+            => method
+                .TryGetCustomAttribute<IteratorStateMachineAttribute>()?
+                .GetStateMachineImplementation()
+                .CollectMethod("MoveNext", visited)
+                ?? Enumerable.Empty<MethodDefinition>();
+
+        private static TypeDefinition GetStateMachineImplementation(this CustomAttribute a)
+            => (TypeDefinition)a.ConstructorArguments.Single().Value;
 
         private static IEnumerable<MethodDefinition> CollectMethod(
             this TypeDefinition type,
@@ -74,20 +78,24 @@ namespace Microscope.CodeAnalysis {
             }
         }
 
-        private static IEnumerable<T> WhereNotNull<T>(this IEnumerable<T?> source)
-            where T : class
-            => source.Where(x => x != null)!;
-
         private static bool IsCompilerGenerated(MethodDefinition m)
             => m.HasCustomAttribute<CompilerGeneratedAttribute>()
             || m.DeclaringType.HasCustomAttribute<CompilerGeneratedAttribute>();
 
-        private static bool HasCustomAttribute<T>(this ICustomAttributeProvider x)
+        private static bool HasCustomAttribute<T>(this ICustomAttributeProvider cap)
             where T : Attribute
-            => x.HasCustomAttributes
-            && x.CustomAttributes.Any(a => a.AttributeType.FullName == typeof(T).FullName);
+            => cap.HasCustomAttributes
+            && cap.CustomAttributes.Any(a => a.AttributeType.FullName == typeof(T).FullName);
 
-        private static bool Implements<T>(this TypeDefinition t)
-            => t.Interfaces.Any(i => i.InterfaceType.FullName == typeof(T).FullName);
+        private static CustomAttribute? TryGetCustomAttribute<T>(this ICustomAttributeProvider cap)
+            where T : Attribute
+            => cap.HasCustomAttributes
+                ? cap.CustomAttributes.SingleOrDefault(a => a.AttributeType.FullName == typeof(T).FullName)
+                : null;
+
+        /// <summary>Filters `null`s and also turns the NRT elements into non-nullable elements.</summary>
+        private static IEnumerable<T> WhereNotNull<T>(this IEnumerable<T?> source)
+            where T : class
+            => source.Where(x => x != null)!;
     }
 }

@@ -40,10 +40,10 @@ namespace Microscope.Tests {
             Method(x => x.Closure(0))
             .CollectGeneratedMethods(visited: empty)
             .Should().SatisfyRespectively(
-                first => first
+                ctor => ctor
                     .Should().Satisfy(m => m.Name.Should().Be(".ctor"))
                     .And.Satisfy(m => m.DeclaringType.Name.Should().Be("<>c__DisplayClass1_0")),
-                second => second
+                closure => closure
                     .Should().Satisfy(m => m.Name.Should().Be("<Closure>b__0"))
                     .And.Satisfy(m => m.DeclaringType.Name.Should().Be("<>c__DisplayClass1_0")));
 
@@ -51,13 +51,13 @@ namespace Microscope.Tests {
             Method(x => x.ClosureNestedInLambda())
             .CollectGeneratedMethods(visited: empty)
             .Should().SatisfyRespectively(
-                first => first
+                lambda => lambda
                     .Should().Satisfy(m => m.Name.Should().Be("<ClosureNestedInLambda>b__2_0"))
                     .And.Satisfy(m => m.DeclaringType.Name.Should().Be("<>c")),
-                second => second
+                ctor => ctor
                     .Should().Satisfy(m => m.Name.Should().Be(".ctor"))
                     .And.Satisfy(m => m.DeclaringType.Name.Should().Be("<>c__DisplayClass2_0")),
-                third => third
+                closure => closure
                     .Should().Satisfy(m => m.Name.Should().Be("<ClosureNestedInLambda>b__1"))
                     .And.Satisfy(m => m.DeclaringType.Name.Should().Be("<>c__DisplayClass2_0")));
 
@@ -79,10 +79,10 @@ namespace Microscope.Tests {
             Method(x => x.Iterator())
             .CollectGeneratedMethods(visited: empty)
             .Should().SatisfyRespectively(
-                first => first
+                ctor => ctor
                     .Should().Satisfy(m => m.Name.Should().Be(".ctor"))
                     .And.Satisfy(m => m.DeclaringType.Name.Should().Be("<Iterator>d__5")),
-                second => second
+                moveNext => moveNext
                     .Should().Satisfy(m => m.Name.Should().Be("MoveNext"))
                     .And.Satisfy(m => m.DeclaringType.Name.Should().Be("<Iterator>d__5")));
 
@@ -90,10 +90,12 @@ namespace Microscope.Tests {
             Method(x => x.AsyncMethod())
             .CollectGeneratedMethods(visited: empty)
             .Should().SatisfyRespectively(
-                first => first
+#if DEBUG // ctor call is optimized away in release builds
+                ctor => ctor
                     .Should().Satisfy(m => m.Name.Should().Be(".ctor"))
                     .And.Satisfy(m => m.DeclaringType.Name.Should().Be("<AsyncMethod>d__6")),
-                second => second
+#endif
+                moveNext => moveNext
                     .Should().Satisfy(m => m.Name.Should().Be("MoveNext"))
                     .And.Satisfy(m => m.DeclaringType.Name.Should().Be("<AsyncMethod>d__6")));
 
@@ -101,13 +103,15 @@ namespace Microscope.Tests {
             Method(x => x.AsyncMethodWithLambda())
             .CollectGeneratedMethods(visited: empty)
             .Should().SatisfyRespectively(
-                first => first
+#if DEBUG // ctor call is optimized away in release builds
+                ctor => ctor
                     .Should().Satisfy(m => m.Name.Should().Be(".ctor"))
                     .And.Satisfy(m => m.DeclaringType.Name.Should().Be("<AsyncMethodWithLambda>d__7")),
-                second => second
+#endif
+                moveNext => moveNext
                     .Should().Satisfy(m => m.Name.Should().Be("MoveNext"))
                     .And.Satisfy(m => m.DeclaringType.Name.Should().Be("<AsyncMethodWithLambda>d__7")),
-                third => third
+                lambda => lambda
                     .Should().Satisfy(m => m.Name.Should().Be("<AsyncMethodWithLambda>b__7_0"))
                     .And.Satisfy(m => m.DeclaringType.Name.Should().Be("<>c")));
 

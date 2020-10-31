@@ -1,21 +1,20 @@
+# We have to use `cmd` instead of `ps` so unicode is rendered correctly.
 version: '{build}'
 image: Visual Studio 2019
 environment:
   marketplaceKey:
     secure: /V44/pvMDD3CZ/FJKsgY6FC+xR4Sa6jwsLEAtzYmfwA8v8Qvt4vhrPf2jYWI+4DAW3lL9eCTUxnUIsgkRzZwgw==
 build_script:
-- ps: |
-    chcp 65001 # fix broken unicode output in PS
-    ./build --update-version --build-number $env:APPVEYOR_BUILD_NUMBER
+- cmd: .\build.cmd --update-version --build-number %APPVEYOR_BUILD_NUMBER%
 test_script:
 - cmd: .\build.cmd test --skip --no-logo
 artifacts:
 - path: ./src/VSExtension/bin/Release/Microscope.VSExtension.vsix
   name: Latest build
 deploy_script:
-- ps: |
-    if ($env:APPVEYOR_REPO_TAG -eq $true) {
-      ./build publish --build-number $env:APPVEYOR_BUILD_NUMBER --no-logo
-    } else {
+- cmd: |
+    if "%APPVEYOR_REPO_TAG%" == "true" (
+      .\build.cmd publish --build-number %APPVEYOR_BUILD_NUMBER% --no-logo
+    ) else (
       echo 'Not publishing, because no tag was pushed.'
-    }
+    )

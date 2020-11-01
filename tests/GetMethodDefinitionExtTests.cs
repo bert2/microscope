@@ -5,6 +5,8 @@ namespace Microscope.Tests {
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
+    using FluentAssertions;
+
     using Microscope.CodeAnalysis;
     using Microscope.Shared;
     using Microscope.Tests.TestData;
@@ -14,7 +16,7 @@ namespace Microscope.Tests {
 
     using Mono.Cecil;
 
-    using Shouldly;
+    using static FluentAssertions.FluentActions;
 
     [TestClass]
     public class GetMethodDefinitionExtTests {
@@ -34,253 +36,301 @@ namespace Microscope.Tests {
 
         #region Basic
 
-        [TestMethod] public void Basic_InstanceMethod() => Should.NotThrow(() =>
+        [TestMethod] public void Basic_InstanceMethod() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Class>(c => c.InstanceMethod())));
+                symbols.Get<Class>(c => c.InstanceMethod())))
+            .Should().NotThrow();
 
-        [TestMethod] public void Basic_StaticMethod() => Should.NotThrow(() =>
+        [TestMethod] public void Basic_StaticMethod() => Invoking(() =>
             testAssembly.GetMethodDefinition(
                 symbols.Get(Class.StaticMethod)));
 
-        [TestMethod] public void Basic_GenericInstanceMethod() => Should.NotThrow(() =>
+        [TestMethod] public void Basic_GenericInstanceMethod() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Class>(c => c.GenericInstanceMethod<int>())));
+                symbols.Get<Class>(c => c.GenericInstanceMethod<int>())))
+            .Should().NotThrow();
 
-        [TestMethod] public void Basic_GenericStaticMethod() => Should.NotThrow(() =>
+        [TestMethod] public void Basic_GenericStaticMethod() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get(Class.GenericStaticMethod<bool>)));
+                symbols.Get(Class.GenericStaticMethod<bool>)))
+            .Should().NotThrow();
 
-        [TestMethod] public void Basic_InstanceMethodWithParam() => Should.NotThrow(() =>
+        [TestMethod] public void Basic_InstanceMethodWithParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Class>(c => c.InstanceMethodWithParam(0))));
+                symbols.Get<Class>(c => c.InstanceMethodWithParam(0))))
+            .Should().NotThrow();
 
-        [TestMethod] public void Basic_StaticMethodWithParam() => Should.NotThrow(() =>
+        [TestMethod] public void Basic_StaticMethodWithParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get(() => Class.StaticMethodWithParam(true))));
+                symbols.Get(() => Class.StaticMethodWithParam(true))))
+            .Should().NotThrow();
 
-        [TestMethod] public void Basic_GenericInstanceMethodWithParam() => Should.NotThrow(() =>
+        [TestMethod] public void Basic_GenericInstanceMethodWithParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Class>(c => c.GenericInstanceMethodWithParam(0))));
+                symbols.Get<Class>(c => c.GenericInstanceMethodWithParam(0))))
+            .Should().NotThrow();
 
-        [TestMethod] public void Basic_GenericStaticMethodWithParam() => Should.NotThrow(() =>
+        [TestMethod] public void Basic_GenericStaticMethodWithParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get(() => Class.GenericStaticMethodWithParam(true))));
+                symbols.Get(() => Class.GenericStaticMethodWithParam(true))))
+            .Should().NotThrow();
 
         #endregion Basic
 
         #region GenericClass
 
-        [TestMethod] public void GenericClass_Method() => Should.NotThrow(() =>
+        [TestMethod] public void GenericClass_Method() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<GenericClass<int>>(c => c.Method(0))));
+                symbols.Get<GenericClass<int>>(c => c.Method(0))))
+            .Should().NotThrow();
 
-        [TestMethod] public void GenericClass_GenericMethod() => Should.NotThrow(() =>
+        [TestMethod] public void GenericClass_GenericMethod() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<GenericClass<int>>(c => c.GenericMethod(0, true))));
+                symbols.Get<GenericClass<int>>(c => c.GenericMethod(0, true))))
+            .Should().NotThrow();
 
         #endregion GenericClass
 
         #region NestedClass
 
-        [TestMethod] public void NestedClass_Method() => Should.NotThrow(() =>
+        [TestMethod] public void NestedClass_Method() => Invoking(() =>
             testAssembly.GetMethodDefinition(
                 symbols.Get<Class.NestedClass>(c => c.Method())));
 
-        [TestMethod] public void NestedNestedClass_Method() => Should.NotThrow(() =>
+        [TestMethod] public void NestedNestedClass_Method() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Class.NestedClass.NestedNestedClass>(c => c.Method())));
+                symbols.Get<Class.NestedClass.NestedNestedClass>(c => c.Method())))
+            .Should().NotThrow();
 
         #endregion NestedClass
 
         #region AmbiguousClass
 
-        [TestMethod] public void AmbiguousClass_Method() => Should.NotThrow(() =>
+        [TestMethod] public void AmbiguousClass_Method() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<AmbiguousClass>(c => c.Method(0))));
+                symbols.Get<AmbiguousClass>(c => c.Method(0))))
+            .Should().NotThrow();
 
-        [TestMethod] public void AmbiguousClass_MethodWithGenericParam() => Should.NotThrow(() =>
+        [TestMethod] public void AmbiguousClass_MethodWithGenericParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<AmbiguousClass<int>>(c => c.Method(0))));
+                symbols.Get<AmbiguousClass<int>>(c => c.Method(0))))
+            .Should().NotThrow();
 
         #endregion AmbiguousClass
 
         #region Overloads
 
-        [TestMethod] public void Overloads_NoParam() => Should.NotThrow(() =>
+        [TestMethod] public void Overloads_NoParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Overloads>(c => c.Method())));
+                symbols.Get<Overloads>(c => c.Method())))
+            .Should().NotThrow();
 
-        [TestMethod] public void Overloads_IntParam() => Should.NotThrow(() =>
+        [TestMethod] public void Overloads_IntParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Overloads>(c => c.Method(0))));
+                symbols.Get<Overloads>(c => c.Method(0))))
+            .Should().NotThrow();
 
-        [TestMethod] public void Overloads_StringParam() => Should.NotThrow(() =>
+        [TestMethod] public void Overloads_StringParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Overloads>(c => c.Method(""))));
+                symbols.Get<Overloads>(c => c.Method(""))))
+            .Should().NotThrow();
 
-        [TestMethod] public void Overloads_GenericParam() => Should.NotThrow(() =>
+        [TestMethod] public void Overloads_GenericParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Overloads>(c => c.Method(true))));
+                symbols.Get<Overloads>(c => c.Method(true))))
+            .Should().NotThrow();
 
-        [TestMethod] public void Overloads_AmbiguousGenericParam() => Should.NotThrow(() =>
+        [TestMethod] public void Overloads_AmbiguousGenericParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Overloads>(c => c.Method<int>(0))));
+                symbols.Get<Overloads>(c => c.Method<int>(0))))
+            .Should().NotThrow();
 
-        [TestMethod] public void Overloads_ListParam() => Should.NotThrow(() =>
+        [TestMethod] public void Overloads_ListParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Overloads>(c => c.Method(new List<int>()))));
+                symbols.Get<Overloads>(c => c.Method(new List<int>()))))
+            .Should().NotThrow();
 
-        [TestMethod] public void Overloads_GenericListParam() => Should.NotThrow(() =>
+        [TestMethod] public void Overloads_GenericListParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Overloads>(c => c.Method(new List<bool>()))));
+                symbols.Get<Overloads>(c => c.Method(new List<bool>()))))
+            .Should().NotThrow();
 
-        [TestMethod] public void Overloads_AmbiguousGenericListParam() => Should.NotThrow(() =>
+        [TestMethod] public void Overloads_AmbiguousGenericListParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Overloads>(c => c.Method<int>(new List<int>()))));
+                symbols.Get<Overloads>(c => c.Method<int>(new List<int>()))))
+            .Should().NotThrow();
 
         #endregion Overloads
 
         #region MoreOverloads
 
-        [TestMethod] public void MoreOverloads_ListParam() => Should.NotThrow(() =>
+        [TestMethod] public void MoreOverloads_ListParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<MoreOverloads>(c => c.Method(new List<int>()))));
+                symbols.Get<MoreOverloads>(c => c.Method(new List<int>()))))
+            .Should().NotThrow();
 
-        [TestMethod] public void MoreOverloads_DictOfListParam() => Should.NotThrow(() =>
+        [TestMethod] public void MoreOverloads_DictOfListParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<MoreOverloads>(c => c.Method(new Dictionary<string, List<int>>()))));
+                symbols.Get<MoreOverloads>(c => c.Method(new Dictionary<string, List<int>>()))))
+            .Should().NotThrow();
 
-        [TestMethod] public void MoreOverloads_DuplicateTypeNamesInDifferenNamespaces() => Should.NotThrow(() =>
+        [TestMethod] public void MoreOverloads_DuplicateTypeNamesInDifferenNamespaces() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<MoreOverloads>(c => c.Method(new Name1.Space1.Foo()))));
+                symbols.Get<MoreOverloads>(c => c.Method(new Name1.Space1.Foo()))))
+            .Should().NotThrow();
 
-        [TestMethod] public void MoreOverloads_NestedTypeParam() => Should.NotThrow(() =>
+        [TestMethod] public void MoreOverloads_NestedTypeParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<MoreOverloads>(c => c.Method(new MoreOverloads.Foo<bool, char>.Bar<float, int>()))));
+                symbols.Get<MoreOverloads>(c => c.Method(new MoreOverloads.Foo<bool, char>.Bar<float, int>()))))
+            .Should().NotThrow();
 
-        [TestMethod] public void MoreOverloads_GenericMethodWithNestedTypeParam() => Should.NotThrow(() =>
+        [TestMethod] public void MoreOverloads_GenericMethodWithNestedTypeParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<MoreOverloads>(c => c.Method(new MoreOverloads.Foo<bool, char>.Bar<double, int>()))));
+                symbols.Get<MoreOverloads>(c => c.Method(new MoreOverloads.Foo<bool, char>.Bar<double, int>()))))
+            .Should().NotThrow();
 
         #endregion MoreOverloads
 
         #region Arrays
 
-        [TestMethod] public void Arrays_ArrayParam() => Should.NotThrow(() =>
+        [TestMethod] public void Arrays_ArrayParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Arrays>(c => c.Method(new int[0]))));
+                symbols.Get<Arrays>(c => c.Method(new int[0]))))
+            .Should().NotThrow();
 
-        [TestMethod] public void Arrays_JaggedArrayParam() => Should.NotThrow(() =>
+        [TestMethod] public void Arrays_JaggedArrayParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Arrays>(c => c.Method(new[] { new[] { new int[0] } }))));
+                symbols.Get<Arrays>(c => c.Method(new[] { new[] { new int[0] } }))))
+            .Should().NotThrow();
 
-        [TestMethod] public void Arrays_MultidimArrayParam() => Should.NotThrow(() =>
+        [TestMethod] public void Arrays_MultidimArrayParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Arrays>(c => c.Method(new int[0,0,0]))));
+                symbols.Get<Arrays>(c => c.Method(new int[0,0,0]))))
+            .Should().NotThrow();
 
-        [TestMethod] public void Arrays_ParamsArray() => Should.NotThrow(() =>
+        [TestMethod] public void Arrays_ParamsArray() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Arrays>(c => c.Method('a', 'b', 'c'))));
+                symbols.Get<Arrays>(c => c.Method('a', 'b', 'c'))))
+            .Should().NotThrow();
 
-        [TestMethod] public void Arrays_GenericArrayParam() => Should.NotThrow(() =>
+        [TestMethod] public void Arrays_GenericArrayParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Arrays>(c => c.Method<int>(new int[0]))));
+                symbols.Get<Arrays>(c => c.Method<int>(new int[0]))))
+            .Should().NotThrow();
 
-        [TestMethod] public void Arrays_GenericJaggedArrayParam() => Should.NotThrow(() =>
+        [TestMethod] public void Arrays_GenericJaggedArrayParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Arrays>(c => c.Method<int>(new[] { new[] { new int[0] } }))));
+                symbols.Get<Arrays>(c => c.Method<int>(new[] { new[] { new int[0] } }))))
+            .Should().NotThrow();
 
-        [TestMethod] public void Arrays_GenericMultidimArrayParam() => Should.NotThrow(() =>
+        [TestMethod] public void Arrays_GenericMultidimArrayParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Arrays>(c => c.Method<int>(new int[0,0,0]))));
+                symbols.Get<Arrays>(c => c.Method<int>(new int[0,0,0]))))
+            .Should().NotThrow();
 
-        [TestMethod] public void Arrays_GenericArrayElements1() => Should.NotThrow(() =>
+        [TestMethod] public void Arrays_GenericArrayElements1() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Arrays>(c => c.Method(new Dictionary<char, int>[0]))));
+                symbols.Get<Arrays>(c => c.Method(new Dictionary<char, int>[0]))))
+            .Should().NotThrow();
 
-        [TestMethod] public void Arrays_GenericArrayElements2() => Should.NotThrow(() =>
+        [TestMethod] public void Arrays_GenericArrayElements2() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Arrays>(c => c.Method(new Dictionary<int, char>[0]))));
+                symbols.Get<Arrays>(c => c.Method(new Dictionary<int, char>[0]))))
+            .Should().NotThrow();
 
-        [TestMethod] public void Arrays_GenericArrayElements3() => Should.NotThrow(() =>
+        [TestMethod] public void Arrays_GenericArrayElements3() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Arrays>(c => c.Method(new MoreOverloads.Foo<bool, char>.Bar<float, int>[0]))));
+                symbols.Get<Arrays>(c => c.Method(new MoreOverloads.Foo<bool, char>.Bar<float, int>[0]))))
+            .Should().NotThrow();
 
         #endregion Arrays
 
         #region Refs
 
-        [TestMethod] public void Refs_RefParam() => Should.NotThrow(() => {
-            var x = 0;
-            _ = testAssembly.GetMethodDefinition(
-                symbols.Get<Refs>(c => c.Method(ref x)));
-        });
+        [TestMethod] public void Refs_RefParam() => Invoking(() => {
+                var x = 0;
+                _ = testAssembly.GetMethodDefinition(
+                    symbols.Get<Refs>(c => c.Method(ref x)));
+            })
+            .Should().NotThrow();
 
-        [TestMethod] public void Refs_InParam() => Should.NotThrow(() => {
-            var x = '\0';
-            _ = testAssembly.GetMethodDefinition(
-                symbols.Get<Refs>(c => c.Method(in x)));
-        });
+        [TestMethod] public void Refs_InParam() => Invoking(() => {
+                var x = '\0';
+                _ = testAssembly.GetMethodDefinition(
+                    symbols.Get<Refs>(c => c.Method(in x)));
+            })
+            .Should().NotThrow();
 
-        [TestMethod] public void Refs_OutParam() => Should.NotThrow(() =>
+        [TestMethod] public void Refs_OutParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Refs>(c => c.Method(out var x))));
+                symbols.Get<Refs>(c => c.Method(out var x))))
+            .Should().NotThrow();
 
         #endregion Refs
 
         #region Pointers
 
-        [TestMethod] public unsafe void Pointers_PtrParam() => Should.NotThrow(() =>
+        [TestMethod] public unsafe void Pointers_PtrParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Pointers>(c => c.Method((int*)null))));
+                symbols.Get<Pointers>(c => c.Method((int*)null))))
+            .Should().NotThrow();
 
-        [TestMethod] public unsafe void Pointers_PtrToPtrParam() => Should.NotThrow(() =>
+        [TestMethod] public unsafe void Pointers_PtrToPtrParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Pointers>(c => c.Method((int**)null))));
+                symbols.Get<Pointers>(c => c.Method((int**)null))))
+            .Should().NotThrow();
 
-        [TestMethod] public unsafe void Pointers_PtrArrayParam() => Should.NotThrow(() =>
+        [TestMethod] public unsafe void Pointers_PtrArrayParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Pointers>(c => c.Method(new int*[0]))));
+                symbols.Get<Pointers>(c => c.Method(new int*[0]))))
+            .Should().NotThrow();
 
-        [TestMethod] public unsafe void Pointers_VoidPtrParam() => Should.NotThrow(() =>
+        [TestMethod] public unsafe void Pointers_VoidPtrParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Pointers>(c => c.Method((void*)null))));
+                symbols.Get<Pointers>(c => c.Method((void*)null))))
+            .Should().NotThrow();
 
         #endregion Pointers
 
         #region Dynamic
 
-        [TestMethod] public void Dynamic_IntParam() => Should.NotThrow(() =>
+        [TestMethod] public void Dynamic_IntParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Dynamic>(c => c.Method(0))));
+                symbols.Get<Dynamic>(c => c.Method(0))))
+            .Should().NotThrow();
 
-        [TestMethod] public void Dynamic_DynamicParam() => Should.NotThrow(() =>
+        [TestMethod] public void Dynamic_DynamicParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Dynamic>(c => c.Method(.0))));
+                symbols.Get<Dynamic>(c => c.Method(.0))))
+            .Should().NotThrow();
 
         #endregion Dynamic
 
         #region Delegate
 
-        [TestMethod] public void Delegate_FuncParam() => Should.NotThrow(() =>
+        [TestMethod] public void Delegate_FuncParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Delegates>(c => c.Method((Func<int, string>)null!))));
+                symbols.Get<Delegates>(c => c.Method((Func<int, string>)null!))))
+            .Should().NotThrow();
 
-        [TestMethod] public void Delegate_DelegateParam() => Should.NotThrow(() =>
+        [TestMethod] public void Delegate_DelegateParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Delegates>(c => c.Method((Delegates.Qux)null!))));
+                symbols.Get<Delegates>(c => c.Method((Delegates.Qux)null!))))
+            .Should().NotThrow();
 
         #endregion Delegate
 
         #region Alias
 
-        [TestMethod] public void Alias_IntParam() => Should.NotThrow(() =>
+        [TestMethod] public void Alias_IntParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Alias>(c => c.Method(0))));
+                symbols.Get<Alias>(c => c.Method(0))))
+            .Should().NotThrow();
 
-        [TestMethod] public void Alias_AliasedParam() => Should.NotThrow(() =>
+        [TestMethod] public void Alias_AliasedParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get<Alias>(c => c.Method(""))));
+                symbols.Get<Alias>(c => c.Method(""))))
+            .Should().NotThrow();
 
         #endregion Alias
     }

@@ -97,9 +97,6 @@
     <PackageReference Include="MSTest.TestFramework">
       <Version>2.1.2</Version>
     </PackageReference>
-    <PackageReference Include="Shouldly">
-      <Version>3.0.2</Version>
-    </PackageReference>
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe">
       <Version>4.7.1</Version>
     </PackageReference>

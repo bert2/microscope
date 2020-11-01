@@ -5,11 +5,11 @@ namespace Microscope.Tests {
     using System.Collections.Immutable;
     using System.Reflection;
 
+    using FluentAssertions;
+
     using Microsoft.CodeAnalysis;
     using Microsoft.VisualStudio.LanguageServices;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-    using Shouldly;
 
     [TestClass]
     public class GetDocumentExtTests {
@@ -17,7 +17,7 @@ namespace Microscope.Tests {
         public void VisualStudioWorkspaceImplTypeExists() => typeof(VisualStudioWorkspace).Assembly
             .GetType(
                 "Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem.VisualStudioWorkspaceImpl")
-            .ShouldNotBeNull();
+            .Should().NotBeNull();
 
         [TestMethod]
         public void ProjectToGuidMapFieldExists() => typeof(VisualStudioWorkspace).Assembly
@@ -25,7 +25,7 @@ namespace Microscope.Tests {
                 "Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem.VisualStudioWorkspaceImpl",
                 throwOnError: true)
             .GetField("_projectToGuidMap", BindingFlags.NonPublic | BindingFlags.Instance)
-            .ShouldNotBeNull();
+            .Should().NotBeNull();
 
         [TestMethod]
         public void ProjectToGuidMapFieldIsImmutableDictionary() => typeof(VisualStudioWorkspace).Assembly
@@ -34,7 +34,7 @@ namespace Microscope.Tests {
                 throwOnError: true)
             .GetField("_projectToGuidMap", BindingFlags.NonPublic | BindingFlags.Instance)
             .FieldType
-            .ShouldBe(typeof(ImmutableDictionary<ProjectId, Guid>));
+            .Should().Be(typeof(ImmutableDictionary<ProjectId, Guid>));
 
         [TestMethod]
         public void GetDocumentIdInCurrentContextMethodExists() => typeof(Workspace)
@@ -44,6 +44,6 @@ namespace Microscope.Tests {
                 binder: null,
                 types: new[] { typeof(DocumentId) },
                 modifiers: null)
-            .ShouldNotBeNull();
+            .Should().NotBeNull();
     }
 }

@@ -6,6 +6,14 @@ A CodeLens extension for Visual Studio that lets you inspect the intermediate la
 
 ![Usage example](img/usage.gif "Usage example")
 
+It also shows the compiler-generated code for lambdas/closures, local functions, `async` methods, and iterators:
+
+![Usage example: compiler-generated code](img/usage-csc-gen.gif "Usage example: compiler-generated code")
+
+It's mostly useful for learning and getting a better understanding of how C# works internally, but it can help when micro-optimizing a hot path too:
+
+![Usage example: micro-optimization](img/usage-opt.gif "Usage example: micro-optimization")
+
 ## Table of contents
 
 - [Usage](#Usage)

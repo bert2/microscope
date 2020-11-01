@@ -10,14 +10,22 @@
     "private": false,
     "qna": true,
     "repo": "https://github.com/bert2/microscope",
-    "assetFiles": [
-        {
-            "pathOnDisk": "img\\usage.gif",
-            "targetPath": "img/usage.gif"
-        },
-        {
-            "pathOnDisk": "img\\settings-page.png",
-            "targetPath": "img/settings-page.png"
-        }
-    ]
+  "assetFiles": [
+    {
+      "pathOnDisk": "img\\usage.gif",
+      "targetPath": "img/usage.gif"
+    },
+    {
+      "pathOnDisk": "img\\usage-csc-gen.gif",
+      "targetPath": "img/usage-csc-gen.gif"
+    },
+    {
+      "pathOnDisk": "img\\usage-opt.gif",
+      "targetPath": "img/usage-opt.gif"
+    },
+    {
+      "pathOnDisk": "img\\settings-page.png",
+      "targetPath": "img/settings-page.png"
+    }
+  ]
 }

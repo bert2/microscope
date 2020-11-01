@@ -23,9 +23,7 @@ namespace Microscope.CodeAnalysis {
             types: new[] { typeof(DocumentId) },
             modifiers: null);
 
-        /// <summary>
-        /// Code adapted from Microsoft.VisualStudio.LanguageServices.CodeLens.CodeLensCallbackListener.TryGetDocument()
-        /// </summary>
+        // Code adapted from Microsoft.VisualStudio.LanguageServices.CodeLens.CodeLensCallbackListener.TryGetDocument()
         public static Document GetDocument(this VisualStudioWorkspace workspace, string filePath, Guid projGuid) {
             var projectToGuidMap = (ImmutableDictionary<ProjectId, Guid>)projectToGuidMapField.GetValue(workspace);
             var sln = workspace.CurrentSolution;

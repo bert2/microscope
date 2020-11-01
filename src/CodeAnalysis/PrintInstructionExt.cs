@@ -9,9 +9,7 @@ namespace Microscope.CodeAnalysis {
     public static class PrintInstructionExt {
         public static string PrintLabel(this Instruction instr) => $"IL_{instr.Offset:X4}";
 
-        /// <summary>
-        /// Code adapted from Mono.Cecil.Cil.Instruction.ToString().
-        /// </summary>
+        // Code adapted from Mono.Cecil.Cil.Instruction.ToString().
         public static string PrintOperand(this Instruction instr) {
             var operand = instr.Operand;
 

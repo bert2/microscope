@@ -42,7 +42,6 @@ It's mostly useful for learning and getting a better understanding of how C# wor
 
 ## Known issues
 
-- The methods the compiler generates for local functions are not shown. This will be fixed in a future release.
 - Visual Studio might freeze for a couple of seconds when you open the details view for a method with a huge amount of instructions (i.e. multiple thousands). This might be fixed in a future release.
 
 ## Contributing
@@ -100,7 +99,6 @@ Since the 1.0.0 release has all the features I wanted this extension to have, I 
 
 ### Future releases
 
-- show compiler-generated code for local functions
 - support more code elements? (properties, classes, ...)
 - show C# code in details view
 - VB support
@@ -117,6 +115,10 @@ Since the 1.0.0 release has all the features I wanted this extension to have, I 
     - can we even access the `Compilation` out-of-proc?
 
 ## Changelog
+
+### 1.1.0
+
+- Adds support for local functions.
 
 ### 1.0.3
 

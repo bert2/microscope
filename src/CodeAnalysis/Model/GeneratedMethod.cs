@@ -17,7 +17,12 @@ namespace Microscope.CodeAnalysis.Model {
 
         public IReadOnlyList<InstructionData> Instructions { get; }
 
-        public GeneratedMethod(string name, string fullName, string returnTypeName, string parameterList, IReadOnlyList<InstructionData> instructions) {
+        public GeneratedMethod(
+            string name,
+            string fullName,
+            string returnTypeName,
+            string parameterList,
+            IReadOnlyList<InstructionData> instructions) {
             Name = name;
             FullName = fullName;
             ReturnTypeName = returnTypeName;

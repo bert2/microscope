@@ -86,6 +86,9 @@ namespace Microscope.Tests.TestData {
         public void Method(ref int x) { }
         public void Method(in char x) { }
         public void Method(out float x) => x = .0f;
+
+        public void MethodWithInParamOverload(in string s) { }
+        public void MethodWithInParamOverload(string s) { }
     }
 
     public class Pointers {

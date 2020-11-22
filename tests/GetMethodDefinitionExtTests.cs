@@ -266,6 +266,18 @@ namespace Microscope.Tests {
                 symbols.Get<Refs>(c => c.Method(out var x))))
             .Should().NotThrow();
 
+        [TestMethod] public void Refs_InParamOverload1() => Invoking(() => {
+                var s = "foo";
+                _ = testAssembly.GetMethodDefinition(
+                        symbols.Get<Refs>(c => c.MethodWithInParamOverload(in s)));
+            })
+            .Should().NotThrow();
+
+        [TestMethod] public void Refs_InParamOverload2() => Invoking(() =>
+            testAssembly.GetMethodDefinition(
+                symbols.Get<Refs>(c => c.MethodWithInParamOverload("foo"))))
+            .Should().NotThrow();
+
         #endregion Refs
 
         #region Pointers

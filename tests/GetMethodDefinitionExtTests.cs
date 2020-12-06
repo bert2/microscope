@@ -175,7 +175,7 @@ namespace Microscope.Tests {
                 symbols.Get<MoreOverloads>(c => c.Method(new Dictionary<string, List<int>>()))))
             .Should().NotThrow();
 
-        [TestMethod] public void MoreOverloads_DuplicateTypeNamesInDifferenNamespaces() => Invoking(() =>
+        [TestMethod] public void MoreOverloads_DuplicateTypeNamesInDifferentNamespaces() => Invoking(() =>
             testAssembly.GetMethodDefinition(
                 symbols.Get<MoreOverloads>(c => c.Method(new Name1.Space1.Foo()))))
             .Should().NotThrow();

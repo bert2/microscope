@@ -170,6 +170,11 @@ namespace Microscope.Tests {
                 symbols.Get<MoreOverloads>(c => c.Method(new List<int>()))))
             .Should().NotThrow();
 
+        [TestMethod] public void MoreOverloads_GenericParamTypeHasDifferentTypeArg() => Invoking(() =>
+            testAssembly.GetMethodDefinition(
+                symbols.Get<MoreOverloads>(c => c.Method(new List<Queue<int>>()))))
+            .Should().NotThrow();
+
         [TestMethod] public void MoreOverloads_DictOfListParam() => Invoking(() =>
             testAssembly.GetMethodDefinition(
                 symbols.Get<MoreOverloads>(c => c.Method(new Dictionary<string, List<int>>()))))

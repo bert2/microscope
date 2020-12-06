@@ -43,7 +43,8 @@ namespace Microscope.Tests {
 
         [TestMethod] public void Basic_StaticMethod() => Invoking(() =>
             testAssembly.GetMethodDefinition(
-                symbols.Get(Class.StaticMethod)));
+                symbols.Get(Class.StaticMethod)))
+            .Should().NotThrow();
 
         [TestMethod] public void Basic_GenericInstanceMethod() => Invoking(() =>
             testAssembly.GetMethodDefinition(

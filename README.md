@@ -10,19 +10,9 @@ It also shows the compiler-generated code for lambdas/closures, local functions,
 
 ![Usage example: compiler-generated code](img/usage-csc-gen.gif "Usage example: compiler-generated code")
 
-It's mostly useful for learning and getting a better understanding of how C# works internally, but it can help when micro-optimizing a hot path too:
+It's mostly useful for learning and getting a better understanding of how C# works internally, but it's a must-have if enjoy procrastinating work with futile micro-optimizations:
 
 ![Usage example: micro-optimization](img/usage-opt.gif "Usage example: micro-optimization")
-
-## Table of contents
-
-- [Usage](#Usage)
-- [Known issues](#known-issues)
-- [Contributing](#contributing)
-- [Roadmap](#roadmap)
-- [Changelog](#changelog)
-- [Versioning scheme](#versioning-scheme)
-- [Credits](#credits)
 
 ## Usage
 

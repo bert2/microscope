@@ -55,6 +55,10 @@ namespace Microscope.Tests.TestData {
     }
 
     public class MoreOverloads {
+        public void Method(List<Queue<int>> x) { }
+        public void Method(List<Stack<int>> x) { }
+        public void Method(List<int>[] x) { }
+        public void Method(List<int[]> x) { }
         public void Method(List<int> x) { }
         public void Method(Dictionary<string, List<int>> x) { }
         public void Method(Name1.Space1.Foo x) { }

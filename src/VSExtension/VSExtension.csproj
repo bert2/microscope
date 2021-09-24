@@ -122,10 +122,16 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis">
-      <Version>3.7.0</Version>
+      <Version>4.0.0-4.final</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.Common">
+      <Version>4.0.0-4.final</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common">
+      <Version>4.0.0-4.final</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.LanguageServices">
-      <Version>3.7.0</Version>
+      <Version>4.0.0-4.final</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.SDK" ExcludeAssets="runtime">
       <Version>17.0.0-previews-4-31709-430</Version>

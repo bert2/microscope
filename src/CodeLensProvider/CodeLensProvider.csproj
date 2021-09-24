@@ -59,7 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Language">
-      <Version>16.1.89</Version>
+      <Version>17.0.391-preview-g5e248c9073</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.SDK.Analyzers">
       <Version>16.3.14</Version>

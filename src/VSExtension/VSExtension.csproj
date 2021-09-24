@@ -143,10 +143,10 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Mono.Cecil">
-      <Version>0.11.3</Version>
+      <Version>0.11.4</Version>
     </PackageReference>
     <PackageReference Include="StreamJsonRpc">
-      <Version>2.5.46</Version>
+      <Version>2.8.28</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

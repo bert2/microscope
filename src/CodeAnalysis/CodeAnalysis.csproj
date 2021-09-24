@@ -73,7 +73,7 @@
       <Version>4.0.0-4.final</Version>
     </PackageReference>
     <PackageReference Include="Mono.Cecil">
-      <Version>0.11.3</Version>
+      <Version>0.11.4</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

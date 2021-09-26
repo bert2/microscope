@@ -14,10 +14,19 @@ It's mostly useful for learning and getting a better understanding of how C# wor
 
 ![Usage example: micro-optimization](img/usage-opt.gif "Usage example: micro-optimization")
 
-## Usage
+## Installation
+
+### Visual Studio 2022
 
 - Install latest stable release from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=bert.microscope).
 - Alternatively you can grab the [VSIX package](https://ci.appveyor.com/project/bert2/microscope/branch/main/artifacts) of the latest build from AppVeyor.
+
+### Visual Studio 2019
+
+- Installation via Extension Marketplace is not possible. Download the VSIX package of the [v1.1.0 release](https://github.com/bert2/microscope/releases/tag/1.1.0) and install microscope manually.
+
+## Usage
+
 - The CodeLens appears on C# methods and displays the number of instructions that will be generated for the method.
 - Click the CodeLens to get a detailed list of all instructions including their offsets and operands.
 - Hover over an instruction in the list to see its documentation summary in a tooltip.
@@ -105,6 +114,10 @@ Since the 1.0.0 release has all the features I wanted this extension to have, I 
     - can we even access the `Compilation` out-of-proc?
 
 ## Changelog
+
+### 2.0.0
+
+- Support Visual Studio 2022. Visual Studio 2019 is no longer supported.
 
 ### 1.1.0
 

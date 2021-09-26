@@ -1,0 +1,16 @@
+# We have to use `cmd` instead of `ps` so unicode is rendered correctly.
+version: '{build}'
+image: Visual Studio 2019
+environment:
+  marketplaceKey:
+    secure: BZmbULp1SVBph/vcYiTXJnaxphIu8TTV1v0VZShOjVOc4RZvkhLaJyeb0QGvtg143vQOrza/9I+wyz6nMG1SbQ==
+  NUKE_TELEMETRY_OPTOUT: true
+build_script:
+- cmd: .\build.cmd --update-version --build-number %APPVEYOR_BUILD_NUMBER%
+test_script:
+- cmd: .\build.cmd test --skip --no-logo
+artifacts:
+- path: ./src/VSExtension/bin/Release/Microscope.VSExtension.vsix
+  name: Latest build
+deploy_script:
+- cmd: if "%APPVEYOR_REPO_TAG%"=="true" .\build.cmd publish --build-number %APPVEYOR_BUILD_NUMBER% --no-logo

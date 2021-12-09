@@ -32,8 +32,16 @@ namespace Microscope.VSExtension.Options {
     /// A base class for specifying options
     /// </summary>
     public abstract class BaseOptionModel<T> where T : BaseOptionModel<T>, new() {
-        private static AsyncLazy<T> _liveModel = new AsyncLazy<T>(CreateAsync, ThreadHelper.JoinableTaskFactory);
-        private static AsyncLazy<ShellSettingsManager> _settingsManager = new AsyncLazy<ShellSettingsManager>(GetSettingsManagerAsync, ThreadHelper.JoinableTaskFactory);
+        private static AsyncLazy<T> liveModel = new AsyncLazy<T>(CreateAsync, ThreadHelper.JoinableTaskFactory);
+        private static AsyncLazy<ShellSettingsManager> settingsManager = new AsyncLazy<ShellSettingsManager>(GetSettingsManagerAsync, ThreadHelper.JoinableTaskFactory);
+        private static Assembly myAssembly = typeof(BaseOptionModel<T>).Assembly;
+
+        static BaseOptionModel() {
+            // Dirty hack: BinaryFormatter is unable to resolve the assembly for the
+            // Microscope.VSExtension.Options.BuildConfig enum, even though it's in the
+            // same assembly that does the deserialization...
+            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler((object _, ResolveEventArgs args) => args.Name == myAssembly.FullName ? myAssembly : null);
+        }
 
         protected BaseOptionModel() { }
 
@@ -56,7 +64,7 @@ namespace Microscope.VSExtension.Options {
         /// <summary>
         /// Get the singleton instance of the options. Thread safe.
         /// </summary>
-        public static Task<T> GetLiveInstanceAsync() => _liveModel.GetValueAsync();
+        public static Task<T> GetLiveInstanceAsync() => liveModel.GetValueAsync();
 
         /// <summary>
         /// Creates a new instance of the options class and loads the values from the store. For internal use only
@@ -84,7 +92,7 @@ namespace Microscope.VSExtension.Options {
         /// Hydrates the properties from the registry asyncronously.
         /// </summary>
         public virtual async Task LoadAsync() {
-            ShellSettingsManager manager = await _settingsManager.GetValueAsync();
+            ShellSettingsManager manager = await settingsManager.GetValueAsync();
             SettingsStore settingsStore = manager.GetReadOnlySettingsStore(SettingsScope.UserSettings);
 
             if (!settingsStore.CollectionExists(CollectionName)) {
@@ -113,7 +121,7 @@ namespace Microscope.VSExtension.Options {
         /// Saves the properties to the registry asyncronously.
         /// </summary>
         public virtual async Task SaveAsync() {
-            ShellSettingsManager manager = await _settingsManager.GetValueAsync();
+            ShellSettingsManager manager = await settingsManager.GetValueAsync();
             WritableSettingsStore settingsStore = manager.GetWritableSettingsStore(SettingsScope.UserSettings);
 
             if (!settingsStore.CollectionExists(CollectionName)) {

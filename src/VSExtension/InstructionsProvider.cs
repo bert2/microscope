@@ -14,6 +14,7 @@ namespace Microscope.VSExtension {
     using Microscope.Shared;
     using Microscope.VSExtension.Options;
 
+    using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.Text;
     using Microsoft.VisualStudio.Language.CodeLens;
     using Microsoft.VisualStudio.LanguageServices;
@@ -51,7 +52,7 @@ namespace Microscope.VSExtension {
                 var methodSymbol = await document.GetMethodSymbolAt(new TextSpan(textStart, textLen), ct).Caf();
 
                 using var peStream = new MemoryStream();
-                using var assembly = await document.Project.Compile(peStream, ct).Caf();
+                using var assembly = await document.Project.Compile(peStream, await GetOptimizationLvl().Caf(), ct).Caf();
                 if (assembly is null) return CodeLensData.CompilerError();
 
                 var methodDefinition = assembly.GetMethodDefinition(methodSymbol);
@@ -60,7 +61,7 @@ namespace Microscope.VSExtension {
                     .Instructions
                     ?? new Collection<Instruction>(capacity: 0);
                 var details = new DetailsData(
-                    methodInstructions:     instructions.Select(InstructionData.From).ToArray(),
+                    methodInstructions: instructions.Select(InstructionData.From).ToArray(),
                     compilerGeneratedTypes: methodDefinition.CollectGeneratedCode());
 
                 CodeLensConnectionHandler.StoreDetailsData(dataPointId, details);
@@ -70,6 +71,15 @@ namespace Microscope.VSExtension {
                 LogVS(ex);
                 return CodeLensData.Failure(ex.ToString());
             }
+        }
+
+        private async Task<OptimizationLevel?> GetOptimizationLvl() {
+            var opts = await GeneralOptions.GetLiveInstanceAsync().Caf();
+            return opts.BuildConfig switch {
+                BuildConfig.Debug => OptimizationLevel.Debug,
+                BuildConfig.Release => OptimizationLevel.Release,
+                _ => null
+            };
         }
     }
 }

@@ -3,6 +3,8 @@
 namespace Microscope.VSExtension.Options {
     using System.ComponentModel;
 
+    public enum BuildConfig { Auto, Debug, Release }
+
     public class GeneralOptions : BaseOptionModel<GeneralOptions> {
         [Category("General")]
         [DisplayName("Enabled")]
@@ -15,5 +17,12 @@ namespace Microscope.VSExtension.Options {
         [Description("Specifies whether the instructions should be refreshed everytime the current document is saved.")]
         [DefaultValue(true)]
         public bool RefreshOnSave { get; set; } = true;
+
+        [Category("General")]
+        [DisplayName("Build configuration")]
+        [Description("Specifies whether to show optimized (Release) or unoptimized (Debug) instructions. Auto will use the build configuration set buy Visual Studio.")]
+        [DefaultValue(BuildConfig.Auto)]
+        [TypeConverter(typeof(EnumConverter))]
+        public BuildConfig BuildConfig { get; set; } = BuildConfig.Auto;
     }
 }

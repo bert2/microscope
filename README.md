@@ -10,7 +10,7 @@ It also shows the compiler-generated code for lambdas/closures, local functions,
 
 ![Usage example: compiler-generated code](img/usage-csc-gen.gif "Usage example: compiler-generated code")
 
-It's mostly useful for learning and getting a better understanding of how C# works internally, but it's a must-have if enjoy procrastinating work with futile micro-optimizations:
+It's mostly useful for learning and getting a better understanding of how C# works internally, but it's a must-have if you enjoy procrastinating work with futile micro-optimizations:
 
 ![Usage example: micro-optimization](img/usage-opt.gif "Usage example: micro-optimization")
 
@@ -114,6 +114,10 @@ Since the 1.0.0 release has all the features I wanted this extension to have, I 
     - can we even access the `Compilation` out-of-proc?
 
 ## Changelog
+
+### 2.1.0
+
+- Adds new setting to the options page controling whether optimized (release) or unoptimized (debug) instructions are shown. 
 
 ### 2.0.0
 

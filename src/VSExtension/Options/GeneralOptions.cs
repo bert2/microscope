@@ -20,7 +20,7 @@ namespace Microscope.VSExtension.Options {
 
         [Category("General")]
         [DisplayName("Build configuration")]
-        [Description("Specifies whether to show optimized (Release) or unoptimized (Debug) instructions. Auto will use the build configuration set buy Visual Studio.")]
+        [Description("Specifies whether to show optimized (Release) or unoptimized (Debug) instructions. Auto will use the build configuration set via Visual Studio.")]
         [DefaultValue(BuildConfig.Auto)]
         [TypeConverter(typeof(EnumConverter))]
         public BuildConfig BuildConfig { get; set; } = BuildConfig.Auto;

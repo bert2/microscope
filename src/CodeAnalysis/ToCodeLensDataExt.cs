@@ -3,11 +3,13 @@
 namespace Microscope.CodeAnalysis {
     using Microscope.Shared;
 
+    using Mono.Cecil;
     using Mono.Cecil.Cil;
     using Mono.Collections.Generic;
 
     public static class ToCodeLensDataExt {
-        public static CodeLensData ToCodeLensData(this Collection<Instruction> instrs) {
+        public static CodeLensData ToCodeLensData(this MethodDefinition method) {
+            var instrs = method.Body?.Instructions ?? new Collection<Instruction>(capacity: 0);
             var boxOpsCount = 0;
             var callvirtOpsCount = 0;
 
@@ -18,7 +20,7 @@ namespace Microscope.CodeAnalysis {
                     callvirtOpsCount++;
             }
 
-            return CodeLensData.Success(instrs.Count, boxOpsCount, callvirtOpsCount);
+            return CodeLensData.Success(instrs.Count, boxOpsCount, callvirtOpsCount, method.Body?.CodeSize ?? 0);
         }
     }
 }

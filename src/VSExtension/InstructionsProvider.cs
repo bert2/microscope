@@ -56,17 +56,14 @@ namespace Microscope.VSExtension {
                 if (assembly is null) return CodeLensData.CompilerError();
 
                 var methodDefinition = assembly.GetMethodDefinition(methodSymbol);
-                var instructions = methodDefinition
-                    .Body?
-                    .Instructions
-                    ?? new Collection<Instruction>(capacity: 0);
+                var instructions = methodDefinition.Body?.Instructions ?? new Collection<Instruction>(capacity: 0);
                 var details = new DetailsData(
                     methodInstructions: instructions.Select(InstructionData.From).ToArray(),
                     compilerGeneratedTypes: methodDefinition.CollectGeneratedCode());
 
                 CodeLensConnectionHandler.StoreDetailsData(dataPointId, details);
 
-                return instructions.ToCodeLensData();
+                return methodDefinition.ToCodeLensData();
             } catch (Exception ex) {
                 LogVS(ex);
                 return CodeLensData.Failure(ex.ToString());

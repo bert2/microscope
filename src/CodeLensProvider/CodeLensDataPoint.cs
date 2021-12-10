@@ -54,7 +54,9 @@ namespace Microscope.CodeLensProvider {
                     : data.InstructionsCount!.Value.Labeled("instruction");
                 var tooltip = data.IsFailure
                     ? data.ErrorMessage!
-                    : $"{data.BoxOpsCount!.Value.Labeled("boxing")}, {data.CallvirtOpsCount!.Value.Labeled("unconstrained virtual call")}";
+                    : $"{data.BoxOpsCount!.Value.Labeled("boxing")}, "
+                    + $"{data.CallvirtOpsCount!.Value.Labeled("unconstrained virtual call")}, "
+                    + $"{data.MethodByteSize!.Value.Labeled("byte")}";
 
                 return new CodeLensDataPointDescriptor {
                     Description = description,

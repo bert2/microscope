@@ -115,6 +115,10 @@ Since the 1.0.0 release has all the features I wanted this extension to have, I 
 
 ## Changelog
 
+### 2.2.0
+
+- The code lense tooltip now also shows the method's byte size.
+
 ### 2.1.0
 
 - Adds new setting to the options page controling whether optimized (release) or unoptimized (debug) instructions are shown. 

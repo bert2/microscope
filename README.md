@@ -27,7 +27,7 @@ It's mostly useful for learning and getting a better understanding of how C# wor
 
 ## Usage
 
-- The CodeLens appears on C# methods and displays the number of instructions that will be generated for the method.
+- The CodeLens appears on C#/VB methods and displays the number of instructions that will be generated for the method.
 - Click the CodeLens to get a detailed list of all instructions including their offsets and operands.
 - Hover over an instruction in the list to see its documentation summary in a tooltip.
 - Double-click an instruction in the list to navigate to its documentation on [docs.microsoft.com](https://docs.microsoft.com/dotnet/api/system.reflection.emit.opcodes).
@@ -92,21 +92,12 @@ Even though the global tool is not required, it makes life a little bit easier:
 PS> nuke test # build and run tests
 ```
 
-## Roadmap
+## Possible features for future releases
 
-Since the 1.0.0 release has all the features I wanted this extension to have, I will devote my time to other projects now. New features will still be released in the future, but they will come less frequently.
-
-### Future releases
-
-- support more code elements? (properties, classes, ...)
+- show CodeLens on properties
 - show C# code in details view
-- VB support
-- F# support?
 - lazy load when method has too many instructions to prevent temporarily freezing VS
 - don't show CodeLens on interface/abstract methods
-- edge cases:
-    - what happens when opening a project instead of a solution?
-    - what happens when opening a file without opening the project?
 - reduce namespace noise in operands column of details view
   - setting for that
   - checkbox in details view for the setting as well
@@ -114,6 +105,10 @@ Since the 1.0.0 release has all the features I wanted this extension to have, I 
     - can we even access the `Compilation` out-of-proc?
 
 ## Changelog
+
+### 2.3.0
+
+- Support Visual Basic projects
 
 ### 2.2.0
 

@@ -19,6 +19,7 @@ namespace Microscope.CodeLensProvider {
     [Name(ProviderId)]
     [LocalizedName(typeof(Resources), "Name")]
     [ContentType("CSharp")]
+    [ContentType("Basic")]
     [Priority(210)] // sort after "references" CodeLens (200)
     public class CodeLensProvider : IAsyncCodeLensDataPointProvider {
         public const string ProviderId = "ILInstructions";

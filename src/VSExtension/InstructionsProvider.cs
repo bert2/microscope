@@ -27,6 +27,7 @@ namespace Microscope.VSExtension {
 
     [Export(typeof(ICodeLensCallbackListener))]
     [ContentType("CSharp")]
+    [ContentType("Basic")]
     public class InstructionsProvider : ICodeLensCallbackListener, IInstructionsProvider {
         private readonly VisualStudioWorkspace workspace;
 

@@ -56,7 +56,7 @@ namespace Microscope.CodeLensProvider {
                     ? data.ErrorMessage!
                     : $"{data.BoxOpsCount!.Value.Labeled("boxing")}, "
                     + $"{data.CallvirtOpsCount!.Value.Labeled("unconstrained virtual call")}, "
-                    + $"{data.MethodByteSize!.Value.Labeled("byte")}";
+                    + $"{data.MemberByteSize!.Value.Labeled("byte")}";
 
                 return new CodeLensDataPointDescriptor {
                     Description = description,

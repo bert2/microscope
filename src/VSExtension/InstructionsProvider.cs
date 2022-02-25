@@ -5,12 +5,10 @@ namespace Microscope.VSExtension {
     using System.ComponentModel.Composition;
     using System.Diagnostics;
     using System.IO;
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Microscope.CodeAnalysis;
-    using Microscope.CodeAnalysis.Model;
     using Microscope.Shared;
     using Microscope.VSExtension.Options;
 
@@ -19,9 +17,6 @@ namespace Microscope.VSExtension {
     using Microsoft.VisualStudio.Language.CodeLens;
     using Microsoft.VisualStudio.LanguageServices;
     using Microsoft.VisualStudio.Utilities;
-
-    using Mono.Cecil.Cil;
-    using Mono.Collections.Generic;
 
     using static Microscope.Shared.Logging;
 
@@ -50,21 +45,21 @@ namespace Microscope.VSExtension {
             CancellationToken ct) {
             try {
                 var document = workspace.GetDocument(filePath, projGuid);
-                var methodSymbol = await document.GetMethodSymbolAt(new TextSpan(textStart, textLen), ct).Caf();
+                var symbol = await document.GetSymbolAt(new TextSpan(textStart, textLen), ct).Caf();
 
                 using var peStream = new MemoryStream();
                 using var assembly = await document.Project.Compile(peStream, await GetOptimizationLvl().Caf(), ct).Caf();
-                if (assembly is null) return CodeLensData.CompilerError();
+                if (assembly is null) return CodeLensData.BuildError();
 
-                var methodDefinition = assembly.GetMethodDefinition(methodSymbol);
-                var instructions = methodDefinition.Body?.Instructions ?? new Collection<Instruction>(capacity: 0);
-                var details = new DetailsData(
-                    methodInstructions: instructions.Select(InstructionData.From).ToArray(),
-                    compilerGeneratedTypes: methodDefinition.CollectGeneratedCode());
+                var (data, details) = symbol switch {
+                    IMethodSymbol m => assembly.GetCodeLensDataFor(m),
+                    IPropertySymbol p => assembly.GetCodeLensDataFor(p),
+                    _ => throw new InvalidOperationException($"Symbol {symbol} is not a method or property.")
+                };
 
                 CodeLensConnectionHandler.StoreDetailsData(dataPointId, details);
 
-                return methodDefinition.ToCodeLensData();
+                return data;
             } catch (Exception ex) {
                 LogVS(ex);
                 return CodeLensData.Failure(ex.ToString());

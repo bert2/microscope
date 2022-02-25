@@ -19,6 +19,17 @@ namespace Microscope.CodeAnalysis {
                 .Select(GeneratedType.From)
                 .ToArray();
 
+        public static IReadOnlyList<GeneratedType> CollectGeneratedCode(this (MethodDefinition? get, MethodDefinition? set) property) {
+            var visited = new HashSet<MethodDefinition>();
+            var generatedByGet = property.get?.CollectGeneratedMethods(visited) ?? Enumerable.Empty<MethodDefinition>();
+            var generatedBySet = property.set?.CollectGeneratedMethods(visited) ?? Enumerable.Empty<MethodDefinition>();
+            return generatedByGet
+                .Concat(generatedBySet)
+                .GroupBy(m => m.DeclaringType)
+                .Select(GeneratedType.From)
+                .ToArray();
+        }
+
         public static IEnumerable<MethodDefinition> CollectGeneratedMethods(
             this MethodDefinition method,
             ISet<MethodDefinition> visited)
@@ -31,7 +42,7 @@ namespace Microscope.CodeAnalysis {
                 .WhereNotNull()
                 .Where(m => !m.IsGetter && !m.IsSetter)
                 .Where(IsCompilerGenerated)
-                .Where(m => visited.Add(m))
+                .Where(visited.Add)
                 .Aggregate(
                     Enumerable.Empty<MethodDefinition>(),
                     (ms, m) => ms.Append(m).Concat(m.CollectGeneratedMethods(visited)))

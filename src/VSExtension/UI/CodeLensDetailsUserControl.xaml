@@ -15,40 +15,42 @@
 
       <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
 
-      <Style TargetType="{x:Type ListView}"
-             BasedOn="{StaticResource {x:Static vs:CodeSenseResources.ListViewStyleKey}}">
+      <Style BasedOn="{StaticResource {x:Static vs:CodeSenseResources.ListViewStyleKey}}"
+             TargetType="{x:Type ListView}">
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True" />
         <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling" />
       </Style>
 
-      <Style TargetType="{x:Type ListViewItem}"
-             BasedOn="{StaticResource {x:Static vs:CodeSenseResources.ListViewItemStyleKey}}">
+      <Style BasedOn="{StaticResource {x:Static vs:CodeSenseResources.ListViewItemStyleKey}}"
+             TargetType="{x:Type ListViewItem}">
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-        <EventSetter Event="MouseDoubleClick" Handler="OnInstructionDoubleClick" />
+        <EventSetter Event="MouseDoubleClick"
+                     Handler="OnInstructionDoubleClick" />
       </Style>
 
-      <Style TargetType="{x:Type TreeView}"
-             BasedOn="{StaticResource {x:Static vs:CodeSenseResources.TreeViewStyleKey}}">
+      <Style BasedOn="{StaticResource {x:Static vs:CodeSenseResources.TreeViewStyleKey}}"
+             TargetType="{x:Type TreeView}">
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True" />
         <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling" />
       </Style>
 
-      <Style TargetType="{x:Type TreeViewItem}"
-             BasedOn="{StaticResource {x:Static vs:CodeSenseResources.TreeViewItemStyleKey}}" />
+      <Style BasedOn="{StaticResource {x:Static vs:CodeSenseResources.TreeViewItemStyleKey}}"
+             TargetType="{x:Type TreeViewItem}" />
 
       <Style x:Key="MethodTreeViewItemStyle"
-             TargetType="{x:Type TreeViewItem}"
-             BasedOn="{StaticResource {x:Static vs:CodeSenseResources.TreeViewItemStyleKey}}">
+             BasedOn="{StaticResource {x:Static vs:CodeSenseResources.TreeViewItemStyleKey}}"
+             TargetType="{x:Type TreeViewItem}">
         <Setter Property="Padding" Value="16,0,0,0" />
       </Style>
 
       <Style x:Key="InstructionTreeViewItemStyle"
-             TargetType="{x:Type TreeViewItem}"
-             BasedOn="{StaticResource {x:Static vs:CodeSenseResources.TreeViewItemStyleKey}}">
+             BasedOn="{StaticResource {x:Static vs:CodeSenseResources.TreeViewItemStyleKey}}"
+             TargetType="{x:Type TreeViewItem}">
         <Setter Property="Padding" Value="16,0,0,0" />
-        <EventSetter Event="MouseDoubleClick" Handler="OnInstructionDoubleClick" />
+        <EventSetter Event="MouseDoubleClick"
+                     Handler="OnInstructionDoubleClick" />
       </Style>
 
       <DataTemplate x:Key="InstructionTemplate"
@@ -76,7 +78,8 @@
 
   <StackPanel>
     <ListView ItemTemplate="{StaticResource InstructionTemplate}"
-              ItemsSource="{Binding MethodInstructions, Mode=OneTime}" />
+              ItemsSource="{Binding MethodInstructions, Mode=OneTime}"
+              Visibility="{Binding IsMethod, Converter={StaticResource BoolToVisConverter}, Mode=OneTime}" />
 
     <StackPanel Visibility="{Binding HasCompilerGeneratedTypes, Converter={StaticResource BoolToVisConverter}, Mode=OneTime}">
       <TextBlock Margin="0,20,0,10"

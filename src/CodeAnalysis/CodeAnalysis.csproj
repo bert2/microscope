@@ -46,10 +46,11 @@
     <Compile Include="AllParametersMatchExt.cs" />
     <Compile Include="CollectGeneratedCodeExt.cs" />
     <Compile Include="CompileExt.cs" />
+    <Compile Include="GetCodeLensDataForExt.cs" />
     <Compile Include="GetDocumentationExt.cs" />
     <Compile Include="GetDocumentExt.cs" />
     <Compile Include="GetMethodDefinitionExt.cs" />
-    <Compile Include="GetMethodSymbolAtExt.cs" />
+    <Compile Include="GetSymbolAtExt.cs" />
     <Compile Include="Model\DetailsData.cs" />
     <Compile Include="Model\GeneratedMethod.cs" />
     <Compile Include="Model\GeneratedType.cs" />

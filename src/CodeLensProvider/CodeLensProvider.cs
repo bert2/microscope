@@ -35,7 +35,7 @@ namespace Microscope.CodeLensProvider {
             CodeLensDescriptor descriptor,
             CodeLensDescriptorContext context,
             CancellationToken ct)
-            => descriptor.Kind == CodeElementKinds.Method
+            => (descriptor.Kind is CodeElementKinds.Method || descriptor.Kind is CodeElementKinds.Property)
             && await callbackService.Value
                 .InvokeAsync<bool>(this, nameof(IInstructionsProvider.IsMicroscopeEnabled)).Caf();
 

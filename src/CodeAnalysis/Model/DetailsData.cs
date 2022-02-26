@@ -6,9 +6,7 @@ namespace Microscope.CodeAnalysis.Model {
     public readonly struct DetailsData {
         public IReadOnlyList<InstructionData>? MethodInstructions { get; }
 
-        public IReadOnlyList<InstructionData>? GetterInstructions { get; }
-
-        public IReadOnlyList<InstructionData>? SetterInstructions { get; }
+        public IReadOnlyList<PropertyAccessor>? PropertyAccessors { get; }
 
         public IReadOnlyList<GeneratedType> CompilerGeneratedTypes { get; }
 
@@ -16,40 +14,36 @@ namespace Microscope.CodeAnalysis.Model {
 
         public bool IsMethod => MethodInstructions != null;
 
-        public bool IsProperty => GetterInstructions != null || SetterInstructions != null;
-
-        public bool HasGetter => GetterInstructions != null;
-
-        public bool HasSetter => SetterInstructions != null;
+        public bool IsProperty => PropertyAccessors != null;
 
         public DetailsData(
             IReadOnlyList<InstructionData>? methodInstructions,
-            IReadOnlyList<InstructionData>? getterInstructions,
-            IReadOnlyList<InstructionData>? setterInstructions,
+            IReadOnlyList<PropertyAccessor>? propertyAccessors,
             IReadOnlyList<GeneratedType> compilerGeneratedTypes) {
             MethodInstructions = methodInstructions;
-            GetterInstructions = getterInstructions;
-            SetterInstructions = setterInstructions;
+            PropertyAccessors = propertyAccessors;
             CompilerGeneratedTypes = compilerGeneratedTypes;
         }
 
         public static DetailsData ForMethod(
             IReadOnlyList<InstructionData> methodInstructions,
             IReadOnlyList<GeneratedType> compilerGeneratedTypes)
-            => new DetailsData(
-                methodInstructions: methodInstructions,
-                getterInstructions: null,
-                setterInstructions: null,
-                compilerGeneratedTypes);
+            => new DetailsData(methodInstructions, propertyAccessors: null, compilerGeneratedTypes);
 
         public static DetailsData ForProperty(
-            IReadOnlyList<InstructionData>? getterInstructions,
-            IReadOnlyList<InstructionData>? setterInstructions,
+            IReadOnlyList<PropertyAccessor> propertyAccessors,
             IReadOnlyList<GeneratedType> compilerGeneratedTypes)
-            => new DetailsData(
-                methodInstructions: null,
-                getterInstructions: getterInstructions,
-                setterInstructions: setterInstructions,
-                compilerGeneratedTypes);
+            => new DetailsData(methodInstructions: null, propertyAccessors, compilerGeneratedTypes);
+    }
+
+    public readonly struct PropertyAccessor {
+        public string Name { get; }
+
+        public IReadOnlyList<InstructionData> Instructions { get; }
+
+        public PropertyAccessor(string name, IReadOnlyList<InstructionData> instructions) {
+            Name = name;
+            Instructions = instructions;
+        }
     }
 }

@@ -14,8 +14,8 @@ namespace Microscope.VSExtension.UI {
     [Name("CodeLens details view element factory")]
     [TypeConversion(from: typeof(CodeLensDetails), to: typeof(FrameworkElement))]
     [Order]
-    public class CodeLensDetailsViewElementFactory : IViewElementFactory {
+    public class ViewElementFactory : IViewElementFactory {
         public TView? CreateViewElement<TView>(ITextView textView, object model) where TView : class
-            => new CodeLensDetailsUserControl((CodeLensDetails)model) as TView;
+            => new CodeLensDetailsControl((CodeLensDetails)model) as TView;
     }
 }

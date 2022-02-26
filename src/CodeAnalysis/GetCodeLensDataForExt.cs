@@ -7,9 +7,8 @@ namespace Microscope.CodeAnalysis {
     using Microsoft.CodeAnalysis;
 
     using Mono.Cecil;
-    using Mono.Cecil.Cil;
-    using Mono.Collections.Generic;
 
+    using System.Collections.Generic;
     using System.Linq;
 
     public static class GetCodeLensDataForExt {
@@ -17,7 +16,7 @@ namespace Microscope.CodeAnalysis {
             var def = assembly.GetMethodDefinition(symbol);
 
             var details = DetailsData.ForMethod(
-                methodInstructions: def.GetInstructions(),
+                methodInstructions: def.GetInstructions().ToArray(),
                 compilerGeneratedTypes: def.CollectGeneratedCode());
 
             var data = def.ToCodeLensData();
@@ -30,8 +29,7 @@ namespace Microscope.CodeAnalysis {
             var setDef = symbol.SetMethod is null ? null : assembly.GetMethodDefinition(symbol.SetMethod);
 
             var details = DetailsData.ForProperty(
-                getterInstructions: getDef?.GetInstructions(),
-                setterInstructions: setDef?.GetInstructions(),
+                propertyAccessors: (getDef, setDef).GetInstructions().ToArray(),
                 compilerGeneratedTypes: (getDef, setDef).CollectGeneratedCode());
 
             var data = (getDef, setDef).ToCodeLensData();
@@ -39,9 +37,15 @@ namespace Microscope.CodeAnalysis {
             return (data, details);
         }
 
-        private static InstructionData[] GetInstructions(this MethodDefinition def) {
-            var instrs = def.HasBody ? def.Body.Instructions : new Collection<Instruction>(capacity: 0);
-            return instrs.Select(InstructionData.From).ToArray();
+        private static IEnumerable<InstructionData> GetInstructions(this MethodDefinition def)
+            => def.HasBody ? def.Body.Instructions.Select(InstructionData.From) : Enumerable.Empty<InstructionData>();
+
+        private static IEnumerable<PropertyAccessor> GetInstructions(this (MethodDefinition? get, MethodDefinition? set) prop) {
+            if (prop.get != null)
+                yield return new PropertyAccessor(prop.get.Name, prop.get.GetInstructions().ToArray());
+
+            if (prop.set != null)
+                yield return new PropertyAccessor(prop.set.Name, prop.set.GetInstructions().ToArray());
         }
     }
 }

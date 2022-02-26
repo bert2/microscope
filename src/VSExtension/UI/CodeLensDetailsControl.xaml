@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Microscope.VSExtension.UI.CodeLensDetailsUserControl"
+﻿<UserControl x:Class="Microscope.VSExtension.UI.CodeLensDetailsControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -53,6 +53,12 @@
                      Handler="OnInstructionDoubleClick" />
       </Style>
 
+      <Style x:Key="PropInstructionTreeViewItemStyle"
+             BasedOn="{StaticResource InstructionTreeViewItemStyle}"
+             TargetType="{x:Type TreeViewItem}">
+        <Setter Property="Padding" Value="0,0,0,0" />
+      </Style>
+
       <DataTemplate x:Key="InstructionTemplate"
                     DataType="{x:Type model:InstructionData}">
         <Grid ToolTip="{Binding Documentation, Mode=OneTime}">
@@ -77,10 +83,26 @@
   </UserControl.Resources>
 
   <StackPanel>
+    <!--  method  -->
     <ListView ItemTemplate="{StaticResource InstructionTemplate}"
               ItemsSource="{Binding MethodInstructions, Mode=OneTime}"
               Visibility="{Binding IsMethod, Converter={StaticResource BoolToVisConverter}, Mode=OneTime}" />
 
+    <!--  property  -->
+    <TreeView ItemsSource="{Binding PropertyAccessors, Mode=OneTime}"
+              Visibility="{Binding IsProperty, Converter={StaticResource BoolToVisConverter}, Mode=OneTime}">
+      <TreeView.ItemTemplate>
+        <HierarchicalDataTemplate DataType="{x:Type model:PropertyAccessor}"
+                                  ItemContainerStyle="{StaticResource PropInstructionTreeViewItemStyle}"
+                                  ItemTemplate="{StaticResource InstructionTemplate}"
+                                  ItemsSource="{Binding Instructions, Mode=OneTime}">
+          <TextBlock Text="{Binding Name, Mode=OneTime}"
+                     ToolTip="{Binding Name, Mode=OneTime}" />
+        </HierarchicalDataTemplate>
+      </TreeView.ItemTemplate>
+    </TreeView>
+
+    <!--  compiler-generated code  -->
     <StackPanel Visibility="{Binding HasCompilerGeneratedTypes, Converter={StaticResource BoolToVisConverter}, Mode=OneTime}">
       <TextBlock Margin="0,20,0,10"
                  Text="Compiler-generated code:" />

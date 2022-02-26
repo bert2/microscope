@@ -8,8 +8,8 @@ namespace Microscope.VSExtension.UI {
     using Microscope.CodeAnalysis.Model;
     using Microscope.Shared;
 
-    public partial class CodeLensDetailsUserControl : UserControl {
-        public CodeLensDetailsUserControl(CodeLensDetails details) {
+    public partial class CodeLensDetailsControl : UserControl {
+        public CodeLensDetailsControl(CodeLensDetails details) {
             InitializeComponent();
             DataContext = CodeLensConnectionHandler.GetDetailsData(details.DataPointId);
         }

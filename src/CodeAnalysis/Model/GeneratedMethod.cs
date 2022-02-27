@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 namespace Microscope.CodeAnalysis.Model {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -35,7 +36,9 @@ namespace Microscope.CodeAnalysis.Model {
             method.FullName,
             method.ReturnType.FullName,
             GetParameterList(method),
-            method.Body.Instructions.Select(InstructionData.From).ToArray());
+            instructions: method.HasBody
+                ? method.Body.Instructions.Select(InstructionData.From).ToArray()
+                : Array.Empty<InstructionData>());
 
         public override string ToString() => Name;
 

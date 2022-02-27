@@ -92,12 +92,14 @@
     <TreeView ItemsSource="{Binding PropertyAccessors, Mode=OneTime}"
               Visibility="{Binding IsProperty, Converter={StaticResource BoolToVisConverter}, Mode=OneTime}">
       <TreeView.ItemTemplate>
-        <HierarchicalDataTemplate DataType="{x:Type model:PropertyAccessor}"
+        <HierarchicalDataTemplate DataType="{x:Type model:GeneratedMethod}"
                                   ItemContainerStyle="{StaticResource PropInstructionTreeViewItemStyle}"
                                   ItemTemplate="{StaticResource InstructionTemplate}"
                                   ItemsSource="{Binding Instructions, Mode=OneTime}">
-          <TextBlock Text="{Binding Name, Mode=OneTime}"
-                     ToolTip="{Binding Name, Mode=OneTime}" />
+          <TextBlock ToolTip="{Binding FullName, Mode=OneTime}">
+            <Run Text="{Binding ReturnTypeName, Mode=OneTime}" /> <Run FontWeight="Bold"
+                 Text="{Binding Name, Mode=OneTime}" /><Run Text="{Binding ParameterList, Mode=OneTime}" />
+          </TextBlock>
         </HierarchicalDataTemplate>
       </TreeView.ItemTemplate>
     </TreeView>

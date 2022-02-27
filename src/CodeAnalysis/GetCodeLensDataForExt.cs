@@ -40,12 +40,9 @@ namespace Microscope.CodeAnalysis {
         private static IEnumerable<InstructionData> GetInstructions(this MethodDefinition def)
             => def.HasBody ? def.Body.Instructions.Select(InstructionData.From) : Enumerable.Empty<InstructionData>();
 
-        private static IEnumerable<PropertyAccessor> GetInstructions(this (MethodDefinition? get, MethodDefinition? set) prop) {
-            if (prop.get != null)
-                yield return new PropertyAccessor(prop.get.Name, prop.get.GetInstructions().ToArray());
-
-            if (prop.set != null)
-                yield return new PropertyAccessor(prop.set.Name, prop.set.GetInstructions().ToArray());
+        private static IEnumerable<GeneratedMethod> GetInstructions(this (MethodDefinition? get, MethodDefinition? set) prop) {
+            if (prop.get != null) yield return GeneratedMethod.From(prop.get);
+            if (prop.set != null) yield return GeneratedMethod.From(prop.set);
         }
     }
 }

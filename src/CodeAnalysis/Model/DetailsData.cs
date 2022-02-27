@@ -6,7 +6,7 @@ namespace Microscope.CodeAnalysis.Model {
     public readonly struct DetailsData {
         public IReadOnlyList<InstructionData>? MethodInstructions { get; }
 
-        public IReadOnlyList<PropertyAccessor>? PropertyAccessors { get; }
+        public IReadOnlyList<GeneratedMethod>? PropertyAccessors { get; }
 
         public IReadOnlyList<GeneratedType> CompilerGeneratedTypes { get; }
 
@@ -18,7 +18,7 @@ namespace Microscope.CodeAnalysis.Model {
 
         public DetailsData(
             IReadOnlyList<InstructionData>? methodInstructions,
-            IReadOnlyList<PropertyAccessor>? propertyAccessors,
+            IReadOnlyList<GeneratedMethod>? propertyAccessors,
             IReadOnlyList<GeneratedType> compilerGeneratedTypes) {
             MethodInstructions = methodInstructions;
             PropertyAccessors = propertyAccessors;
@@ -31,19 +31,8 @@ namespace Microscope.CodeAnalysis.Model {
             => new DetailsData(methodInstructions, propertyAccessors: null, compilerGeneratedTypes);
 
         public static DetailsData ForProperty(
-            IReadOnlyList<PropertyAccessor> propertyAccessors,
+            IReadOnlyList<GeneratedMethod> propertyAccessors,
             IReadOnlyList<GeneratedType> compilerGeneratedTypes)
             => new DetailsData(methodInstructions: null, propertyAccessors, compilerGeneratedTypes);
-    }
-
-    public readonly struct PropertyAccessor {
-        public string Name { get; }
-
-        public IReadOnlyList<InstructionData> Instructions { get; }
-
-        public PropertyAccessor(string name, IReadOnlyList<InstructionData> instructions) {
-            Name = name;
-            Instructions = instructions;
-        }
     }
 }

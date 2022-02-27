@@ -2,7 +2,7 @@
 
 [![build](https://img.shields.io/appveyor/build/bert2/microscope/main?logo=appveyor)](https://ci.appveyor.com/project/bert2/microscope/branch/main) [![CodeFactor](https://www.codefactor.io/repository/github/bert2/microscope/badge)](https://www.codefactor.io/repository/github/bert2/microscope) ![last commit](https://img.shields.io/github/last-commit/bert2/microscope/main?logo=github) [![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/bert.microscope?label=marketplace&logo=visual-studio&logoColor=%23bb88f3)](https://marketplace.visualstudio.com/items?itemName=bert.microscope) [![Visual Studio Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/bert.microscope?label=installs&logo=visual-studio&logoColor=%23bb88f3)](https://marketplace.visualstudio.com/items?itemName=bert.microscope)
 
-A CodeLens extension for Visual Studio that lets you inspect the intermediate language instructions of a method.
+A CodeLens extension for Visual Studio that lets you inspect the intermediate language instructions of methods and properties.
 
 ![Usage example](img/usage.gif "Usage example")
 
@@ -27,13 +27,13 @@ It's mostly useful for learning and getting a better understanding of how C# wor
 
 ## Usage
 
-- The CodeLens appears on C#/VB methods and displays the number of instructions that will be generated for the method.
+- The CodeLens appears on C#/VB methods/properties and displays the number of instructions that will be generated for the method.
 - Click the CodeLens to get a detailed list of all instructions including their offsets and operands.
 - Hover over an instruction in the list to see its documentation summary in a tooltip.
 - Double-click an instruction in the list to navigate to its documentation on [docs.microsoft.com](https://docs.microsoft.com/dotnet/api/system.reflection.emit.opcodes).
-- Hover over the CodeLens to see individual counts for the number of `box` and unconstrained `callvirt` instructions in the method.
+- Hover over the CodeLens to see individual counts for the number of `box` and unconstrained `callvirt` instructions in the method as well the method's/property's byte size.
 - The CodeLens will automatically update everytime you save the current document. You can also click the "Refresh" button in the bottom left of the details view.
-- Any types that the compiler generated for the method (e.g. for lambdas) will be shown below the list of instructions together with their methods and instructions.
+- Any types that the compiler generated for the method/property (e.g. for lambdas) will be shown below the list of instructions together with their methods and instructions.
 - In case the retrieval of instructions fails the CodeLens will display `-` instead of a count. Hover over the CodeLens to see the exception that caused the failure.
 - Configuration options are available in the Visual Studio settings ("Tools" > "Options..." > "microscope").
 
@@ -94,7 +94,6 @@ PS> nuke test # build and run tests
 
 ## Possible features for future releases
 
-- show CodeLens on properties
 - show C# code in details view
 - lazy load when method has too many instructions to prevent temporarily freezing VS
 - don't show CodeLens on interface/abstract methods
@@ -106,9 +105,13 @@ PS> nuke test # build and run tests
 
 ## Changelog
 
+### 2.4.0
+
+- Support inspecting the instructions of properties.
+
 ### 2.3.0
 
-- Support Visual Basic projects
+- Support Visual Basic projects.
 
 ### 2.2.0
 

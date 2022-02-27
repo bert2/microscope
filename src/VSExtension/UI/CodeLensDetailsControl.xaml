@@ -52,9 +52,8 @@
       </Style>
 
       <Style x:Key="InstrTviStyle"
-             BasedOn="{StaticResource {x:Static vs:CodeSenseResources.TreeViewItemStyleKey}}"
+             BasedOn="{StaticResource MethodTviStyle}"
              TargetType="{x:Type TreeViewItem}">
-        <Setter Property="Padding" Value="16,0,0,0" />
         <EventSetter Event="MouseDoubleClick"
                      Handler="OnInstructionDoubleClick" />
       </Style>

@@ -13,7 +13,7 @@
         <x:Static Member="vs:SharedResources.Default" />
       </ResourceDictionary.MergedDictionaries>
 
-      <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+      <BooleanToVisibilityConverter x:Key="BoolToVisConv" />
 
       <Style BasedOn="{StaticResource {x:Static vs:CodeSenseResources.ListViewStyleKey}}"
              TargetType="{x:Type ListView}">
@@ -39,13 +39,13 @@
       <Style BasedOn="{StaticResource {x:Static vs:CodeSenseResources.TreeViewItemStyleKey}}"
              TargetType="{x:Type TreeViewItem}" />
 
-      <Style x:Key="MethodTreeViewItemStyle"
+      <Style x:Key="MethodTviStyle"
              BasedOn="{StaticResource {x:Static vs:CodeSenseResources.TreeViewItemStyleKey}}"
              TargetType="{x:Type TreeViewItem}">
         <Setter Property="Padding" Value="16,0,0,0" />
       </Style>
 
-      <Style x:Key="InstructionTreeViewItemStyle"
+      <Style x:Key="InstrTviStyle"
              BasedOn="{StaticResource {x:Static vs:CodeSenseResources.TreeViewItemStyleKey}}"
              TargetType="{x:Type TreeViewItem}">
         <Setter Property="Padding" Value="16,0,0,0" />
@@ -53,13 +53,13 @@
                      Handler="OnInstructionDoubleClick" />
       </Style>
 
-      <Style x:Key="PropInstructionTreeViewItemStyle"
-             BasedOn="{StaticResource InstructionTreeViewItemStyle}"
+      <Style x:Key="PropInstrTviStyle"
+             BasedOn="{StaticResource InstrTviStyle}"
              TargetType="{x:Type TreeViewItem}">
         <Setter Property="Padding" Value="0,0,0,0" />
       </Style>
 
-      <DataTemplate x:Key="InstructionTemplate"
+      <DataTemplate x:Key="InstrTempl"
                     DataType="{x:Type model:InstructionData}">
         <Grid ToolTip="{Binding Documentation, Mode=OneTime}">
           <Grid.ColumnDefinitions>
@@ -84,17 +84,17 @@
 
   <StackPanel>
     <!--  method  -->
-    <ListView ItemTemplate="{StaticResource InstructionTemplate}"
+    <ListView ItemTemplate="{StaticResource InstrTempl}"
               ItemsSource="{Binding MethodInstructions, Mode=OneTime}"
-              Visibility="{Binding IsMethod, Converter={StaticResource BoolToVisConverter}, Mode=OneTime}" />
+              Visibility="{Binding IsMethod, Converter={StaticResource BoolToVisConv}, Mode=OneTime}" />
 
     <!--  property  -->
     <TreeView ItemsSource="{Binding PropertyAccessors, Mode=OneTime}"
-              Visibility="{Binding IsProperty, Converter={StaticResource BoolToVisConverter}, Mode=OneTime}">
+              Visibility="{Binding IsProperty, Converter={StaticResource BoolToVisConv}, Mode=OneTime}">
       <TreeView.ItemTemplate>
         <HierarchicalDataTemplate DataType="{x:Type model:GeneratedMethod}"
-                                  ItemContainerStyle="{StaticResource PropInstructionTreeViewItemStyle}"
-                                  ItemTemplate="{StaticResource InstructionTemplate}"
+                                  ItemContainerStyle="{StaticResource PropInstrTviStyle}"
+                                  ItemTemplate="{StaticResource InstrTempl}"
                                   ItemsSource="{Binding Instructions, Mode=OneTime}">
           <TextBlock ToolTip="{Binding FullName, Mode=OneTime}">
             <Run Text="{Binding ReturnTypeName, Mode=OneTime}" /> <Run FontWeight="Bold"
@@ -105,22 +105,22 @@
     </TreeView>
 
     <!--  compiler-generated code  -->
-    <StackPanel Visibility="{Binding HasCompilerGeneratedTypes, Converter={StaticResource BoolToVisConverter}, Mode=OneTime}">
+    <StackPanel Visibility="{Binding HasCompilerGeneratedTypes, Converter={StaticResource BoolToVisConv}, Mode=OneTime}">
       <TextBlock Margin="0,20,0,10"
                  Text="Compiler-generated code:" />
 
       <TreeView ItemsSource="{Binding CompilerGeneratedTypes, Mode=OneTime}">
         <TreeView.ItemTemplate>
           <HierarchicalDataTemplate DataType="{x:Type model:GeneratedType}"
-                                    ItemContainerStyle="{StaticResource MethodTreeViewItemStyle}"
+                                    ItemContainerStyle="{StaticResource MethodTviStyle}"
                                     ItemsSource="{Binding Methods, Mode=OneTime}">
             <TextBlock Text="{Binding Name, Mode=OneTime}"
                        ToolTip="{Binding FullName, Mode=OneTime}" />
 
             <HierarchicalDataTemplate.ItemTemplate>
               <HierarchicalDataTemplate DataType="{x:Type model:GeneratedMethod}"
-                                        ItemContainerStyle="{StaticResource InstructionTreeViewItemStyle}"
-                                        ItemTemplate="{StaticResource InstructionTemplate}"
+                                        ItemContainerStyle="{StaticResource InstrTviStyle}"
+                                        ItemTemplate="{StaticResource InstrTempl}"
                                         ItemsSource="{Binding Instructions, Mode=OneTime}">
                 <TextBlock ToolTip="{Binding FullName, Mode=OneTime}">
                   <Run Text="{Binding ReturnTypeName, Mode=OneTime}" /> <Run FontWeight="Bold"

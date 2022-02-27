@@ -45,6 +45,12 @@
         <Setter Property="Padding" Value="16,0,0,0" />
       </Style>
 
+      <Style x:Key="PropAccessorTviStyle"
+             BasedOn="{StaticResource {x:Static vs:CodeSenseResources.TreeViewItemStyleKey}}"
+             TargetType="{x:Type TreeViewItem}">
+        <Setter Property="IsExpanded" Value="True" />
+      </Style>
+
       <Style x:Key="InstrTviStyle"
              BasedOn="{StaticResource {x:Static vs:CodeSenseResources.TreeViewItemStyleKey}}"
              TargetType="{x:Type TreeViewItem}">
@@ -89,7 +95,8 @@
               Visibility="{Binding IsMethod, Converter={StaticResource BoolToVisConv}, Mode=OneTime}" />
 
     <!--  property  -->
-    <TreeView ItemsSource="{Binding PropertyAccessors, Mode=OneTime}"
+    <TreeView ItemContainerStyle="{StaticResource PropAccessorTviStyle}"
+              ItemsSource="{Binding PropertyAccessors, Mode=OneTime}"
               Visibility="{Binding IsProperty, Converter={StaticResource BoolToVisConv}, Mode=OneTime}">
       <TreeView.ItemTemplate>
         <HierarchicalDataTemplate DataType="{x:Type model:GeneratedMethod}"
